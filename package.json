@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "autoprefixer": "^10.4.20",
+    "axios": "^1.7.4",
     "core-js": "^3.25.3",
+    "js-cookie": "^3.0.5",
     "nuxt": "^2.15.8",
     "postcss": "^8.4.41",
     "slick-carousel": "^1.8.1",

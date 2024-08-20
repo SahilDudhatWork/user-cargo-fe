@@ -6,7 +6,7 @@
                 <div class="mt-10">
                     <h1 class="font-normal text-[44px] text-[#212121]">Email Sent</h1>
                     <p class="text-[18px] text-[#494949] font-normal mt-2 xl:max-w-[420px]">We’ve sent an OTP on your mail please check and fill it to recover your password.</p>
-                    <form class="space-y-4 md:space-y-6 mt-6" action="#">
+                    <form class="space-y-4 md:space-y-6 mt-6" @click="verifyOtp" >
                         <div class="flex space-x-2">
                             <input v-for="(digit, index) in otp" :key="index" type="tel" maxlength="1" class="sm:w-12 w-11 h-12 text-center border rounded" v-model="otp[index]" @input="handleInput(index)" @keydown.backspace="handleBackspace(index)" ref="otpInput" @keypress="isNumber" />
                         </div>
@@ -18,7 +18,7 @@
                         <button type="submit" class="xl:w-[382px] w-full text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-5 py-[15px] text-center">Submit</button>
                         <div class="text-sm font-normal text-[#1E1E1E] max-w-[362px] mt-10 !m-0">
                             <p class="mt-8">
-                                By creating an account or signing you have read and agree to our <span class="font-medium text-sm text-[#1E1E1E]">Terms and Conditions </span>and <span class="font-medium text-sm text-[#1E1E1E]">Privacy Policies</span>
+                                By creating an account or signing you have read and agree to our <span class="font-medium text-sm text-[#1E1E1E] cursor-pointer">Terms and Conditions </span>and <span class="font-medium text-sm text-[#1E1E1E] cursor-pointer">Privacy Policies</span>
                             </p>
                         </div>
                     </form>
@@ -30,13 +30,30 @@
 </template>
 
 <script>
+import { mapActions,mapState } from "vuex"
 export default {
     data() {
         return {
             otp: Array(6).fill(''),
         };
     },
+    computed:{
+        ...mapState({
+            forgetEmail: state => state.forgetEmail
+        })
+    },  
     methods: {
+        ...mapActions({
+            verifyOtp:"auth/verifyOtp"
+        }),
+        async verifyOtp(){
+            try {
+                const res = await this.verifyOtp({email:this.email,otp:this.otp})
+                console.log(res,'ress');
+            } catch (error) {
+                console.log(error);
+            }
+        },
         handleInput(index) {
             if (this.otp[index].length === 1 && index < this.otp.length - 1) {
                 this.$refs.otpInput[index + 1].focus();
