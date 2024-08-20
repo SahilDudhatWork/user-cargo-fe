@@ -1,0 +1,58 @@
+::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #9ED0FF 0%, #0464CB 100%);
+  }
+  
+  .child-drop {
+    opacity: 0;
+    visibility: hidden;
+    transition: all .5s;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s;
+  }
+  
+  .drop-li:hover .child-drop {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-10px);
+    -webkit-transform: translateY(-10px);
+    -moz-transform: translateY(-10px);
+    -ms-transform: translateY(-10px);
+    -o-transform: translateY(-10px);
+  }
+
+  .nav-menu-content::after {
+    content: "";
+    background: #ffffff;
+    width: 0;
+    height: 2px;
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    transition: all .5s;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s;
+  }
+  
+  .nav-menu-content:hover::after {
+    width: 100%;
+  }
+
+  .\[\&\.active\]\:after\:bg-gradient-to-r.active::after {
+    content: "";
+    background: #ffffff;
+  }
+  .slick-slide {
+    padding: 0 10px;
+  /* display: flex !important; */
+  /* gap: 30px !important; */
+  /* margin: 0 50px; */
+  /* width: 432px !important; */
+}
