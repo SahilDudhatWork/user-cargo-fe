@@ -42,21 +42,37 @@
               </svg>
               <span class="text-sm text-white font-normal">EN</span>
             </div>
-            <p
-              class="text-white font-normal text-sm cursor-pointer"
-              @click="goToSignIn"
+            <div class="flex cursor-pointer" @click="isDropdown = !isDropdown">
+                <div class="bg-white rounded-full cursor-pointer py-2 px-[18px]">
+              <img src="../static/svg/user.svg" alt="" >
+            </div>
+            <img src="../static/svg/down-arrow.svg" alt="">
+            </div>
+        </div>
+    </header>
+        <div class="relative">
+            <div
+            v-if="isDropdown"
+            v-click-outside="closeDropdown"
+            class="z-50 absolute right-[5rem] top-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
             >
-              Log in
-            </p>
-            <button
-              type="button"
-              class="bg-white text-[#0464CB] py-1 px-[15px] rounded-full"
-              @click="goToSignUp"
+            <ul
+                class="py-2 text-sm text-gray-700 dark:text-gray-200 cursor-pointer"
+                aria-labelledby="dropdownHoverButton"
+                @click="closeDropdown"
             >
-              Sign up
-            </button>
-          </div>
-        </header>
+            <li>
+                <nuxt-link to="/edit-profile" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</nuxt-link>
+            </li>
+                <li>
+                <nuxt-link to="/setting" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</nuxt-link>
+            </li>
+            <li>
+                <a @click="logOut" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Log out</a>
+                </li>
+            </ul>
+            </div>
+        </div>
       </div>
     </div>
   </template>
@@ -65,18 +81,15 @@
   export default {
     data() {
       return {
+      isDropdown: false,
         navItems: [
           {
-            text: "Service",
-            href: "/service",
+            text: "Home",
+            href: "/home",
           },
           {
-            text: "Carrier",
-            href: "/carrier",
-          },
-          {
-            text: "About us",
-            href: "/about-us",
+            text: "History",
+            href: "/history",
           },
         ],
         activeIndex: 0,
@@ -92,6 +105,12 @@
       goToSignIn() {
         this.$router.push("/login");
       },
+      closeDropdown() {
+      this.isDropdown = false;
+      },
+      logOut(){
+        this.$router.push('/login')
+      }
     },
   };
   </script>

@@ -1,23 +1,19 @@
 import $axios from "@/plugins/axios";
-import Cookies from "js-cookie";
 
 export const state = () => ({
-  forgetEmail:""
 });
 
-export const getters = {};
+export const getters = {
+};
 export const mutations = {
-  setForgetEmail(state, email) {
-    state.forgetEmail = email;
-  }
 };
 
 export const actions = {
   async signin(ctx, payload) {
     try {
       const response = await $axios.post(`/v1/user/auth/logIn`, payload);
-      Cookies.set("token", response.data.accessToken, {
-        expires: 7, // Cookie will expire in 7 days
+      this.$cookies.set("token", response.data.accessToken, {
+        expires: 7,
         path: "/",
         secure: true,
         sameSite: "Strict",

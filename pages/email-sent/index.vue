@@ -6,7 +6,7 @@
                 <div class="mt-10">
                     <h1 class="font-normal text-[44px] text-[#212121]">Email Sent</h1>
                     <p class="text-[18px] text-[#494949] font-normal mt-2 xl:max-w-[420px]">We’ve sent an OTP on your mail please check and fill it to recover your password.</p>
-                    <form class="space-y-4 md:space-y-6 mt-6" @click="verifyOtp" >
+                    <form class="space-y-4 md:space-y-6 mt-6" @submit.prevent="veryfyCode">
                         <div class="flex space-x-2">
                             <input v-for="(digit, index) in otp" :key="index" type="tel" maxlength="1" class="sm:w-12 w-11 h-12 text-center border rounded" v-model="otp[index]" @input="handleInput(index)" @keydown.backspace="handleBackspace(index)" ref="otpInput" @keypress="isNumber" />
                         </div>
@@ -15,7 +15,7 @@
                                 Didn’t get it? <span class="font-medium text-sm text-[#1E1E1E] border-b border-[#1E1E1E] cursor-pointer">Resend code</span>
                             </p>
                         </div>
-                        <button type="submit" class="xl:w-[382px] w-full text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-5 py-[15px] text-center">Submit</button>
+                        <button class="xl:w-[382px] w-full text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-5 py-[15px] text-center">Submit</button>
                         <div class="text-sm font-normal text-[#1E1E1E] max-w-[362px] mt-10 !m-0">
                             <p class="mt-8">
                                 By creating an account or signing you have read and agree to our <span class="font-medium text-sm text-[#1E1E1E] cursor-pointer">Terms and Conditions </span>and <span class="font-medium text-sm text-[#1E1E1E] cursor-pointer">Privacy Policies</span>
@@ -30,7 +30,8 @@
 </template>
 
 <script>
-import { mapActions,mapState } from "vuex"
+import { mapActions} from "vuex";
+
 export default {
     data() {
         return {
@@ -38,20 +39,43 @@ export default {
         };
     },
     computed:{
-        ...mapState({
-            forgetEmail: state => state.forgetEmail
-        })
+
     },  
     methods: {
         ...mapActions({
             verifyOtp:"auth/verifyOtp"
         }),
-        async verifyOtp(){
+        async veryfyCode(){            
             try {
-                const res = await this.verifyOtp({email:this.email,otp:this.otp})
-                console.log(res,'ress');
-            } catch (error) {
-                console.log(error);
+                if(this.otp.some(digit => digit === '')){
+                    this.$toast.open({
+                        message: this.$i18n.t("errorMessage"),
+                        type: 'error',
+                        duration: 2000,
+                        position: 'bottom-right',
+                    });
+                    return;
+                }
+                else{
+                    let otpString = '';
+                    for (let i = 0; i < this.otp.length; i++) {
+                    otpString += this.otp[i];
+                    }
+                    const accessEmail = this.$cookies.get("email");
+                    const res = await this.verifyOtp({email:accessEmail,otp:parseInt(otpString)});
+                    this.$cookies.set('otpToken',res.data.token);
+
+                    this.$router.push("/create-password");
+                }
+                } catch (error) {
+                    console.log(error);
+                    
+                    this.$toast.open({
+                        message: error?.response?.data?.msg,
+                        type: 'error',
+                        duration: 2000,
+                        position: 'bottom-right',
+                    });
             }
         },
         handleInput(index) {

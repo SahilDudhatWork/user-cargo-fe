@@ -1,3 +1,6 @@
+import local_en from "./config/lang/en.json";
+// import global_en from "./node_modules/@bizinbox/bib-ui-lib/dist/lang/global_en.json";
+
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -30,8 +33,9 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: "~/plugins/v-click-outside.js", mode: "client" },
-    { src: '~/plugins/vue-slick-carousel.js', mode: 'client' }
-
+    { src: '~/plugins/vue-slick-carousel.js', mode: 'client' },
+    { src: "~/plugins/toast-notification.js", mode: "client" },
+    '~/plugins/js-cookie.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -39,6 +43,25 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    [
+      "nuxt-i18n",
+      {
+        vueI18nLoader: true,
+        defaultLocale: "en",
+        locales: [
+          {
+            code: "en",
+            name: "English",
+          },
+        ],
+        globalInjection: true,
+        vueI18n: {
+          locale: "en",
+          fallbackLocale: "en",
+          messages: { en: {...local_en } },
+        },
+      },
+    ],
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
