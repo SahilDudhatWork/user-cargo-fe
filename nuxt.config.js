@@ -39,6 +39,7 @@ export default {
     { src: '~/plugins/vue-slick-carousel.js', mode: 'client' },
     { src: "~/plugins/toast-notification.js", mode: "client" },
     '~/plugins/js-cookie.js',
+    '~/plugins/lodash.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

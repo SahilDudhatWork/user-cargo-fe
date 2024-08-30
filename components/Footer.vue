@@ -6,7 +6,7 @@
         </div>
     </div>
     <div class="relative">
-        <img src="../static/Images/rounded-left.webp" alt="" class="absolute left-0 ease-in-out transform !rotate-12 -top-[4rem]">
+        <img src="../static/Images/rounded-left.webp" alt="" class="absolute left-0 ease-in-out transform -top-[7rem]">
     </div>
     <footer class="bg-[#0464CB] mt-5 p-3">
 
@@ -56,8 +56,8 @@
             <p class="text-white font-normal text-sm">
                 Non Copyrighted © 2022 Design and upload by rich technologies
             </p>
-            <div>
-                25
+            <div class="flex gap-2">
+                <img src="../static/svg/white-socia-media.svg" alt="">
             </div>
         </div>
 

@@ -1,117 +1,131 @@
 <template>
-    <div>
-      <div class="border border-gray-300 py-4 bg-[#0464CB]">
-        <img
-          src="../static/Images/header-image.webp"
-          alt=""
-          class="w-60 absolute top-0 right-0"
-        />
-        <header class="sm:mx-20 mx-6 flex justify-between relative">
-          <div class="flex items-center gap-12">
-            <img src="../static/Images/Subtract.png" alt="" />
-            <ul class="flex display-block items-center gap-7">
-              <li
-                v-for="(item, index) in navItems"
-                :key="index"
-                class="drop-li relative"
+  <div>
+    <div class="border border-gray-300 py-4 bg-[#0464CB]">
+      <img
+        src="../static/Images/header-image.webp"
+        alt=""
+        class="w-60 absolute top-0 right-0"
+      />
+      <header class="sm:mx-20 mx-6 flex justify-between relative">
+        <div class="flex items-center gap-12">
+          <img src="../static/Images/Subtract.png" alt="" />
+          <ul class="flex display-block items-center gap-7">
+            <li
+              v-for="(item, index) in navItems"
+              :key="index"
+              class="drop-li relative"
+            >
+              <a
+                @click.prevent="setActive(index)"
+                :class="{ active: activeIndex === index }"
+                :href="item.href"
+                class="xl:text-[19px] cursor-pointer lg:text-[19px] inline-flex gap-2 justify-center items-center font-normal xl:text-white text-white [&.active]:after:content('') [&.active]:after:w-full [&.active]:after:h-[2px] [&.active]:after:bg-gradient-to-r from-[#9ED0FF] to-[#4F42E4] [&.active]:after:absolute [&.active]:after:bottom-[-10px] [&.active]:after:left-0 relative nav-menu-content"
               >
-                <a
-                  @click.prevent="setActive(index)"
-                  :class="{ active: activeIndex === index }"
-                  :href="item.href"
-                  class="xl:text-[19px] cursor-pointer lg:text-[19px] inline-flex gap-2 justify-center items-center font-normal xl:text-white text-white [&.active]:after:content('') [&.active]:after:w-full [&.active]:after:h-[2px] [&.active]:after:bg-gradient-to-r from-[#9ED0FF] to-[#4F42E4] [&.active]:after:absolute [&.active]:after:bottom-[-10px] [&.active]:after:left-0 relative nav-menu-content"
-                >
-                  {{ item.text }}
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="flex items-center gap-7 relative">
-            <div class="flex items-center gap-1 cursor-pointer">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M8 0C6.41775 0 4.87104 0.469192 3.55544 1.34824C2.23985 2.22729 1.21447 3.47672 0.608967 4.93853C0.00346629 6.40034 -0.15496 8.00887 0.153721 9.56072C0.462403 11.1126 1.22433 12.538 2.34315 13.6569C3.46197 14.7757 4.88743 15.5376 6.43928 15.8463C7.99113 16.155 9.59966 15.9965 11.0615 15.391C12.5233 14.7855 13.7727 13.7602 14.6518 12.4446C15.5308 11.129 16 9.58225 16 8C15.9977 5.87897 15.1541 3.84547 13.6543 2.34568C12.1545 0.845886 10.121 0.00229405 8 0V0ZM13.7647 4.66667H11.6173C11.1366 3.55266 10.5037 2.51072 9.73667 1.57067C11.4343 2.03262 12.8815 3.14498 13.7647 4.66667ZM11 8C10.9945 8.67876 10.8876 9.35288 10.6827 10H5.31734C5.11244 9.35288 5.00548 8.67876 5 8C5.00548 7.32124 5.11244 6.64712 5.31734 6H10.6827C10.8876 6.64712 10.9945 7.32124 11 8ZM5.852 11.3333H10.148C9.58216 12.4505 8.85877 13.4806 8 14.392C7.14092 13.4808 6.4175 12.4507 5.852 11.3333ZM5.852 4.66667C6.41785 3.54952 7.14123 2.51944 8 1.608C8.85909 2.51918 9.58251 3.54931 10.148 4.66667H5.852ZM6.26667 1.57067C5.49844 2.51052 4.86439 3.55247 4.38267 4.66667H2.23534C3.11924 3.14429 4.56778 2.03184 6.26667 1.57067ZM1.64067 6H3.93334C3.76051 6.65276 3.67091 7.32476 3.66667 8C3.67091 8.67524 3.76051 9.34724 3.93334 10H1.64067C1.2309 8.69815 1.2309 7.30185 1.64067 6ZM2.23534 11.3333H4.38267C4.86439 12.4475 5.49844 13.4895 6.26667 14.4293C4.56778 13.9682 3.11924 12.8557 2.23534 11.3333ZM9.73667 14.4293C10.5037 13.4893 11.1366 12.4473 11.6173 11.3333H13.7647C12.8815 12.855 11.4343 13.9674 9.73667 14.4293ZM14.3593 10H12.0667C12.2395 9.34724 12.3291 8.67524 12.3333 8C12.3291 7.32476 12.2395 6.65276 12.0667 6H14.358C14.7678 7.30185 14.7678 8.69815 14.358 10H14.3593Z"
-                  fill="white"
-                />
-              </svg>
-              <span class="text-sm text-white font-normal">EN</span>
-            </div>
-            <div class="flex cursor-pointer" @click="isDropdown = !isDropdown">
-                <div class="bg-white rounded-full cursor-pointer py-2 px-[18px]">
-              <img src="../static/svg/user.svg" alt="" >
-            </div>
-            <img src="../static/svg/down-arrow.svg" alt="">
-            </div>
+                {{ item.text }}
+              </a>
+            </li>
+          </ul>
         </div>
-    </header>
-        <div class="relative">
-            <div
-            v-if="isDropdown"
-            v-click-outside="closeDropdown"
-            class="z-50 absolute right-[5rem] top-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+        <div class="flex items-center gap-7 relative">
+          <div class="flex items-center gap-1 cursor-pointer">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
-            <ul
-                class="py-2 text-sm text-gray-700 dark:text-gray-200 cursor-pointer"
-                aria-labelledby="dropdownHoverButton"
-                @click="closeDropdown"
-            >
-            <li>
-                <nuxt-link to="/edit-profile" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</nuxt-link>
-            </li>
-                <li>
-                <nuxt-link to="/setting" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</nuxt-link>
-            </li>
-            <li>
-                <a @click="logOut" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Log out</a>
-                </li>
-            </ul>
+              <path
+                d="M8 0C6.41775 0 4.87104 0.469192 3.55544 1.34824C2.23985 2.22729 1.21447 3.47672 0.608967 4.93853C0.00346629 6.40034 -0.15496 8.00887 0.153721 9.56072C0.462403 11.1126 1.22433 12.538 2.34315 13.6569C3.46197 14.7757 4.88743 15.5376 6.43928 15.8463C7.99113 16.155 9.59966 15.9965 11.0615 15.391C12.5233 14.7855 13.7727 13.7602 14.6518 12.4446C15.5308 11.129 16 9.58225 16 8C15.9977 5.87897 15.1541 3.84547 13.6543 2.34568C12.1545 0.845886 10.121 0.00229405 8 0V0ZM13.7647 4.66667H11.6173C11.1366 3.55266 10.5037 2.51072 9.73667 1.57067C11.4343 2.03262 12.8815 3.14498 13.7647 4.66667ZM11 8C10.9945 8.67876 10.8876 9.35288 10.6827 10H5.31734C5.11244 9.35288 5.00548 8.67876 5 8C5.00548 7.32124 5.11244 6.64712 5.31734 6H10.6827C10.8876 6.64712 10.9945 7.32124 11 8ZM5.852 11.3333H10.148C9.58216 12.4505 8.85877 13.4806 8 14.392C7.14092 13.4808 6.4175 12.4507 5.852 11.3333ZM5.852 4.66667C6.41785 3.54952 7.14123 2.51944 8 1.608C8.85909 2.51918 9.58251 3.54931 10.148 4.66667H5.852ZM6.26667 1.57067C5.49844 2.51052 4.86439 3.55247 4.38267 4.66667H2.23534C3.11924 3.14429 4.56778 2.03184 6.26667 1.57067ZM1.64067 6H3.93334C3.76051 6.65276 3.67091 7.32476 3.66667 8C3.67091 8.67524 3.76051 9.34724 3.93334 10H1.64067C1.2309 8.69815 1.2309 7.30185 1.64067 6ZM2.23534 11.3333H4.38267C4.86439 12.4475 5.49844 13.4895 6.26667 14.4293C4.56778 13.9682 3.11924 12.8557 2.23534 11.3333ZM9.73667 14.4293C10.5037 13.4893 11.1366 12.4473 11.6173 11.3333H13.7647C12.8815 12.855 11.4343 13.9674 9.73667 14.4293ZM14.3593 10H12.0667C12.2395 9.34724 12.3291 8.67524 12.3333 8C12.3291 7.32476 12.2395 6.65276 12.0667 6H14.358C14.7678 7.30185 14.7678 8.69815 14.358 10H14.3593Z"
+                fill="white"
+              />
+            </svg>
+            <span class="text-sm text-white font-normal">EN</span>
+          </div>
+          <div class="flex cursor-pointer" @click="isDropdown = !isDropdown">
+            <div class="bg-white rounded-full cursor-pointer py-2 px-[18px]">
+              <img src="../static/svg/user.svg" alt="" />
             </div>
+            <img src="../static/svg/down-arrow.svg" alt="" />
+          </div>
+        </div>
+      </header>
+      <div class="relative">
+        <div
+          v-if="isDropdown"
+          v-click-outside="closeDropdown"
+          class="z-50 absolute right-[5rem] top-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+        >
+          <ul
+            class="py-2 text-sm text-gray-700 dark:text-gray-200 cursor-pointer"
+            aria-labelledby="dropdownHoverButton"
+            @click="closeDropdown"
+          >
+            <li>
+              <nuxt-link
+                to="/edit-profile"
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >Profile</nuxt-link
+              >
+            </li>
+            <li>
+              <a
+                to="/setting"
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >Settings</a
+              >
+            </li>
+            <li>
+              <a
+                @click="logOut"
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >Log out</a
+              >
+            </li>
+          </ul>
         </div>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
+  </div>
+</template>
+
+<script>
+import Cookies from "js-cookie";
+
+export default {
+  data() {
+    return {
       isDropdown: false,
-        navItems: [
-          {
-            text: "Home",
-            href: "/home",
-          },
-          {
-            text: "History",
-            href: "/history",
-          },
-        ],
-        activeIndex: 0,
-      };
+      navItems: [
+        {
+          text: "Home",
+          href: "/home",
+        },
+        {
+          text: "History",
+          href: "/history",
+        },
+      ],
+      activeIndex: 0,
+    };
+  },
+  methods: {
+    setActive(index) {
+      this.activeIndex = index;
     },
-    methods: {
-      setActive(index) {
-        this.activeIndex = index;
-      },
-      goToSignUp() {
-        this.$router.push("/register");
-      },
-      goToSignIn() {
-        this.$router.push("/login");
-      },
-      closeDropdown() {
+    goToSignUp() {
+      this.$router.push("/register");
+    },
+    goToSignIn() {
+      this.$router.push("/login");
+    },
+    closeDropdown() {
       this.isDropdown = false;
-      },
-      logOut(){
-        this.$router.push('/login')
-      }
     },
-  };
-  </script>
-  
+    logOut() {
+      Cookies.remove("token");
+      this.$router.push("/login");
+    },
+  },
+};
+</script>

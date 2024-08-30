@@ -56,8 +56,8 @@
                 <p class="text-black font-normal text-sm">
                     Non Copyrighted © 2022 Design and upload by rich technologies
                 </p>
-                <div>
-                    25
+                <div class="flex gap-2">
+                    <img src="../static/svg/black-socia-media.svg" alt="">
                 </div>
             </div>
     

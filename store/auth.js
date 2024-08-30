@@ -1,13 +1,19 @@
 import $axios from "@/plugins/axios";
 
 export const state = () => ({
+  profileData:{}
 });
 
 export const getters = {
+  getUserProfile(state){
+    return state.profileData;
+  }
 };
 export const mutations = {
+  setUserProfile(state,payload){
+    state.profileData = payload;
+  }
 };
-
 export const actions = {
   async signin(ctx, payload) {
     try {
@@ -35,6 +41,7 @@ export const actions = {
   async profile(ctx, payload) {
     try {
       const response = await $axios.get("/v1/user/profile");
+      ctx.commit("setUserProfile", response.data);
       return response;
     } catch (error) {
       throw error;
