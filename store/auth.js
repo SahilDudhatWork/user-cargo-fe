@@ -33,6 +33,20 @@ export const actions = {
   async signup(ctx, payload) {
     try {
       const response = await $axios.post("/v1/user/auth/signUp", payload);
+      this.$cookies.set("token", response.data.accessToken, {
+        expires: 7,
+        path: "/",
+        secure: true,
+        sameSite: "Strict",
+      });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+  async tokenVerify(ctx, payload) {
+    try {
+      const response = await $axios.post("/v1/common/tokenVerify/user", payload);
       return response;
     } catch (error) {
       throw error;
