@@ -3,7 +3,7 @@
     <div>
       <Content>
         <template #modalContent>
-          <div class="mt-10 sm:w-[400px]">
+          <div class="sm:w-[400px]">
             <h1 class="font-normal text-[44px] text-[#212121]">Register</h1>
             <p class="text-[18px] text-[#494949] font-normal mt-2">
               Already have a cargo-connect account?
@@ -17,7 +17,7 @@
               class="space-y-4 md:space-y-6 mt-6"
               @submit.prevent="sendRegistrationRequest"
             >
-              <div class="overflow-y-scroll h-[260px]">
+              <div class="overflow-y-scroll h-[500px]">
                 <div>
                   <label
                     for="companyName"
