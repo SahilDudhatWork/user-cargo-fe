@@ -1,17 +1,19 @@
 <template>
-    <div>
-      <DashboardHeader />
-      <Nuxt />
-      <DashboardFooter />
-    </div>
+  <div>
+    <DashboardHeader />
+    <Nuxt />
+    <Footer />
+  </div>
 </template>
 
 <script>
-export default {  
+export default {
   middleware: "auth",
-}
+  mounted() {
+    document.body.style.backgroundColor = "#ECF3FA";
+  },
+  beforeDestroy() {
+    document.body.style.backgroundColor = "";
+  },
+};
 </script>
-
-
-  
-  

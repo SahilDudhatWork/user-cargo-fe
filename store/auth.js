@@ -1,30 +1,29 @@
 import $axios from "@/plugins/axios";
 
 export const state = () => ({
-  profileData:{}
+  profileData: {},
 });
 
 export const getters = {
-  getUserProfile(state){
+  getUserProfile(state) {
     return state.profileData;
-  }
+  },
 };
 export const mutations = {
-  setUserProfile(state,payload){
+  setUserProfile(state, payload) {
     state.profileData = payload;
-  }
+  },
 };
 export const actions = {
   async signin(ctx, payload) {
     try {
       const response = await $axios.post(`/v1/user/auth/logIn`, payload);
       this.$cookies.set("token", response.data.accessToken, {
-        expires: 7,
-        path: "/",
-        secure: true,
-        sameSite: "Strict",
+        // expires: 7,
+        // path: "/",
+        // secure: true,
+        // sameSite: "Strict",
       });
-      ctx.commit("getuserData", response.data);
       return response;
     } catch (error) {
       throw error;
@@ -34,10 +33,10 @@ export const actions = {
     try {
       const response = await $axios.post("/v1/user/auth/signUp", payload);
       this.$cookies.set("token", response.data.accessToken, {
-        expires: 7,
-        path: "/",
-        secure: true,
-        sameSite: "Strict",
+        // expires: 7,
+        // path: "/",
+        // secure: true,
+        // sameSite: "Strict",
       });
       return response;
     } catch (error) {
@@ -46,7 +45,10 @@ export const actions = {
   },
   async tokenVerify(ctx, payload) {
     try {
-      const response = await $axios.post("/v1/common/tokenVerify/user", payload);
+      const response = await $axios.post(
+        "/v1/common/tokenVerify/user",
+        payload
+      );
       return response;
     } catch (error) {
       throw error;
@@ -96,12 +98,12 @@ export const actions = {
       throw error;
     }
   },
-  async uploadImage(ctx,payload){
+  async uploadImage(ctx, payload) {
     try {
       const response = await $axios.post("/v1/common/imageUpload", payload);
       return response;
     } catch (error) {
-      throw error
+      throw error;
     }
-  }
+  },
 };

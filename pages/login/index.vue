@@ -153,7 +153,7 @@ export default {
           this.$toast.open({
             message: this.$i18n.t("loginMessage"),
           });
-          this.$router.push("/dashboard");
+          this.$router.push("/additional-details");
         }
       } catch (error) {
         this.$toast.open({

@@ -8,7 +8,7 @@
       </div>
       <div class="lg:block hidden xl:w-[35%]">
         <img
-          src="../static/Images/truck-img.webp"
+          src="@/static/Images/truck-img.webp"
           alt=""
           class="rounded-xl h-full object-cover"
         />

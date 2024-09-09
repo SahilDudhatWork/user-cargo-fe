@@ -24,6 +24,7 @@
     "vue-server-renderer": "^2.7.10",
     "vue-slick-carousel": "^1.0.6",
     "vue-template-compiler": "^2.7.10",
-    "vue-toast-notification": "^1.0.1"
+    "vue-toast-notification": "^1.0.1",
+    "vue2-datepicker": "^3.11.1"
   }
 }

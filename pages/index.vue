@@ -1,13 +1,15 @@
 <template>
-    <div>
-        <Hero />
-        <ChooseByCarousel />
-        <Easier />
-    </div>
+  <div>
+    <Hero />
+    <Service />
+    <ChooseByCarousel />
+    <Ecommerce />
+    <Easier />
+  </div>
 </template>
 
 <script>
 export default {
-    layout:'landing'
-}
+  layout: "landing",
+};
 </script>

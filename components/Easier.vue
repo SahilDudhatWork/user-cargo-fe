@@ -1,24 +1,74 @@
 <template>
-    <div>
-        <div class="xl:max-w-[1240px] flex flex-col justify-center mx-auto mt-16 mb-20">
-            <p class="text-[#212121] font-semibold text-[44px]">It’s easier in the apps</p>
-            <div class="grid xl:grid-cols-2 grid-cols-1 gap-8 mt-6">
-                <div class="bg-[#F7F7F7] flex items-center py-6 px-5 gap-5 w-full">
-                    <img src="../static/Images/scanner.webp" alt="">
-                    <div> 
-                        <p class="text-[#212121] font-medium text-2xl max-w-[600px]">Download the Cargo connect</p>
-                        <p class="text-base	font-normal text-[#212121]">Scan to download the app</p>
-                    </div>
-
-                </div>
-                <div class="bg-[#F7F7F7] flex items-center py-6 px-5 gap-5 w-full">
-                    <img src="../static/Images/scanner.webp" alt="">
-                    <div> 
-                        <p class="text-[#212121] font-medium text-2xl max-w-[600px]">Download the Cargo connect</p>
-                        <p class="text-base	font-normal text-[#212121]">Scan to download the app</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div>
+    <div class="flex justify-between mt-20 mb-20">
+      <div class="sm:mx-48 mx-6">
+        <p
+          class="text-[#0060C9] font-medium text-[32px] max-w-[430px] leading-[40px]"
+        >
+          Making cargo operations easier with Advanced capabilities
+        </p>
+        <ul class="mt-7 list-disc mx-5">
+          <li
+            v-for="(item, index) in features"
+            :key="index"
+            class="group relative cursor-pointer py-5 transition-all duration-300 hover:pt-2 hover:py-0"
+          >
+            <span
+              class="text-[18px] text-[#000000] font-bold border-b border-gray-300 py-5 group-hover:border-none"
+            >
+              {{ item.title }}
+            </span>
+            <p
+              class="text-gray-500 font-medium text-sm max-w-[390px] overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0 group-hover:opacity-100 group-hover:max-h-[4rem] group-hover:py-5"
+            >
+              {{ item.description }}
+            </p>
+          </li>
+        </ul>
+      </div>
+      <div class="relative">
+        <img
+          src="@/static/Images/container-img.webp"
+          alt=""
+          class="w-[1000px] h-[450px]"
+        />
+        <img
+          src="@/static/Images/right-circle-img.webp"
+          alt=""
+          class="absolute right-0 top-36 z-50"
+        />
+      </div>
     </div>
+  </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      features: [
+        {
+          title: "Autonomous Driving",
+          description:
+            "Consectetur, Mauris risus turpis Lorem ipsum dolor sit amet consectetur, Mauris risus turpis Lorem",
+        },
+        {
+          title: "Advance Route Optimization",
+          description:
+            "Consectetur, Mauris risus turpis Lorem ipsum dolor sit amet consectetur, Mauris risus turpis Lorem",
+        },
+        {
+          title: "Real-Time Tracking",
+          description:
+            "Consectetur, Mauris risus turpis Lorem ipsum dolor sit amet consectetur, Mauris risus turpis Lorem",
+        },
+        {
+          title: "Enhanced Safety",
+          description:
+            "Consectetur, Mauris risus turpis Lorem ipsum dolor sit amet consectetur, Mauris risus turpis Lorem",
+        },
+      ],
+    };
+  },
+};
+</script>

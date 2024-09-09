@@ -56,3 +56,127 @@
   .slick-slide {
     padding: 0 10px;
 }
+
+.slick-dots {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 5px 0;
+  list-style-type: none;
+}
+
+.slick-dots li.slick-active {
+  margin: -20px 25px !important;
+}
+.slick-dots li {
+  margin: -20px 7px !important;
+}
+
+.slick-dots button {
+  display: block;
+  /* width: 3rem !important; */
+  height: 4px !important;
+  padding: 0;
+  border: none;
+  border-radius: 40px;
+  background-color: #8CB8E7 !important;
+  text-indent: -9999px;
+  -webkit-border-radius: 40px;
+  -moz-border-radius: 40px;
+  -ms-border-radius: 40px;
+  -o-border-radius: 40px;
+}
+
+.slick-dots li.slick-active button {
+  background-color: #0464CB !important;
+  width: 3rem !important;
+  margin: 0px -15px !important;
+}
+
+.slick-prev {
+  left: -40px;
+}
+
+.slick-next {
+  right: -30px !important;
+}
+
+.slick-prev,
+.slick-next {
+  border: 1px solid #DDDDDD !important;
+  border-radius: 100% !important;
+  padding: 15px !important; 
+  display: flex !important; 
+  justify-content: center !important; 
+  align-items: center !important; 
+}
+.slick-next::before {
+  background-image: url('@/static/svg/blue-side-arrow.svg') !important;
+  background-repeat: no-repeat !important;
+  background-position: center center; 
+  position: absolute !important;
+  content: '' !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 15px !important; 
+  box-sizing: border-box !important; 
+}
+.slick-prev::before {
+  background-image: url('@/static/svg/blue-left-arrow.svg') !important;
+  background-repeat: no-repeat !important;
+  background-position: center center; 
+  position: absolute !important;
+  content: '' !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 15px !important; 
+  box-sizing: border-box !important; 
+}
+
+.mx-datepicker .mx-icon-calendar {
+  position: absolute;
+  top: 50%;
+  left: 8px !important;
+  color: #000000 !important;
+  display: block !important;
+}
+
+.mx-datepicker .mx-input {
+  background-color: white !important;
+  cursor: pointer !important;
+  border: 1px solid 	#E8E8E8;
+  border-radius: 8px;
+  height: 54px !important;
+  padding-left: 38px !important;
+  color: #1E1E1E;
+  font-weight: 400 !important;
+  font-size: 16px;
+}
+.group .mx-datepicker .mx-icon-calendar {
+  display: none !important;
+}
+.group .mx-datepicker .mx-icon-clear {
+  position: absolute;
+  top: 50%;
+  right: 15px !important;
+  color: #000000 !important;
+  display: block !important;
+}
+.mx-input:hover, .mx-input:focus {
+  border: 1px solid 	#E8E8E8 !important;
+  border-color: #E8E8E8 !important;
+}
+
+.mx-datepicker-main{ 
+  left: 957.5px !important;
+  position: absolute !important;
+}
+.mx-datepicker-main .mx-time{ 
+  width: 382px !important;
+}
+
+.mx-datepicker-main .mx-calendar {
+  width: 382px !important;
+}
