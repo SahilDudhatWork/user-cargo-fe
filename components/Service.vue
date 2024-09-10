@@ -22,29 +22,30 @@
               />
             </div>
             <div>
-              <nuxt-link to="/additional-details">
+              <!-- <nuxt-link to="/additional-details"> -->
+              <div
+                v-for="(item, key) in typeOfService"
+                :key="key"
+                class="flex justify-between gap-40 mb-10 cursor-pointer relative z-50"
+                @click="handleClick(item)"
+              >
                 <div
-                  v-for="(item, key) in typeOfService"
-                  :key="key"
-                  class="flex justify-between gap-40 mb-10 cursor-pointer relative z-50"
+                  class="relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[rgba(255,255,255,0.3)] before:to-[rgba(236,243,250,0)] pb-5 pt-2"
                 >
-                  <div
-                    class="relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[rgba(255,255,255,0.3)] before:to-[rgba(236,243,250,0)] pb-5 pt-2"
-                  >
-                    <h1 class="font-bold text-base text-white mb-2">
-                      {{ item.title }}
-                    </h1>
-                    <p class="font-medium text-[13px] text-gray-300">
-                      {{ item.description }}
-                    </p>
-                  </div>
-                  <img
-                    src="@/static/svg/side-arrow.svg"
-                    alt=""
-                    class="w-6 h-6 pt-2"
-                  />
+                  <h1 class="font-bold text-base text-white mb-2">
+                    {{ item.title }}
+                  </h1>
+                  <p class="font-medium text-[13px] text-gray-300">
+                    {{ item.description }}
+                  </p>
                 </div>
-              </nuxt-link>
+                <img
+                  src="@/static/svg/side-arrow.svg"
+                  alt=""
+                  class="w-6 h-6 pt-2"
+                />
+              </div>
+              <!-- </nuxt-link> -->
             </div>
           </div>
         </div>
@@ -91,6 +92,12 @@ export default {
     ...mapActions({
       fetchService: "service/fetchService",
     }),
+    handleClick(item) {
+      if (item) {
+        this.$cookies.set("service", JSON.stringify(item), { expires: 7 });
+        this.$router.push("/additional-details");
+      }
+    },
   },
   async mounted() {
     try {

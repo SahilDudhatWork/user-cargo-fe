@@ -505,7 +505,7 @@ export default {
         this.$toast.open({
           message: response.msg,
         });
-        this.$router.push("/login");
+        this.$router.push("/additional-details");
       } catch (error) {
         this.$toast.open({
           message: error?.response?.data?.msg,

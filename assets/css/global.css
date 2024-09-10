@@ -74,7 +74,6 @@
 
 .slick-dots button {
   display: block;
-  /* width: 3rem !important; */
   height: 4px !important;
   padding: 0;
   border: none;
@@ -134,6 +133,19 @@
   padding: 15px !important; 
   box-sizing: border-box !important; 
 }
+/* --landing-page */
+.landing_carousel .slick-prev {
+  right: 83px !important;
+  left: 1455px; 
+  position: absolute !important;
+  top: -24px;
+}
+
+.landing_carousel .slick-next {
+  right: 0px !important;
+  top: -24px !important;
+}
+/* ----- */
 
 .mx-datepicker .mx-icon-calendar {
   position: absolute;

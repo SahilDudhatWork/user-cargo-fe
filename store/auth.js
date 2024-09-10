@@ -18,12 +18,12 @@ export const actions = {
   async signin(ctx, payload) {
     try {
       const response = await $axios.post(`/v1/user/auth/logIn`, payload);
-      this.$cookies.set("token", response.data.accessToken, {
-        // expires: 7,
-        // path: "/",
-        // secure: true,
-        // sameSite: "Strict",
-      });
+      // this.$cookies.set("token", response.data.accessToken, {
+      // expires: 7,
+      // path: "/",
+      // secure: true,
+      // sameSite: "Strict",
+      // });
       return response;
     } catch (error) {
       throw error;
@@ -79,9 +79,20 @@ export const actions = {
       throw error;
     }
   },
+  // for forgot password
   async verifyOtp(ctx, payload) {
     try {
       const response = await $axios.post("/v1/common/otp/verify", payload);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // for login
+  async verifyUserOtp(ctx, payload) {
+    try {
+      const response = await $axios.post("/v1/common/otp/verify/user", payload);
       return response;
     } catch (error) {
       throw error;

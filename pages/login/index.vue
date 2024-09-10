@@ -34,7 +34,7 @@
                   <label
                     for="createPassword"
                     class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                    >Create Password</label
+                    >Password</label
                   >
                   <svg
                     @click="togglePassword"
@@ -69,7 +69,7 @@
                     name="createPassword"
                     id="createPassword"
                     class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[13px]"
-                    placeholder="Type your email address"
+                    placeholder="Type your password"
                     v-model="formData.password"
                   />
                 </div>
@@ -150,10 +150,12 @@ export default {
           });
         } else {
           const res = await this.signin(this.formData);
+          this.$cookies.set("email", this.formData?.email, { expires: 1 });
+
           this.$toast.open({
-            message: this.$i18n.t("loginMessage"),
+            message: this.$i18n.t("loginOTPMessage"),
           });
-          this.$router.push("/additional-details");
+          this.$router.push("/verification");
         }
       } catch (error) {
         this.$toast.open({

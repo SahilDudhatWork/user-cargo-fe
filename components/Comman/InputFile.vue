@@ -6,6 +6,7 @@
       >{{ itemLabel }}</label
     >
     <label
+      :class="errors ? 'border border-red-600' : 'border border-gray-300'"
       class="xl:w-[382px] relative flex w-full max-w-md px-6 py-[17px] border border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition-all duration-150"
     >
       <div class="flex justify-between">
@@ -62,19 +63,20 @@ export default {
       required: true,
       default: "Choose file to upload",
     },
+    errors: {
+      type: String,
+      required: false,
+      default: "",
+    },
   },
   computed: {
     fileUrl() {
       const baseUrl = "https://cargo-storage-bucket.s3.amazonaws.com";
 
-      // Check if the URL starts with the base URL
       if (this.file.startsWith(baseUrl)) {
-        // Split and return the image name
         const cleanedUrl = this.file.split("?")[0];
-        // Extract and return the image name
         return cleanedUrl.split("/").pop();
       } else {
-        // Return the value as it is, assuming it's already the image name
         return this.file;
       }
     },

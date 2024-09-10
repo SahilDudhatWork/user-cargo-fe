@@ -4,299 +4,498 @@
       <div class="mt-5">
         <div class="relative">
           <img
-            src="@/static/Images/edit-profile-truck-imag.webp"
+            src="@/static/Images/profile-truck.webp"
             alt=""
-            class="w-full h-[400px]"
+            class="w-full relative -top-[100px]"
           />
           <h1
-            class="text-[#3683D5] font-normal text-[12px] bg-white py-2 px-5 absolute right-16 top-12 rounded-2xl cursor-pointer"
+            class="text-white font-medium text-[15px] bg-black opacity-60 py-2 px-5 absolute right-[15rem] top-12 rounded-lg cursor-pointer"
           >
             Change Background
           </h1>
         </div>
-        <div class="mx-16 relative">
-          <img
-            src="@/static/Images/edit-profile-truck-circle-imag.webp"
-            alt=""
-            class="rounded-full absolute w-[300px] -top-36 h-[300px] object-cover border-[17px] border-white"
-          />
-          <p
-            class="text-[#3683D5] font-normal text-sm absolute top-44 left-20 cursor-pointer"
+        <div class="relative -top-[7.5rem]">
+          <div
+            :class="isProfile ? ' border-b border-[#EEEEEE] pb-6 ' : ''"
+            class="sm:mx-40 mx-6 relative flex justify-between items-center"
           >
-            Change profile picture
-          </p>
-        </div>
-      </div>
-      <div class="mt-56 mx-10">
-        <form
-          class="space-y-4 md:space-y-6 mt-6"
-          @submit.prevent="upateUserProfile"
-        >
-          <div class="">
-            <div class="grid grid-cols-3 gap-y-2">
+            <div class="flex gap-10 items-center relative">
               <div>
-                <label
-                  for="Company name"
-                  class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                  >Company name</label
-                >
-                <input
-                  type="text"
-                  name="CompanyName"
-                  id="CompanyName"
-                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
-                  placeholder="Your company name"
-                  v-model="formData.companyName"
-                />
+                <div class="border-[12px] border-white rounded-full">
+                  <img
+                    src="@/static/Images/profile-circle-img.webp"
+                    alt=""
+                    class="w-[120px] h-[120px] object-cover rounded-full"
+                  />
+                  <img
+                    v-if="isProfile === false"
+                    src="@/static/svg/profile-edit.svg"
+                    alt=""
+                    class="object-cover rounded-full bg-white absolute p-2 left-24 bottom-2"
+                  />
+                </div>
               </div>
-              <div>
-                <label
-                  for="ContactName"
-                  class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                  >Contact name</label
-                >
-                <input
-                  type="text"
-                  name="ContactName"
-                  id="ContactName"
-                  placeholder="Your contact name"
-                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
-                  v-model="formData.contactName"
-                />
+              <div class="mt-3">
+                <h1 class="text-[#000000] font-bold text-lg">
+                  {{ formData.contactName }}
+                </h1>
+                <p class="text-[#00000099] text-sm font-normal mt-3">
+                  {{ formData.email }}
+                </p>
+                <p class="text-[#00000099] text-sm font-normal mt-1">
+                  {{ formData.contactNumber }}
+                </p>
               </div>
-              <div>
-                <label
-                  for="email"
-                  class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                  >Email Address</label
-                >
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  placeholder="Your Email Address"
-                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
-                  v-model="formData.email"
-                />
+            </div>
+            <div>
+              <button
+                @click="isProfile = !isProfile"
+                v-if="isProfile"
+                class="border border-[#0060C9] rounded-lg text-base font-semibold text-[#0060C9] px-4 py-2.5"
+              >
+                Edit Profile
+              </button>
+            </div>
+          </div>
+          <div class="sm:mx-40 mx-6 mt-8 grid grid-cols-2" v-if="isProfile">
+            <div class="border-r border-[#EEEEEE]">
+              <h1 class="text-[#000000] font-bold text-lg">Service Details</h1>
+              <p class="text-[#00000099] font-normal text-sm mt-4">
+                Account ID
+              </p>
+              <div class="grid grid-cols-2 mt-1">
+                <p class="text-[#1E1E1E] font-medium text-base">
+                  {{ formData.accountId }}
+                </p>
+                <img src="@/static/svg/copy.svg" alt="" class="" />
               </div>
+              <p class="text-[#00000099] font-normal text-sm mt-3">
+                Account created on
+              </p>
+              <p class="text-[#1E1E1E] font-medium text-base mt-1">
+                {{ AccountCreatedDate }}
+              </p>
+            </div>
+            <div class="px-7">
+              <h1 class="text-[#000000] font-bold text-lg">Company Details</h1>
+              <p class="text-[#00000099] font-normal text-sm mt-4">
+                Carrier Info
+              </p>
+              <div class="flex gap-3 items-center">
+                <img
+                  src="../../static/svg/star.svg"
+                  alt=""
+                  class="bg-[#F0F0F0] py-2.5 px-1.5 rounded-xl mt-3"
+                />
+                <div>
+                  <p class="text-[#1E1E1E] font-medium text-base">
+                    {{ formData.companyName }}
+                  </p>
+                  <p class="text-[#00000099] font-normal text-sm">
+                    Menlo Park, CA 94025, USA
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sm:mx-40 mx-5" v-else>
+            <form
+              class="space-y-4 md:space-y-6 mt-6"
+              @submit.prevent="upateUserProfile"
+            >
               <div>
-                <label
-                  for="ContactNo"
-                  class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                  >Contact No.</label
+                <div
+                  class="grid grid-cols-3 gap-y-2 border-b border-[#EEEEEE] py-2"
                 >
-                <label class="xl:w-[382px] relative flex cursor-pointer">
-                  <div class="flex justify-between">
-                    <img
-                      src="@/static/svg/usa-flag.svg"
-                      alt=""
-                      class="absolute ml-3 mb-3 mr-4 top-4 w-6 h-6"
-                    />
-                    <span
-                      class="absolute left-12 mb-3 mr-4 top-4 text-[#1E1E1E] font-normal text-base"
-                      >+1</span
+                  <div>
+                    <label
+                      for="ContactName"
+                      class="block mb-2 text-sm font-medium text-[#1B1B1B]"
+                      >Name</label
                     >
-                    <div
-                      class="border-r border-gray-400 h-[40%] absolute left-20 top-4"
-                    ></div>
                     <input
-                      type="number"
-                      name="ContactNo"
-                      id="ContactNo"
-                      placeholder="Your Contact No."
-                      class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[15px] bg-white pl-24 focus:outline-none mb-3"
-                      v-model="formData.contactNumber"
+                      type="text"
+                      name="ContactName"
+                      id="ContactName"
+                      placeholder="Your contact name"
+                      :class="
+                        errors.contactName
+                          ? 'border border-red-600'
+                          : 'border border-gray-300'
+                      "
+                      class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                      v-model="formData.contactName"
+                    />
+                    <span class="error-msg" v-if="errors.contactName">{{
+                      errors.contactName
+                    }}</span>
+                  </div>
+                  <div>
+                    <label
+                      for="email"
+                      class="block mb-2 text-sm font-medium text-[#1B1B1B]"
+                      >Email address</label
+                    >
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      disabled
+                      placeholder="Your Email Address"
+                      class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                      v-model="formData.email"
+                      :class="
+                        errors.email
+                          ? 'border border-red-600'
+                          : 'border border-gray-300'
+                      "
+                    />
+                    <span class="error-msg" v-if="errors.email">{{
+                      errors.email
+                    }}</span>
+                  </div>
+                  <div>
+                    <label
+                      for="ContactNo"
+                      class="block mb-2 text-sm font-medium text-[#1B1B1B]"
+                      >Contact
+                    </label>
+                    <label
+                      class="xl:w-[382px] relative flex cursor-pointer flex-col"
+                    >
+                      <div class="flex justify-between">
+                        <!-- <CountryDropdown
+                          :items="item"
+                          :selectedLabel="selected"
+                          @getValue="getCountry"
+                          v-for="(item, key) in countries"
+                          :key="key"
+                          class="absolute ml-3 mb-3 mr-4"
+                        /> -->
+                        <img
+                          src="@/static/svg/usa-flag.svg"
+                          alt=""
+                          class="absolute ml-3 mb-3 mr-4 top-4 w-6 h-6"
+                        />
+                        <span
+                          class="absolute left-12 mb-3 mr-4 top-4 text-[#1E1E1E] font-normal text-base"
+                          >+1</span
+                        >
+                        <div
+                          class="border-r border-gray-400 h-[40%] absolute left-20 top-4"
+                        ></div>
+                        <input
+                          type="number"
+                          name="ContactNo"
+                          id="ContactNo"
+                          placeholder="Your Contact No."
+                          class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[15px] bg-white pl-24 focus:outline-none mb-3"
+                          v-model="formData.contactNumber"
+                          :class="
+                            errors.contactNumber
+                              ? 'border border-red-600'
+                              : 'border border-gray-300'
+                          "
+                        />
+                      </div>
+                      <span class="error-msg" v-if="errors.contactNumber">{{
+                        errors.contactNumber
+                      }}</span>
+                    </label>
+                  </div>
+                </div>
+                <h1 class="text-[#000000] font-bold text-lg mt-3">
+                  Company Details
+                </h1>
+                <div class="grid grid-cols-3 border-b border-[#EEEEEE] py-4">
+                  <div>
+                    <label
+                      for="Company name"
+                      class="block mb-2 text-sm font-medium text-[#1B1B1B]"
+                      >Company name</label
+                    >
+                    <input
+                      type="text"
+                      name="CompanyName"
+                      id="CompanyName"
+                      class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                      placeholder="Your company name"
+                      v-model="formData.companyName"
+                      :class="
+                        errors.companyName
+                          ? 'border border-red-600'
+                          : 'border border-gray-300'
+                      "
+                    />
+                    <span class="error-msg" v-if="errors.companyName">{{
+                      errors.companyName
+                    }}</span>
+                  </div>
+                  <div>
+                    <label
+                      for="companyFormation"
+                      class="block mb-2 text-sm font-normal text-[#1E1E1E]"
+                      >Company Formation</label
+                    >
+                    <Dropdown
+                      :items="countriesList"
+                      :selectedLabel="selectedLabel"
+                      @getValue="getValue"
                     />
                   </div>
-                </label>
-              </div>
-              <div class="">
-                <label
-                  for="companyFormation"
-                  class="block mb-2 text-sm font-normal text-[#1E1E1E]"
-                  >Company Formation</label
-                >
-                <Dropdown
-                  :items="countriesList"
-                  :selectedLabel="selectedLabel"
-                  @getValue="getValue"
-                />
-              </div>
-              <div v-if="selectedLabel === 'USA'">
-                <inputFile
-                  item-label="W9 Form"
-                  :file="
-                    typeof formData.companyFormation.usa.w9_Form == 'object'
-                      ? formData.companyFormation.usa.w9_Form?.name
-                      : formData.companyFormation.usa.w9_Form
-                  "
-                  @handleFileChange="uploadW9Form"
-                />
-              </div>
-              <div v-if="selectedLabel === 'USA'">
-                <inputFile
-                  item-label="Utility Bill"
-                  :file="
-                    typeof formData.companyFormation.usa.utility_Bill ==
-                    'object'
-                      ? formData.companyFormation.usa.utility_Bill?.name
-                      : formData.companyFormation.usa.utility_Bill
-                  "
-                  @handleFileChange="uploadUtilityBill"
-                />
-              </div>
-              <div v-if="selectedLabel === 'MEXICO'">
-                <inputFile
-                  item-label="COPIA RFC Form"
-                  :file="
-                    typeof formData.companyFormation.maxico.copia_Rfc_Form ==
-                    'object'
-                      ? formData.companyFormation.maxico.copia_Rfc_Form?.name
-                      : formData.companyFormation.maxico.copia_Rfc_Form
-                  "
-                  @handleFileChange="uploadCopiaRfcForm"
-                />
-              </div>
-              <div v-if="selectedLabel === 'MEXICO'">
-                <inputFile
-                  item-label="Constance of Fiscal Situation"
-                  :file="
-                    typeof formData.companyFormation.maxico
-                      .constance_Of_Fiscal_Situation == 'object'
-                      ? formData.companyFormation.maxico
-                          .constance_Of_Fiscal_Situation?.name
-                      : formData.companyFormation.maxico
-                          .constance_Of_Fiscal_Situation
-                  "
-                  @handleFileChange="uploadConstanceOfFiscalSituation"
-                />
-              </div>
-              <div v-if="selectedLabel === 'MEXICO'">
-                <inputFile
-                  item-label="Proof of Favorable"
-                  :file="
-                    typeof formData.companyFormation.maxico
-                      .proof_of_Favorable == 'object'
-                      ? formData.companyFormation.maxico.proof_of_Favorable
-                          ?.name
-                      : formData.companyFormation.maxico.proof_of_Favorable
-                  "
-                  @handleFileChange="uploadProofOfFavorable"
-                />
-              </div>
-              <div v-if="selectedLabel === 'MEXICO'">
-                <inputFile
-                  item-label="Proof of Address"
-                  :file="
-                    typeof formData.companyFormation.maxico.proof_Of_Address ==
-                    'object'
-                      ? formData.companyFormation.maxico.proof_Of_Address?.name
-                      : formData.companyFormation.maxico.proof_Of_Address
-                  "
-                  @handleFileChange="uploadProofOfAddress"
-                />
-              </div>
-            </div>
+                  <div v-if="selectedLabel === 'USA'">
+                    <inputFile
+                      :errors="errors.w9_Form"
+                      item-label="W9 Form"
+                      :file="
+                        typeof formData.companyFormation.usa.w9_Form == 'object'
+                          ? formData.companyFormation.usa.w9_Form?.name
+                          : formData.companyFormation.usa.w9_Form
+                      "
+                      @handleFileChange="uploadW9Form"
+                    />
+                    <span class="error-msg" v-if="errors.w9_Form">{{
+                      errors.w9_Form
+                    }}</span>
+                  </div>
+                  <div v-if="selectedLabel === 'USA'">
+                    <inputFile
+                      :errors="errors.utility_Bill"
+                      item-label="Utility Bill"
+                      :file="
+                        typeof formData.companyFormation.usa.utility_Bill ==
+                        'object'
+                          ? formData.companyFormation.usa.utility_Bill?.name
+                          : formData.companyFormation.usa.utility_Bill
+                      "
+                      @handleFileChange="uploadUtilityBill"
+                    />
+                    <span class="error-msg" v-if="errors.utility_Bill">{{
+                      errors.utility_Bill
+                    }}</span>
+                  </div>
+                  <div v-if="selectedLabel === 'MEXICO'">
+                    <inputFile
+                      :errors="errors.copia_Rfc_Form"
+                      item-label="COPIA RFC Form"
+                      :file="
+                        typeof formData?.companyFormation?.maxico
+                          ?.copia_Rfc_Form == 'object'
+                          ? formData?.companyFormation?.maxico?.copia_Rfc_Form
+                              ?.name
+                          : formData?.companyFormation?.maxico?.copia_Rfc_Form
+                      "
+                      @handleFileChange="uploadCopiaRfcForm"
+                    />
+                    <span class="error-msg" v-if="errors.copia_Rfc_Form">{{
+                      errors.copia_Rfc_Form
+                    }}</span>
+                  </div>
+                  <div v-if="selectedLabel === 'MEXICO'">
+                    <inputFile
+                      :errors="errors.constance_Of_Fiscal_Situation"
+                      item-label="Constance of Fiscal Situation"
+                      :file="
+                        typeof formData?.companyFormation?.maxico
+                          ?.constance_Of_Fiscal_Situation == 'object'
+                          ? formData?.companyFormation?.maxico
+                              ?.constance_Of_Fiscal_Situation?.name
+                          : formData?.companyFormation?.maxico
+                              ?.constance_Of_Fiscal_Situation
+                      "
+                      @handleFileChange="uploadConstanceOfFiscalSituation"
+                    />
+                    <span
+                      class="error-msg"
+                      v-if="errors.constance_Of_Fiscal_Situation"
+                      >{{ errors.constance_Of_Fiscal_Situation }}</span
+                    >
+                  </div>
+                  <div v-if="selectedLabel === 'MEXICO'">
+                    <inputFile
+                      item-label="Proof of Favorable"
+                      :errors="errors.proof_of_Favorable"
+                      :file="
+                        typeof formData?.companyFormation?.maxico
+                          ?.proof_of_Favorable == 'object'
+                          ? formData?.companyFormation?.maxico
+                              ?.proof_of_Favorable?.name
+                          : formData?.companyFormation?.maxico
+                              ?.proof_of_Favorable
+                      "
+                      @handleFileChange="uploadProofOfFavorable"
+                    />
+                    <span class="error-msg" v-if="errors.proof_of_Favorable">{{
+                      errors.proof_of_Favorable
+                    }}</span>
+                  </div>
+                  <div v-if="selectedLabel === 'MEXICO'">
+                    <inputFile
+                      :errors="errors.proof_Of_Address"
+                      item-label="Proof of Address"
+                      :file="
+                        typeof formData?.companyFormation?.maxico
+                          ?.proof_Of_Address == 'object'
+                          ? formData?.companyFormation?.maxico?.proof_Of_Address
+                              ?.name
+                          : formData?.companyFormation?.maxico?.proof_Of_Address
+                      "
+                      @handleFileChange="uploadProofOfAddress"
+                    />
+                    <span class="error-msg" v-if="errors.proof_Of_Address">{{
+                      errors.proof_Of_Address
+                    }}</span>
+                  </div>
+                </div>
 
-            <div
-              v-if="selectedLabel != 'Select option'"
-              class="grid grid-cols-3 mt-1"
-            >
-              <div
-                v-for="(reference, key) in formData.commercialReference"
-                :key="key"
-                class="grid gap-y-2"
-              >
-                <div>
-                  <h1 class="text-[#1E1E1E] font-medium text-base">
+                <div
+                  v-if="selectedLabel != 'Select option'"
+                  :class="key === 0 ? 'border-b border-[#EEEEEE] py-4' : ''"
+                  v-for="(reference, key) in formData.commercialReference"
+                  :key="key"
+                >
+                  <h1 class="text-[#000000] font-bold text-lg mt-3">
                     Commercial Reference {{ key + 1 }}
                   </h1>
-                  <label
-                    for="Company name"
-                    class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                    >Company name</label
-                  >
-                  <input
-                    type="text"
-                    name="CompanyName"
-                    id="CompanyName"
-                    class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
-                    placeholder="Your company name"
-                    v-model="reference.companyName"
-                  />
-                </div>
-                <div>
-                  <label
-                    for="ContactName"
-                    class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                    >Contact name</label
-                  >
-                  <input
-                    type="text"
-                    name="ContactName"
-                    id="ContactName"
-                    placeholder="Your contact name"
-                    class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
-                    v-model="reference.contactName"
-                  />
-                </div>
-                <div>
-                  <label
-                    for="email"
-                    class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                    >Email Address</label
-                  >
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="Your Email Address"
-                    class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
-                    v-model="reference.emailAddress"
-                  />
-                </div>
-                <div>
-                  <label
-                    for="ContactNo"
-                    class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                    >Contact No.</label
-                  >
-                  <label class="xl:w-[382px] relative flex cursor-pointer">
-                    <div class="flex justify-between">
-                      <img
-                        src="@/static/svg/usa-flag.svg"
-                        alt=""
-                        class="absolute ml-3 mb-3 mr-4 top-4 w-6 h-6"
+                  <div class="grid grid-cols-3 gap-y-2 mt-4">
+                    <div>
+                      <label
+                        for="Company name"
+                        class="block mb-2 text-sm font-medium text-[#1B1B1B]"
+                        >Company name</label
+                      >
+                      <input
+                        :class="
+                          errors[`commercialReference[${key}].companyName`]
+                            ? 'border border-red-600'
+                            : 'border border-gray-300'
+                        "
+                        type="text"
+                        name="CompanyName"
+                        id="CompanyName"
+                        class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                        placeholder="Your company name"
+                        v-model="reference.companyName"
                       />
                       <span
-                        class="absolute left-12 mb-3 mr-4 top-4 text-[#1E1E1E] font-normal text-base"
-                        >+1</span
+                        class="error-msg"
+                        v-if="errors[`commercialReference[${key}].companyName`]"
                       >
-                      <div
-                        class="border-r border-gray-400 h-[40%] absolute left-20 top-4"
-                      ></div>
-                      <input
-                        type="number"
-                        name="ContactNo"
-                        id="ContactNo"
-                        placeholder="Your Contact No."
-                        class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[15px] bg-white pl-24 focus:outline-none mb-3"
-                        v-model="reference.contactNo"
-                      />
+                        {{ errors[`commercialReference[${key}].companyName`] }}
+                      </span>
                     </div>
-                  </label>
+                    <div>
+                      <label
+                        for="ContactName"
+                        class="block mb-2 text-sm font-medium text-[#1B1B1B]"
+                        >Contact name</label
+                      >
+                      <input
+                        type="text"
+                        :class="
+                          errors[`commercialReference[${key}].contactName`]
+                            ? 'border border-red-600'
+                            : 'border border-gray-300'
+                        "
+                        name="ContactName"
+                        id="ContactName"
+                        placeholder="Your contact name"
+                        class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                        v-model="reference.contactName"
+                      />
+                      <span
+                        class="error-msg"
+                        v-if="errors[`commercialReference[${key}].contactName`]"
+                      >
+                        {{ errors[`commercialReference[${key}].contactName`] }}
+                      </span>
+                    </div>
+                    <div>
+                      <label
+                        for="email"
+                        class="block mb-2 text-sm font-medium text-[#1B1B1B]"
+                        >Email Address</label
+                      >
+                      <input
+                        type="email"
+                        :class="
+                          errors[`commercialReference[${key}].emailAddress`]
+                            ? 'border border-red-600'
+                            : 'border border-gray-300'
+                        "
+                        name="email"
+                        id="email"
+                        placeholder="Your Email Address"
+                        class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                        v-model="reference.emailAddress"
+                      />
+                      <span
+                        class="error-msg"
+                        v-if="
+                          errors[`commercialReference[${key}].emailAddress`]
+                        "
+                      >
+                        {{ errors[`commercialReference[${key}].emailAddress`] }}
+                      </span>
+                    </div>
+                    <div>
+                      <label
+                        for="ContactNo"
+                        class="block mb-2 text-sm font-medium text-[#1B1B1B]"
+                        >Contact No.</label
+                      >
+                      <label
+                        class="xl:w-[382px] relative flex cursor-pointer flex-col"
+                      >
+                        <div class="flex justify-between">
+                          <img
+                            src="@/static/svg/usa-flag.svg"
+                            alt=""
+                            class="absolute ml-3 mb-3 mr-4 top-4 w-6 h-6"
+                          />
+                          <span
+                            class="absolute left-12 mb-3 mr-4 top-4 text-[#1E1E1E] font-normal text-base"
+                            >+1</span
+                          >
+                          <div
+                            class="border-r border-gray-400 h-[40%] absolute left-20 top-4"
+                          ></div>
+                          <input
+                            :class="
+                              errors[`commercialReference[${key}].contactNo`]
+                                ? 'border border-red-600'
+                                : 'border border-gray-300'
+                            "
+                            type="number"
+                            name="ContactNo"
+                            id="ContactNo"
+                            placeholder="Your Contact No."
+                            class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[15px] bg-white pl-24 focus:outline-none mb-3"
+                            v-model="reference.contactNo"
+                          />
+                        </div>
+                      </label>
+                      <span
+                        class="error-msg"
+                        v-if="errors[`commercialReference[${key}].contactNo`]"
+                      >
+                        {{ errors[`commercialReference[${key}].contactNo`] }}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+              <div class="flex mt-4">
+                <button
+                  type="submit"
+                  class="mb-5 text-white bg-[#0060C9] font-medium rounded-lg text-[16px] px-[6.5rem] py-[15px] text-center"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
           </div>
-          <div class="flex justify-center mt-4">
-            <button
-              class="mb-5 w-[20%] text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-5 py-[15px] text-center"
-            >
-              Update Profile
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>
@@ -308,6 +507,8 @@ export default {
   layout: "dashboard",
   data() {
     return {
+      isProfile: true,
+      errors: {},
       countriesList: [
         {
           label: "USA",
@@ -316,6 +517,17 @@ export default {
           label: "MEXICO",
         },
       ],
+      countries: [
+        {
+          key: "+1",
+          value: "+1",
+        },
+        {
+          key: "+52",
+          value: "+52",
+        },
+      ],
+      selected: "+1",
       selectedLabel: "Select option",
       formData: {
         companyName: "",
@@ -359,6 +571,9 @@ export default {
     ...mapGetters({
       getUserProfile: "auth/getUserProfile",
     }),
+    AccountCreatedDate() {
+      return this.$moment(this.formData.createdAt).format("Do MMM YYYY");
+    },
   },
   methods: {
     ...mapActions({
@@ -368,6 +583,12 @@ export default {
     getValue(item) {
       this.selectedLabel = item.label;
       this.formData.companyFormationType = item.label;
+    },
+    getCountry(item) {
+      this.selected = item.value;
+      console.log(this.selected, "this.selected");
+
+      // this.formData.companyFormationType = item.label;
     },
     async uploadW9Form(event) {
       try {
@@ -420,7 +641,6 @@ export default {
     },
     async upateUserProfile() {
       try {
-        console.log("this.formData", this.formData);
         const formData = new FormData();
         formData.append("companyName", this.formData.companyName);
         formData.append("contactName", this.formData.contactName);
@@ -511,9 +731,8 @@ export default {
         this.$toast.open({
           message: response.msg,
         });
+        this.isProfile = true;
       } catch (error) {
-        console.log(error, "error");
-
         this.$toast.open({
           message: error?.response?.data?.msg,
           type: "error",
@@ -526,13 +745,22 @@ export default {
     try {
       await this.profile();
       this.formData = await this.$lodash.cloneDeep(this.getUserProfile);
-      this.selectedLabel = this.formData.companyFormationType;
+      this.selectedLabel = this.formData.companyFormationType
+        ? this.formData.companyFormationType
+        : "Select option";
     } catch (error) {
       console.log(error);
     }
   },
-  beforeMount() {
-    document.body.style.backgroundColor = "";
-  },
 };
 </script>
+<style scoped>
+body {
+  background-color: white !important;
+}
+.error-msg {
+  font-size: 14px;
+  font-weight: 400;
+  color: red;
+}
+</style>

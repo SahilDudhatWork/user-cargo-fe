@@ -39,6 +39,8 @@ export default {
     { src: "~/plugins/toast-notification.js", mode: "client" },
     "~/plugins/js-cookie.js",
     "~/plugins/lodash.js",
+    "~/plugins/validation.js",
+    "~/plugins/moment.js",
     { src: "~/plugins/vue2-datepicker.js", mode: "client" },
   ],
 

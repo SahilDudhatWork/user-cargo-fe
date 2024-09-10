@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div class="sm:mx-44 mx-6 mt-10 flex flex-col justify-center">
+    <div class="sm:mx-48 mx-6 mt-10 flex flex-col justify-center">
       <div>
         <h1 class="font-bold text-[20px] text-[#212121]">Best Offers</h1>
         <p class="font-medium text-base text-gray-700">
           Lorem ipsum dolor sit amet consectetur risus turpis.
         </p>
       </div>
-      <div class="mt-5 cursor-pointer">
-        <VueSlickCarousel v-bind="settings" class="">
+      <div class="mt-5 cursor-pointer landing_carousel">
+        <VueSlickCarousel v-bind="settings">
           <div v-for="(item, key) in carouselItem" :key="key" class="w-[350px]">
             <div
               class="rounded-xl relative"

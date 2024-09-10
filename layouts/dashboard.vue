@@ -10,7 +10,9 @@
 export default {
   middleware: "auth",
   mounted() {
-    document.body.style.backgroundColor = "#ECF3FA";
+    if (this.$route.fullPath != "/edit-profile") {
+      document.body.style.backgroundColor = "#ECF3FA";
+    }
   },
   beforeDestroy() {
     document.body.style.backgroundColor = "";

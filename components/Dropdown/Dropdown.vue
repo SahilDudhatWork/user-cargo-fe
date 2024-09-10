@@ -2,7 +2,7 @@
   <div>
     <button
       @click="toggleDropdown"
-      class="dropdown-list relative bg-white mx-0 text-[#5B638B] font-semibold rounded-lg text-base py-[17px] w-full xl:w-[382px] text-center inline-flex justify-between px-2"
+      class="dropdown-list relative bg-white mx-0 text-[#5B638B] font-semibold rounded-lg text-base py-[15px] w-full xl:w-[382px] text-center inline-flex justify-between px-2"
       :class="
         isDropdown ? ' border-t border-r border-l rounded-t-lg' : 'border'
       "
