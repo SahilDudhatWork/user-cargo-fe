@@ -9,7 +9,7 @@
     </div>
     <footer class="bg-[#0464CB] mt-5 p-3">
       <div class="sm:mx-44 mx-6 py-6">
-        <div class="flex justify-between mt-3">
+        <div class="flex justify-between sm:flex-row gap-y-3 flex-col mt-3">
           <div>
             <img src="@/static/Images/footer-logo.webp" alt="" />
           </div>
@@ -31,7 +31,7 @@
           </div>
         </div>
         <div>
-          <ul class="flex gap-8">
+          <ul class="flex gap-8 sm:flex-none flex-wrap">
             <li v-for="(item, key) in company" :key="key">
               <a
                 class="text-white text-sm font-normal mb-3 inline-block transition-main hover:translate-x-[10px] cursor-pointer"

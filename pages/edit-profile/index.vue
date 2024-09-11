@@ -57,7 +57,7 @@
               </button>
             </div>
           </div>
-          <div class="sm:mx-40 mx-6 mt-8 grid grid-cols-2" v-if="isProfile">
+          <div class="sm:mx-40 mx-6 mt-8 grid-cols-2 grid" v-if="isProfile">
             <div class="border-r border-[#EEEEEE]">
               <h1 class="text-[#000000] font-bold text-lg">Service Details</h1>
               <p class="text-[#00000099] font-normal text-sm mt-4">
@@ -83,7 +83,7 @@
               </p>
               <div class="flex gap-3 items-center">
                 <img
-                  src="../../static/svg/star.svg"
+                  src="@/static/svg/star.svg"
                   alt=""
                   class="bg-[#F0F0F0] py-2.5 px-1.5 rounded-xl mt-3"
                 />
@@ -164,23 +164,12 @@
                       class="xl:w-[382px] relative flex cursor-pointer flex-col"
                     >
                       <div class="flex justify-between">
-                        <!-- <CountryDropdown
-                          :items="item"
-                          :selectedLabel="selected"
+                        <CountryDropdown
+                          :items="countries"
+                          :selectedLabel="formData?.countryCode"
                           @getValue="getCountry"
-                          v-for="(item, key) in countries"
-                          :key="key"
-                          class="absolute ml-3 mb-3 mr-4"
-                        /> -->
-                        <img
-                          src="@/static/svg/usa-flag.svg"
-                          alt=""
-                          class="absolute ml-3 mb-3 mr-4 top-4 w-6 h-6"
+                          class="absolute mb-3 mr-4"
                         />
-                        <span
-                          class="absolute left-12 mb-3 mr-4 top-4 text-[#1E1E1E] font-normal text-base"
-                          >+1</span
-                        >
                         <div
                           class="border-r border-gray-400 h-[40%] absolute left-20 top-4"
                         ></div>
@@ -248,9 +237,10 @@
                       :errors="errors.w9_Form"
                       item-label="W9 Form"
                       :file="
-                        typeof formData.companyFormation.usa.w9_Form == 'object'
-                          ? formData.companyFormation.usa.w9_Form?.name
-                          : formData.companyFormation.usa.w9_Form
+                        typeof formData?.companyFormation?.usa?.w9_Form ==
+                        'object'
+                          ? formData?.companyFormation?.usa?.w9_Form?.name
+                          : formData?.companyFormation?.usa?.w9_Form
                       "
                       @handleFileChange="uploadW9Form"
                     />
@@ -263,10 +253,10 @@
                       :errors="errors.utility_Bill"
                       item-label="Utility Bill"
                       :file="
-                        typeof formData.companyFormation.usa.utility_Bill ==
+                        typeof formData?.companyFormation?.usa?.utility_Bill ==
                         'object'
-                          ? formData.companyFormation.usa.utility_Bill?.name
-                          : formData.companyFormation.usa.utility_Bill
+                          ? formData?.companyFormation?.usa?.utility_Bill?.name
+                          : formData?.companyFormation?.usa?.utility_Bill
                       "
                       @handleFileChange="uploadUtilityBill"
                     />
@@ -448,15 +438,14 @@
                         class="xl:w-[382px] relative flex cursor-pointer flex-col"
                       >
                         <div class="flex justify-between">
-                          <img
-                            src="@/static/svg/usa-flag.svg"
-                            alt=""
-                            class="absolute ml-3 mb-3 mr-4 top-4 w-6 h-6"
+                          <CountryDropdown
+                            :items="countries"
+                            :selectedLabel="reference?.countryCode"
+                            @getValue="
+                              (value) => getReferenceCountry(value, reference)
+                            "
+                            class="absolute mb-3 mr-4"
                           />
-                          <span
-                            class="absolute left-12 mb-3 mr-4 top-4 text-[#1E1E1E] font-normal text-base"
-                            >+1</span
-                          >
                           <div
                             class="border-r border-gray-400 h-[40%] absolute left-20 top-4"
                           ></div>
@@ -519,19 +508,19 @@ export default {
       ],
       countries: [
         {
-          key: "+1",
-          value: "+1",
+          key: 1,
+          value: 1,
         },
         {
-          key: "+52",
-          value: "+52",
+          key: 52,
+          value: 52,
         },
       ],
-      selected: "+1",
       selectedLabel: "Select option",
       formData: {
         companyName: "",
         contactName: "",
+        countryCode: 1,
         contactNumber: "",
         email: "",
         password: "",
@@ -553,14 +542,14 @@ export default {
             companyName: "",
             contactName: "",
             emailAddress: "",
-            countryCode: "",
+            countryCode: 1,
             contactNo: "",
           },
           {
             companyName: "",
             contactName: "",
             emailAddress: "",
-            countryCode: "",
+            countryCode: 1,
             contactNo: "",
           },
         ],
@@ -585,10 +574,10 @@ export default {
       this.formData.companyFormationType = item.label;
     },
     getCountry(item) {
-      this.selected = item.value;
-      console.log(this.selected, "this.selected");
-
-      // this.formData.companyFormationType = item.label;
+      this.formData.countryCode = item.value;
+    },
+    getReferenceCountry(item, ref) {
+      ref.countryCode = item.value;
     },
     async uploadW9Form(event) {
       try {
@@ -644,30 +633,32 @@ export default {
         const formData = new FormData();
         formData.append("companyName", this.formData.companyName);
         formData.append("contactName", this.formData.contactName);
-        formData.append("contactNumber", `+1${this.formData.contactNumber}`);
+        formData.append("contactNumber", this.formData.contactNumber);
+        formData.append("countryCode", this.formData.countryCode);
         formData.append("email", this.formData.email);
         formData.append(
           "companyFormationType",
           this.formData.companyFormationType
         );
         if (this.selectedLabel === "USA") {
-          delete this.formData.companyFormation.maxico;
+          delete this.formData?.companyFormation?.maxico;
           if (
-            this.formData.companyFormation.usa.w9_Form != null &&
-            typeof this.formData.companyFormation.usa.w9_Form == "object"
+            this.formData?.companyFormation?.usa?.w9_Form != null &&
+            typeof this.formData?.companyFormation?.usa?.w9_Form == "object"
           ) {
             formData.append(
               "companyFormation_usa_w9_Form",
-              this.formData.companyFormation.usa.w9_Form
+              this.formData?.companyFormation?.usa?.w9_Form
             );
           }
           if (
-            this.formData.companyFormation.usa.utility_Bill != null &&
-            typeof this.formData.companyFormation.usa.utility_Bill == "object"
+            this.formData?.companyFormation?.usa?.utility_Bill != null &&
+            typeof this.formData?.companyFormation?.usa?.utility_Bill ==
+              "object"
           ) {
             formData.append(
               "companyFormation_usa_utility_Bill",
-              this.formData.companyFormation.usa.utility_Bill
+              this.formData?.companyFormation?.usa?.utility_Bill
             );
           }
         }
@@ -692,37 +683,42 @@ export default {
           ) {
             formData.append(
               "companyFormation_maxico_constance_Of_Fiscal_Situation",
-              this.formData.companyFormation.maxico
-                .constance_Of_Fiscal_Situation
+              this.formData?.companyFormation?.maxico
+                ?.constance_Of_Fiscal_Situation
             );
           }
           if (
-            this.formData.companyFormation.maxico.proof_of_Favorable != null &&
-            typeof this.formData.companyFormation.maxico.proof_of_Favorable ==
-              "object"
+            this.formData?.companyFormation?.maxico?.proof_of_Favorable !=
+              null &&
+            typeof this.formData?.companyFormation?.maxico
+              ?.proof_of_Favorable == "object"
           ) {
             formData.append(
               "companyFormation_maxico_proof_of_Favorable",
-              this.formData.companyFormation.maxico.proof_of_Favorable
+              this.formData?.companyFormation?.maxico?.proof_of_Favorable
             );
           }
           if (
-            this.formData.companyFormation.maxico.proof_Of_Address != null &&
-            typeof this.formData.companyFormation.maxico.proof_Of_Address ==
+            this.formData?.companyFormation?.maxico?.proof_Of_Address != null &&
+            typeof this.formData?.companyFormation?.maxico?.proof_Of_Address ==
               "object"
           ) {
             formData.append(
               "companyFormation_maxico_proof_Of_Address",
-              this.formData.companyFormation.maxico.proof_Of_Address
+              this.formData?.companyFormation?.maxico?.proof_Of_Address
             );
           }
         }
+        console.log(this.formData.commercialReference);
         this.formData.commercialReference.forEach((ref, index) => {
           for (let key in ref) {
             let value = ref[key];
 
-            if (key === "countryCode" || key === "contactNo") {
-              value = `+1${value}`;
+            if (key === "contactNo") {
+              value = `${value}`;
+            }
+            if (key === "countryCode") {
+              value = `${value}`;
             }
             formData.append(`commercialReference[${index}][${key}]`, value);
           }
@@ -733,8 +729,9 @@ export default {
         });
         this.isProfile = true;
       } catch (error) {
+        console.log(error);
         this.$toast.open({
-          message: error?.response?.data?.msg,
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
       }
@@ -755,9 +752,6 @@ export default {
 };
 </script>
 <style scoped>
-body {
-  background-color: white !important;
-}
 .error-msg {
   font-size: 14px;
   font-weight: 400;

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mt-24 sm:mx-48 mx-6">
+    <div class="mt-24 xl:mx-48 mx-6">
       <div>
         <p class="font-bold text-[20px] text-[#000000]">
           Unlock the power of Cargoconnect
@@ -9,7 +9,9 @@
           Lorem ipsum dolor sit amet consectetur risus turpis.
         </p>
       </div>
-      <div class="bg-white rounded-2xl mt-5 grid grid-cols-3 py-7">
+      <div
+        class="bg-white rounded-2xl mt-5 grid xl:grid-cols-3 sm:grid-cols-3 grid-cols-1 gap-y-4 py-7"
+      >
         <div
           class="border-r border-gray-400 px-6"
           v-for="(item, key) in ecommerceItem"

@@ -6,27 +6,26 @@
         alt=""
         class="right-0 absolute -top-36"
       />
-      <div class="sm:mx-48 mx-6">
+      <div class="xl:mx-48 mx-6">
         <div class="relative"></div>
         <div class="pt-32 pb-12">
           <h1 class="font-bold text-[20px] text-white">Services for you</h1>
           <p class="text-gray-300 font-normal text-base">
             4 different type of service you can opt
           </p>
-          <div class="flex gap-20 mt-8">
+          <div class="flex xl:gap-20 mt-8">
             <div>
               <img
                 src="@/static/Images/trueck1-image.webp"
                 alt=""
-                class="rounded-2xl w-[900px] h-[450px]"
+                class="rounded-2xl xl:w-[900px] w-[600px] h-[450px] hidden sm:block"
               />
             </div>
             <div>
-              <!-- <nuxt-link to="/additional-details"> -->
               <div
                 v-for="(item, key) in typeOfService"
                 :key="key"
-                class="flex justify-between gap-40 mb-10 cursor-pointer relative z-50"
+                class="flex justify-between mb-10 cursor-pointer relative z-50 mx-5"
                 @click="handleClick(item)"
               >
                 <div
@@ -45,7 +44,6 @@
                   class="w-6 h-6 pt-2"
                 />
               </div>
-              <!-- </nuxt-link> -->
             </div>
           </div>
         </div>
@@ -103,8 +101,9 @@ export default {
     try {
       // await this.fetchService();
     } catch (error) {
+      console.log(error);
       this.$toast.open({
-        message: error?.response?.data?.msg,
+        message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
         type: "error",
       });
     }

@@ -1,7 +1,8 @@
 {
-    "errorMessage":"Please fill up your field !",
+    "requiredErrorMessage":"Please fill up your field !",
     "matchErrorMessage":"Passwords do not match.",
     "loginMessage":"Successfully logged in.",
     "loginOTPMessage":"OTP has been sent to your email address. Please check your inbox and use the OTP to proceed",
-    "matchPasswordMessage":"Passwords do not match."
+    "matchPasswordMessage":"Passwords do not match.",
+    "errorMessage":"Something is wrong please try again"
 }

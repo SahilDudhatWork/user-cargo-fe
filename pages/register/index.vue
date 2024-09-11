@@ -115,15 +115,12 @@
                     >Contact No.</label
                   >
                   <div class="flex items-center text-lg relative">
-                    <img
-                      src="@/static/svg/usa-flag.svg"
-                      alt=""
-                      class="absolute ml-3 mb-3 mr-4 top-4 w-6 h-6"
+                    <CountryDropdown
+                      :items="countries"
+                      :selectedLabel="formData?.countryCode"
+                      @getValue="getCountry"
+                      class="absolute mb-3 mr-4"
                     />
-                    <span
-                      class="absolute left-12 mb-3 mr-4 text-[#1E1E1E] font-normal text-base"
-                      >+1</span
-                    >
                     <div
                       class="border-r border-gray-400 h-[40%] absolute left-20 top-4"
                     ></div>
@@ -153,19 +150,20 @@
                   <inputFile
                     item-label="W9 Form"
                     :file="
-                      typeof formData.companyFormation.usa.w9_Form == 'object'
-                        ? formData.companyFormation.usa.w9_Form?.name
-                        : formData.companyFormation.usa.w9_Form
+                      typeof formData?.companyFormation?.usa?.w9_Form ==
+                      'object'
+                        ? formData?.companyFormation?.usa?.w9_Form?.name
+                        : formData?.companyFormation?.usa?.w9_Form
                     "
                     @handleFileChange="uploadW9Form"
                   />
                   <inputFile
                     item-label="Utility Bill"
                     :file="
-                      typeof formData.companyFormation.usa.utility_Bill ==
+                      typeof formData?.companyFormation?.usa?.utility_Bill ==
                       'object'
-                        ? formData.companyFormation.usa.utility_Bill?.name
-                        : formData.companyFormation.usa.utility_Bill
+                        ? formData?.companyFormation?.usa?.utility_Bill?.name
+                        : formData?.companyFormation?.usa?.utility_Bill
                     "
                     @handleFileChange="uploadUtilityBill"
                   />
@@ -174,44 +172,45 @@
                   <inputFile
                     item-label="COPIA RFC Form"
                     :file="
-                      typeof formData.companyFormation.maxico.copia_Rfc_Form ==
-                      'object'
-                        ? formData.companyFormation.maxico.copia_Rfc_Form?.name
-                        : formData.companyFormation.maxico.copia_Rfc_Form
+                      typeof formData?.companyFormation?.maxico
+                        ?.copia_Rfc_Form == 'object'
+                        ? formData?.companyFormation?.maxico?.copia_Rfc_Form
+                            ?.name
+                        : formData?.companyFormation?.maxico?.copia_Rfc_Form
                     "
                     @handleFileChange="uploadCopiaRfcForm"
                   />
                   <inputFile
                     item-label="Constance of Fiscal Situation"
                     :file="
-                      typeof formData.companyFormation.maxico
-                        .constance_Of_Fiscal_Situation == 'object'
-                        ? formData.companyFormation.maxico
-                            .constance_Of_Fiscal_Situation?.name
-                        : formData.companyFormation.maxico
-                            .constance_Of_Fiscal_Situation
+                      typeof formData?.companyFormation.maxico
+                        ?.constance_Of_Fiscal_Situation == 'object'
+                        ? formData?.companyFormation.maxico
+                            ?.constance_Of_Fiscal_Situation?.name
+                        : formData?.companyFormation.maxico
+                            ?.constance_Of_Fiscal_Situation
                     "
                     @handleFileChange="uploadConstanceOfFiscalSituation"
                   />
                   <inputFile
                     item-label="Proof of Favorable"
                     :file="
-                      typeof formData.companyFormation.maxico
+                      typeof formData?.companyFormation?.maxico
                         .proof_of_Favorable == 'object'
-                        ? formData.companyFormation.maxico.proof_of_Favorable
+                        ? formData?.companyFormation?.maxico.proof_of_Favorable
                             ?.name
-                        : formData.companyFormation.maxico.proof_of_Favorable
+                        : formData?.companyFormation?.maxico.proof_of_Favorable
                     "
                     @handleFileChange="uploadProofOfFavorable"
                   />
                   <inputFile
                     item-label="Proof of Address"
                     :file="
-                      typeof formData.companyFormation.maxico
-                        .proof_Of_Address == 'object'
-                        ? formData.companyFormation.maxico.proof_Of_Address
+                      typeof formData?.companyFormation?.maxico
+                        ?.proof_Of_Address == 'object'
+                        ? formData?.companyFormation?.maxico?.proof_Of_Address
                             ?.name
-                        : formData.companyFormation.maxico.proof_Of_Address
+                        : formData?.companyFormation?.maxico?.proof_Of_Address
                     "
                     @handleFileChange="uploadProofOfAddress"
                   />
@@ -278,15 +277,14 @@
                       >
                       <label class="xl:w-[382px] relative flex cursor-pointer">
                         <div class="flex justify-between">
-                          <img
-                            src="@/static/svg/usa-flag.svg"
-                            alt=""
-                            class="absolute ml-3 mb-3 mr-4 top-4 w-6 h-6"
+                          <CountryDropdown
+                            :items="countries"
+                            :selectedLabel="reference?.countryCode"
+                            @getValue="
+                              (value) => getReferenceCountry(value, reference)
+                            "
+                            class="absolute mb-3 mr-4"
                           />
-                          <span
-                            class="absolute left-12 mb-3 mr-4 top-4 text-[#1E1E1E] font-normal text-base"
-                            >+1</span
-                          >
                           <div
                             class="border-r border-gray-400 h-[40%] absolute left-20 top-4"
                           ></div>
@@ -340,10 +338,21 @@ export default {
           label: "MEXICO",
         },
       ],
+      countries: [
+        {
+          key: 1,
+          value: 1,
+        },
+        {
+          key: 52,
+          value: 52,
+        },
+      ],
       selectedLabel: "Select option",
       formData: {
         companyName: "",
         contactName: "",
+        countryCode: 1,
         contactNumber: "",
         email: "",
         password: "",
@@ -365,14 +374,14 @@ export default {
             companyName: "",
             contactName: "",
             emailAddress: "",
-            countryCode: "",
+            countryCode: 1,
             contactNo: "",
           },
           {
             companyName: "",
             contactName: "",
             emailAddress: "",
-            countryCode: "",
+            countryCode: 1,
             contactNo: "",
           },
         ],
@@ -396,6 +405,12 @@ export default {
     getValue(item) {
       this.selectedLabel = item.label;
       this.formData.companyFormationType = item.label;
+    },
+    getCountry(item) {
+      this.formData.countryCode = item.value;
+    },
+    getReferenceCountry(item, ref) {
+      ref.countryCode = item.value;
     },
     async uploadW9Form(event) {
       try {
@@ -451,7 +466,8 @@ export default {
         const formData = new FormData();
         formData.append("companyName", this.formData.companyName);
         formData.append("contactName", this.formData.contactName);
-        formData.append("contactNumber", `+1${this.formData.contactNumber}`);
+        formData.append("contactNumber", this.formData.contactNumber);
+        formData.append("countryCode", this.formData.countryCode);
         formData.append("email", this.formData.email);
         formData.append("password", this.formData.password);
         formData.append(
@@ -459,35 +475,36 @@ export default {
           this.formData.companyFormationType
         );
         if (this.selectedLabel === "USA") {
-          delete this.formData.companyFormation.maxico;
+          delete this.formData?.companyFormation?.maxico;
 
           formData.append(
             "companyFormation_usa_w9_Form",
-            this.formData.companyFormation.usa.w9_Form
+            this.formData?.companyFormation?.usa?.w9_Form
           );
           formData.append(
             "companyFormation_usa_utility_Bill",
-            this.formData.companyFormation.usa.utility_Bill
+            this.formData?.companyFormation?.usa?.utility_Bill
           );
         }
         if (this.selectedLabel === "MEXICO") {
-          delete this.formData.companyFormation.usa;
+          delete this.formData?.companyFormation?.usa;
 
           formData.append(
             "companyFormation_maxico_copia_Rfc_Form",
-            this.formData.companyFormation.maxico.copia_Rfc_Form
+            this.formData?.companyFormation?.maxico?.copia_Rfc_Form
           );
           formData.append(
             "companyFormation_maxico_constance_Of_Fiscal_Situation",
-            this.formData.companyFormation.maxico.constance_Of_Fiscal_Situation
+            this.formData?.companyFormation?.maxico
+              ?.constance_Of_Fiscal_Situation
           );
           formData.append(
             "companyFormation_maxico_proof_of_Favorable",
-            this.formData.companyFormation.maxico.proof_of_Favorable
+            this.formData?.companyFormation?.maxico?.proof_of_Favorable
           );
           formData.append(
             "companyFormation_maxico_proof_Of_Address",
-            this.formData.companyFormation.maxico.proof_Of_Address
+            this.formData?.companyFormation?.maxico?.proof_Of_Address
           );
         }
 
@@ -495,8 +512,11 @@ export default {
           for (let key in ref) {
             let value = ref[key];
 
-            if (key === "countryCode" || key === "contactNo") {
-              value = `+1${value}`;
+            if (key === "contactNo") {
+              value = `${value}`;
+            }
+            if (key === "countryCode") {
+              value = `${value}`;
             }
             formData.append(`commercialReference[${index}][${key}]`, value);
           }
@@ -507,8 +527,9 @@ export default {
         });
         this.$router.push("/additional-details");
       } catch (error) {
+        console.log(error);
         this.$toast.open({
-          message: error?.response?.data?.msg,
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
       }

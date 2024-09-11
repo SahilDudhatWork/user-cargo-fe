@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex justify-between mt-20 mb-20">
-      <div class="sm:mx-48 mx-6">
+      <div class="xl:mx-48 mx-6">
         <p
           class="text-[#0060C9] font-medium text-[32px] max-w-[430px] leading-[40px]"
         >
@@ -30,7 +30,7 @@
         <img
           src="@/static/Images/container-img.webp"
           alt=""
-          class="w-[1000px] h-[450px]"
+          class="w-[1000px] h-[450px] sm:block hidden"
         />
         <img
           src="@/static/Images/right-circle-img.webp"

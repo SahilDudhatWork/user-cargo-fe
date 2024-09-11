@@ -1266,8 +1266,9 @@ export default {
     try {
       // await this.fetchService();
     } catch (error) {
+      console.log(error);
       this.$toast.open({
-        message: error?.response?.data?.msg,
+        message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
         type: "error",
       });
     }
@@ -1275,8 +1276,9 @@ export default {
       const res = await this.fetchServiceReference();
       this.userReference = res.data.commercialReference;
     } catch (error) {
+      console.log(error);
       this.$toast.open({
-        message: error?.response?.data?.msg,
+        message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
         type: "error",
       });
     }
