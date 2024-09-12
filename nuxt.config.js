@@ -42,6 +42,7 @@ export default {
     "~/plugins/validation.js",
     "~/plugins/moment.js",
     { src: "~/plugins/vue2-datepicker.js", mode: "client" },
+    { src: "~/plugins/vue2-google-maps.js", ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
