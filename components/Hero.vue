@@ -6,7 +6,7 @@
       <div class="z-50 absolute content rounded-2xl h-[458px]">
         <div class="mx-10 mt-20">
           <h1
-            class="text-[42px] font-normal text-white max-w-[370px] leading-[48px]"
+            class="sm:text-[42px] text-[30px] font-normal text-white max-w-[370px] leading-[48px]"
           >
             Revolutionising the transportation
           </h1>

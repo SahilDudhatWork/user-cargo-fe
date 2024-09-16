@@ -13,15 +13,15 @@
           <p class="text-gray-300 font-normal text-base">
             4 different type of service you can opt
           </p>
-          <div class="flex xl:gap-20 mt-8">
-            <div>
+          <div class="grid grid-cols-2 mt-8">
+            <div class="w-full">
               <img
                 src="@/static/Images/trueck1-image.webp"
                 alt=""
-                class="rounded-2xl xl:w-[900px] w-[600px] h-[450px] hidden sm:block"
+                class="rounded-2xl xl:w-[700px] w-[600px] h-[450px] hidden sm:block"
               />
             </div>
-            <div>
+            <div class="w-full">
               <div
                 v-for="(item, key) in typeOfService"
                 :key="key"
@@ -29,20 +29,22 @@
                 @click="handleClick(item)"
               >
                 <div
-                  class="relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[rgba(255,255,255,0.3)] before:to-[rgba(236,243,250,0)] pb-5 pt-2"
+                  class="relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[rgba(255,255,255,0.3)] before:to-[rgba(236,243,250,0)] pb-5"
                 >
-                  <h1 class="font-bold text-base text-white mb-2">
+                  <h1 class="font-bold text-lg text-white mb-2">
                     {{ item.title }}
                   </h1>
-                  <p class="font-medium text-[13px] text-gray-300">
+                  <p class="font-medium text-base text-gray-300">
                     {{ item.description }}
                   </p>
                 </div>
-                <img
-                  src="@/static/svg/side-arrow.svg"
-                  alt=""
-                  class="w-6 h-6 pt-2"
-                />
+                <div>
+                  <img
+                    src="@/static/svg/side-arrow.svg"
+                    alt=""
+                    class="w-6 h-6 pt-2"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -52,43 +54,17 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   data() {
     return {
-      typeOfService: [
-        {
-          title: "Northbound",
-          description: "Lorem ipsum dolor sit amet Mauris risus turpis.",
-          _id: "66c43302a7eb5f1b0de6fadd",
-        },
-        {
-          title: "Southbound",
-          description: "Lorem ipsum dolor sit amet Mauris risus turpis.",
-          _id: "66c43302a7eb5f1b0de6fade",
-        },
-        {
-          title: "Local Drayage MX",
-          description: "Lorem ipsum dolor sit amet Mauris risus turpis.",
-          _id: "66c43302a7eb5f1b0de6fadf",
-        },
-        {
-          title: "Local Drayage US",
-          description: "Lorem ipsum dolor sit amet Mauris risus turpis.",
-          _id: "66c43302a7eb5f1b0de6fae0",
-        },
-      ],
+      typeOfService: [],
     };
-  },
-  computed: {
-    ...mapGetters({
-      serviceData: "service/getService",
-    }),
   },
   methods: {
     ...mapActions({
-      fetchService: "service/fetchService",
+      fetchTypeOfService: "service/fetchTypeOfService",
     }),
     handleClick(item) {
       if (item) {
@@ -96,17 +72,21 @@ export default {
         this.$router.push("/additional-details");
       }
     },
+    async getTypeOfServices() {
+      try {
+        const res = await this.fetchTypeOfService();
+        this.typeOfService = res.data.typeOfService;
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    },
   },
   async mounted() {
-    try {
-      // await this.fetchService();
-    } catch (error) {
-      console.log(error);
-      this.$toast.open({
-        message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
-        type: "error",
-      });
-    }
+    await this.getTypeOfServices();
   },
 };
 </script>

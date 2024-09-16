@@ -11,7 +11,7 @@
     >
       <div class="flex justify-between">
         <p class="text-sm text-[#686868] font-normal">
-          {{ fileUrl || "Choose file to upload" }}
+          {{ "Choose file to upload" }}
         </p>
         <svg
           width="20"
@@ -43,6 +43,13 @@
     <p class="text-[#989898] font-normal text-[12px] mt-1">
       {{ itemPlaceholder }}
     </p>
+    <div v-if="fileData" class="mt-4">
+      <img
+        :src="fileUrl"
+        alt="Image Preview"
+        class="w-20 object-contain h-12 rounded-lg"
+      />
+    </div>
   </div>
 </template>
 <script>
@@ -63,6 +70,10 @@ export default {
       required: true,
       default: "Choose file to upload",
     },
+    fileData: {
+      type: [File, String],
+      default: null,
+    },
     errors: {
       type: String,
       required: false,
@@ -72,12 +83,11 @@ export default {
   computed: {
     fileUrl() {
       const baseUrl = "https://cargo-storage-bucket.s3.amazonaws.com";
-
       if (this.file.startsWith(baseUrl)) {
-        const cleanedUrl = this.file.split("?")[0];
-        return cleanedUrl.split("/").pop();
-      } else {
         return this.file;
+      } else {
+        let url = this.fileData ? URL.createObjectURL(this.fileData) : "";
+        return url;
       }
     },
   },

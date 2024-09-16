@@ -40,6 +40,7 @@ export default {
     "~/plugins/js-cookie.js",
     "~/plugins/lodash.js",
     "~/plugins/validation.js",
+    "~/plugins/uniqueIdPlugin.js",
     "~/plugins/moment.js",
     { src: "~/plugins/vue2-datepicker.js", mode: "client" },
     { src: "~/plugins/vue2-google-maps.js", ssr: false },

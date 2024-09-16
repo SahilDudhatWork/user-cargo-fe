@@ -10,7 +10,10 @@
 export default {
   middleware: "auth",
   mounted() {
-    if (this.$route.fullPath != "/edit-profile") {
+    if (
+      this.$route.fullPath != "/edit-profile" &&
+      this.$route.fullPath != "/my-orders"
+    ) {
       document.body.style.backgroundColor = "#ECF3FA";
     }
   },

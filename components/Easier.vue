@@ -14,7 +14,7 @@
             class="group relative cursor-pointer py-5 transition-all duration-300 hover:pt-2 hover:py-0"
           >
             <span
-              class="text-[18px] text-[#000000] font-bold border-b border-gray-300 py-5 group-hover:border-none"
+              class="sm:text-[18px] text-[16px] text-[#000000] font-bold border-b border-gray-300 py-5 group-hover:border-none"
             >
               {{ item.title }}
             </span>
@@ -35,7 +35,7 @@
         <img
           src="@/static/Images/right-circle-img.webp"
           alt=""
-          class="absolute right-0 top-36 z-50"
+          class="absolute right-0 top-72 z-50"
         />
       </div>
     </div>

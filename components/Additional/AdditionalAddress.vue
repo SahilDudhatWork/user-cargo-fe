@@ -7,34 +7,48 @@
       "
       @click="handleClick"
     >
-      <div>
-        <span
-          class="rounded flex"
-          :class="
-            isSelected ? 'bg-[#034790] p-1' : ' p-[7px] border border-gray-400'
-          "
-        >
-          <img
-            src="@/static/svg/true.svg"
-            alt=""
-            class="w-[9px] h-[9px]"
-            v-if="isSelected"
-          />
-        </span>
+      <div class="flex gap-4">
+        <div>
+          <span
+            class="rounded flex"
+            :class="
+              isSelected
+                ? 'bg-[#034790] p-1'
+                : ' p-[7px] border border-gray-400'
+            "
+          >
+            <img
+              src="@/static/svg/true.svg"
+              alt=""
+              class="w-[9px] h-[9px]"
+              v-if="isSelected"
+            />
+          </span>
+        </div>
+        <div>
+          <p class="font-semibold text-sm text-[#1E1E1E]">
+            {{ item?.addressDetails?.laneNumber }}
+            {{ item?.addressDetails?.buildinName }}
+          </p>
+          <p
+            class="font-medium text-[12px] text-[#1B1B1B] border-b border-[#EEEEEE] pb-2 pt-1"
+          >
+            {{ item?.addressDetails?.postalCode }}
+          </p>
+          <p class="font-semibold text-sm text-[#1E1E1E] pt-2">
+            {{ item?.contactDetails?.contactName }},
+            {{ item?.contactDetails?.contactNumber }}
+          </p>
+        </div>
       </div>
       <div>
-        <p class="font-semibold text-sm text-[#1E1E1E]">{{ item?.title }}</p>
-        <p
-          class="font-medium text-[12px] text-[#1B1B1B] border-b border-[#EEEEEE] pb-2 pt-1"
+        <button
+          type="button"
+          class="text-[#0060C9] font-medium text-sm"
+          @click.stop="getUserAddress"
         >
-          {{ item?.address }}
-        </p>
-        <p class="font-semibold text-sm text-[#1E1E1E] pt-2">
-          {{ item?.details }}
-        </p>
-      </div>
-      <div>
-        <p class="text-[#0060C9] font-medium text-sm">Edit</p>
+          Edit
+        </button>
       </div>
     </div>
   </div>
@@ -58,6 +72,9 @@ export default {
   methods: {
     handleClick() {
       this.$emit("select", this.item);
+    },
+    getUserAddress() {
+      this.$emit("getUserAddress", this.item._id);
     },
   },
 };

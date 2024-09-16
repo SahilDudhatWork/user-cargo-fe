@@ -48,7 +48,60 @@
                   {{ item.text }}
                 </a>
               </li>
-              <nuxt-link to="/login">
+
+              <div v-if="isToken">
+                <div class="flex items-center gap-7 relative">
+                  <div
+                    class="flex bg-[#ECF3FA] cursor-pointer py-[4px] items-center rounded-lg pl-1 pr-3 gap-1"
+                    @click="isDropdown = !isDropdown"
+                  >
+                    <img
+                      src="@/static/Images/dashboard-header-logo.webp"
+                      alt=""
+                    />
+                    <img src="@/static/svg/blue-down-arrow.svg" alt="" />
+                  </div>
+                </div>
+                <div class="relative">
+                  <div
+                    v-if="isDropdown"
+                    v-click-outside="closeDropdown"
+                    class="!z-[999] right-1 absolute top-3 bg-white divide-y divide-gray-100 rounded-2xl shadow flex flex-col items-center dropdown-content"
+                    style="box-shadow: rgba(0, 0, 0, 0.5) 0px 6px 50px 0px"
+                  >
+                    <ul class="py-2 cursor-pointer" @click="closeDropdown">
+                      <nuxt-link to="/my-orders">
+                        <li class="flex items-center gap-3 px-3 w-36">
+                          <img src="@/static/svg/clock.svg" alt="" />
+                          <span
+                            class="block py-2.5 text-[#333333] font-medium text-base"
+                          >
+                            My orders
+                          </span>
+                        </li>
+                      </nuxt-link>
+                      <nuxt-link to="/edit-profile">
+                        <li class="flex items-center gap-3 px-3">
+                          <img src="@/static/svg/user.svg" alt="" />
+                          <span
+                            class="block py-2.5 text-[#333333] font-medium text-base"
+                          >
+                            Profile
+                          </span>
+                        </li>
+                      </nuxt-link>
+                      <li class="flex items-center gap-3 px-3">
+                        <img src="@/static/svg/settings-sliders.svg" alt="" />
+                        <a
+                          class="block py-2.5 text-[#333333] font-medium text-base"
+                          >Settings</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <nuxt-link to="/login" v-else>
                 <button
                   type="button"
                   class="bg-[#0060C9] text-white font-semibold text-base py-[9px] px-[21px] rounded-xl"
@@ -107,6 +160,8 @@ export default {
   data() {
     return {
       isSidebarOpen: false,
+      isDropdown: false,
+      isToken: null,
       navItems: [
         {
           text: "Service",
@@ -138,8 +193,26 @@ export default {
     toggleSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen;
     },
+    closeDropdown() {
+      this.isDropdown = !this.isDropdown;
+    },
+  },
+  mounted() {
+    this.isToken = this.$cookies.get("token");
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.dropdown-content:after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 15%;
+  margin-top: -15px;
+  z-index: 1;
+  border-bottom: solid 15px #fff;
+  border-left: solid 12px transparent;
+  border-right: solid 12px transparent;
+}
+</style>

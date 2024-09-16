@@ -13,7 +13,7 @@
         type="button"
       >
         <span class="flex gap-2 justify-between">
-          <span>{{ selectedLabel }}</span>
+          <span>{{ selectedLabel || "Select option" }}</span>
           <img
             src="@/static/svg/up-arrow.svg"
             alt=""
@@ -38,6 +38,7 @@
             <a @click.prevent="selectItem(item, index)">
               <span class="block px-4 py-[16px] font-medium hover:bg-gray-100">
                 {{ item.label }}
+                <span v-if="item.contactName"> ({{ item.contactName }})</span>
               </span>
             </a>
           </li>
@@ -74,14 +75,6 @@ export default {
     },
     toggleDropdown() {
       this.isDropdown = !this.isDropdown;
-      //   if (this.isDropdown) {
-      //     this.$nextTick(() => {
-      //       this.$el.querySelector(".dropdown-list").scrollIntoView({
-      //         behavior: "smooth",
-      //         block: "start",
-      //       });
-      //     });
-      //   }
     },
     selectItem(item) {
       this.isDropdown = false;

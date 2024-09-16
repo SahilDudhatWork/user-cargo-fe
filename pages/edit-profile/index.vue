@@ -174,7 +174,7 @@
                           class="border-r border-gray-400 h-[40%] absolute left-20 top-4"
                         ></div>
                         <input
-                          type="number"
+                          type="text"
                           name="ContactNo"
                           id="ContactNo"
                           placeholder="Your Contact No."
@@ -236,6 +236,7 @@
                     <inputFile
                       :errors="errors.w9_Form"
                       item-label="W9 Form"
+                      :fileData="formData?.companyFormation?.usa?.w9_Form"
                       :file="
                         typeof formData?.companyFormation?.usa?.w9_Form ==
                         'object'
@@ -252,6 +253,7 @@
                     <inputFile
                       :errors="errors.utility_Bill"
                       item-label="Utility Bill"
+                      :fileData="formData?.companyFormation?.usa?.utility_Bill"
                       :file="
                         typeof formData?.companyFormation?.usa?.utility_Bill ==
                         'object'
@@ -268,6 +270,9 @@
                     <inputFile
                       :errors="errors.copia_Rfc_Form"
                       item-label="COPIA RFC Form"
+                      :fileData="
+                        formData?.companyFormation?.maxico?.copia_Rfc_Form
+                      "
                       :file="
                         typeof formData?.companyFormation?.maxico
                           ?.copia_Rfc_Form == 'object'
@@ -285,6 +290,10 @@
                     <inputFile
                       :errors="errors.constance_Of_Fiscal_Situation"
                       item-label="Constance of Fiscal Situation"
+                      :fileData="
+                        formData?.companyFormation?.maxico
+                          ?.constance_Of_Fiscal_Situation
+                      "
                       :file="
                         typeof formData?.companyFormation?.maxico
                           ?.constance_Of_Fiscal_Situation == 'object'
@@ -304,6 +313,9 @@
                   <div v-if="selectedLabel === 'MEXICO'">
                     <inputFile
                       item-label="Proof of Favorable"
+                      :fileData="
+                        formData?.companyFormation?.maxico?.proof_of_Favorable
+                      "
                       :errors="errors.proof_of_Favorable"
                       :file="
                         typeof formData?.companyFormation?.maxico
@@ -322,6 +334,9 @@
                   <div v-if="selectedLabel === 'MEXICO'">
                     <inputFile
                       :errors="errors.proof_Of_Address"
+                      :fileData="
+                        formData?.companyFormation?.maxico?.proof_Of_Address
+                      "
                       item-label="Proof of Address"
                       :file="
                         typeof formData?.companyFormation?.maxico
@@ -455,7 +470,7 @@
                                 ? 'border border-red-600'
                                 : 'border border-gray-300'
                             "
-                            type="number"
+                            type="text"
                             name="ContactNo"
                             id="ContactNo"
                             placeholder="Your Contact No."
@@ -583,6 +598,13 @@ export default {
       try {
         const file = event.target.files[0];
         this.formData.companyFormation.usa.w9_Form = file;
+        // if (file) {
+        //   const reader = new FileReader();
+        //   reader.onload = (e) => {
+        //     this.formData.companyFormation.usa.w9_Form = e.target.result;
+        //   };
+        //   reader.readAsDataURL(file);
+        // }
       } catch (error) {
         console.log(error);
       }
@@ -715,12 +737,20 @@ export default {
             let value = ref[key];
 
             if (key === "contactNo") {
-              value = `${value}`;
+              value = value ? `${value}` : "";
             }
             if (key === "countryCode") {
               value = `${value}`;
             }
-            formData.append(`commercialReference[${index}][${key}]`, value);
+            if (
+              value &&
+              value != "" &&
+              value != null &&
+              key != "accountId" &&
+              key != "_id"
+            ) {
+              formData.append(`commercialReference[${index}][${key}]`, value);
+            }
           }
         });
         const response = await this.updateProfile(formData);

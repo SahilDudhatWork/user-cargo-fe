@@ -93,5 +93,58 @@ export default async (ctx, inject) => {
     return errors;
   };
 
+  const validateUserAddress = async ({ form }) => {
+    const errors = {};
+    // if (!form || !form.addressDetails || !form.contactDetails) {
+    //   console.error("Form structure is missing");
+    //   return { form: "Form structure is invalid" };
+    // }
+    const isEmpty = (value) => {
+      return typeof value === "string" ? value.trim() === "" : !value;
+    };
+    const setError = (fieldName, message) => {
+      errors[fieldName] = message;
+    };
+
+    const validateField = (field, fieldName, errorLabel) => {
+      if (isEmpty(field)) {
+        setError(fieldName, `${errorLabel} is required`);
+      }
+    };
+
+    const addressDetails = form.addressDetails;
+    validateField(addressDetails.buildinName, "buildinName", "Building-name");
+    validateField(addressDetails.postalCode, "postalCode", "Postal-code");
+    validateField(addressDetails.laneNumber, "laneNumber", "Lane number");
+    validateField(
+      addressDetails.additionalDetails,
+      "additionalDetails",
+      "Additional details"
+    );
+
+    const contactDetails = form.contactDetails;
+    validateField(contactDetails.contactName, "contactName", "Contact-name");
+    validateField(
+      contactDetails.contactNumber,
+      "contactNumber",
+      "Contact number"
+    );
+    validateField(contactDetails.contactEmail, "contactEmail", "Email");
+
+    if (
+      contactDetails.contactEmail &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactDetails.contactEmail)
+    ) {
+      setError("contactEmail", "Invalid email format");
+    }
+
+    if (!(await validatePhoneNumber(contactDetails.contactNumber))) {
+      setError("contactNumber", "Invalid contact number format");
+    }
+
+    return errors;
+  };
+
   inject("validateEditProfile", validateEditProfile);
+  inject("validateUserAddress", validateUserAddress);
 };

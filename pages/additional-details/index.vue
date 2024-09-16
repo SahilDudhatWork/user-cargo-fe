@@ -22,11 +22,11 @@
           </div>
           <div class="grid grid-cols-2 gap-7">
             <TypeOfTransportation
-              v-for="(item, index) of transportationType"
+              v-for="(item, index) of serviceData?.typeOfTransportation"
               :key="index"
               :item="item"
               :isSelected="item.title === selectedItem"
-              @select="selectItem"
+              @select="selectTypeOfTransportationItem"
             />
           </div>
           <p class="font-medium text-[13px] text-gray-400">
@@ -43,7 +43,7 @@
           <div class="grid grid-cols-3 gap-3">
             <ModeOfTransportation
               v-if="selectedItem === 'FTL'"
-              v-for="(item, index) of modeOfTransportation?.FTL"
+              v-for="(item, index) of serviceData?.modeOfTransportation?.FTL"
               :key="index"
               :item="item"
               :isSelected="item.title === modeSelectedItem"
@@ -51,7 +51,7 @@
             />
             <ModeOfTransportation
               v-if="selectedItem === 'LTL'"
-              v-for="(item, index) of modeOfTransportation?.LTL"
+              v-for="(item, index) of serviceData?.modeOfTransportation?.LTL"
               :key="index"
               :item="item"
               :isSelected="item.title === modeSelectedItem"
@@ -117,7 +117,10 @@
                 @getValue="getUserReferenceValue"
               />
             </div>
-            <div class="mt-7 relative group cursor-pointer">
+            <div
+              class="mt-7 relative group cursor-pointer"
+              v-if="programeSelectedLabel === 'Schedule'"
+            >
               <img
                 src="@/static/svg/down-arrow.svg"
                 alt=""
@@ -147,7 +150,10 @@
                 @getValue="getQuantityValue"
               />
             </div>
-            <div class="mt-7 group relative cursor-pointer">
+            <div
+              class="mt-7 group relative cursor-pointer"
+              v-if="programeSelectedLabel === 'Schedule'"
+            >
               <img
                 src="@/static/svg/down-arrow.svg"
                 alt=""
@@ -249,7 +255,7 @@
               class="text-[12px] font-semibold text-[#000000]"
               @click="
                 {
-                  openModal('step1'), closeModal('step3');
+                  openModal('step2'), closeModal('step3');
                 }
               "
             >
@@ -278,8 +284,11 @@
                   name="CompanyName"
                   class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                   placeholder="Your Building Name"
-                  v-model="addressDetails.buildinName"
+                  v-model="formData.addressDetails.buildinName"
                 />
+                <span v-if="errors.buildinName" class="error-msg">{{
+                  errors.buildinName
+                }}</span>
               </div>
               <div>
                 <label
@@ -288,12 +297,15 @@
                   >Postal Code</label
                 >
                 <input
-                  type="number"
+                  type="text"
                   name="CompanyName"
                   class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                   placeholder="Your Postal Code"
-                  v-model="addressDetails.postalCode"
+                  v-model="formData.addressDetails.postalCode"
                 />
+                <span v-if="errors.postalCode" class="error-msg">{{
+                  errors.postalCode
+                }}</span>
               </div>
               <div>
                 <label
@@ -302,12 +314,15 @@
                   >Lane Number</label
                 >
                 <input
-                  type="number"
+                  type="text"
                   name="CompanyName"
                   class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                   placeholder="Your Lane Number"
-                  v-model="addressDetails.laneNumber"
+                  v-model="formData.addressDetails.laneNumber"
                 />
+                <span v-if="errors.laneNumber" class="error-msg">{{
+                  errors.laneNumber
+                }}</span>
               </div>
               <div>
                 <label
@@ -320,8 +335,11 @@
                   name="CompanyName"
                   class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                   placeholder="Your Additional Details"
-                  v-model="addressDetails.additionalDetails"
+                  v-model="formData.addressDetails.additionalDetails"
                 />
+                <span v-if="errors.additionalDetails" class="error-msg">{{
+                  errors.additionalDetails
+                }}</span>
               </div>
             </div>
             <div class="flex flex-col gap-y-2">
@@ -340,8 +358,11 @@
                   name="ContactName"
                   class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                   placeholder="Your Contact name"
-                  v-model="contactDetails.contactName"
+                  v-model="formData.contactDetails.contactName"
                 />
+                <span v-if="errors.contactName" class="error-msg">{{
+                  errors.contactName
+                }}</span>
               </div>
               <div>
                 <label
@@ -355,8 +376,11 @@
                   id="email"
                   placeholder="Your Contact Email"
                   class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
-                  v-model="contactDetails.contactEmail"
+                  v-model="formData.contactDetails.contactEmail"
                 />
+                <span v-if="errors.contactEmail" class="error-msg">{{
+                  errors.contactEmail
+                }}</span>
               </div>
 
               <div>
@@ -365,7 +389,9 @@
                   class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                   >Contact No.</label
                 >
-                <label class="xl:w-[382px] relative flex cursor-pointer">
+                <label
+                  class="xl:w-[382px] relative flex cursor-pointer flex-col"
+                >
                   <div class="flex justify-between">
                     <img
                       src="@/static/svg/usa-flag.svg"
@@ -380,20 +406,24 @@
                       class="border-r border-gray-400 h-[40%] absolute left-20 top-4"
                     ></div>
                     <input
-                      type="number"
+                      type="text"
                       name="ContactNo"
                       id="ContactNo"
                       placeholder="Your Contact No."
                       class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[15px] bg-white pl-24 focus:outline-none mb-3"
-                      v-model="contactDetails.contactNumber"
+                      v-model="formData.contactDetails.contactNumber"
                     />
                   </div>
+                  <span v-if="errors.contactNumber" class="error-msg">{{
+                    errors.contactNumber
+                  }}</span>
                 </label>
               </div>
             </div>
           </div>
         </template>
       </Additional>
+
       <Additional @click="step4Next" v-if="modal.step4">
         <template #header>
           <div class="flex items-center gap-2 cursor-pointer">
@@ -412,7 +442,7 @@
               class="text-[12px] font-semibold text-[#000000]"
               @click="
                 {
-                  openModal('step1'), closeModal('step4');
+                  openModal('step2'), closeModal('step4');
                 }
               "
             >
@@ -441,13 +471,18 @@
               PICKUP LOCATIONS
             </h1>
             <div class="ml-6 mr-7">
-              <VueSlickCarousel v-bind="settings" class="flex justify-center">
+              <VueSlickCarousel
+                v-if="locations && locations.length"
+                v-bind="settings"
+                class="flex justify-center"
+              >
                 <AdditionalAddress
-                  v-for="(item, index) of pickupLocation"
+                  v-for="(item, index) of locations"
                   :key="index"
                   :item="item"
-                  :isSelected="item.title === selectedPickupItem"
-                  @select="selectPickupItem"
+                  :isSelected="selectedPickup(item._id)"
+                  @select="selectPickupItem(item._id)"
+                  @getUserAddress="getEditUserAddress"
                 />
               </VueSlickCarousel>
             </div>
@@ -457,13 +492,18 @@
               DROP LOCATIONS
             </h1>
             <div class="ml-6 mr-7">
-              <VueSlickCarousel v-bind="settings" class="">
+              <VueSlickCarousel
+                v-if="locations && locations.length"
+                v-bind="settings"
+                class="flex justify-center"
+              >
                 <AdditionalAddress
-                  v-for="(item, index) of dropLocation"
+                  v-for="(item, index) of locations"
                   :key="index"
                   :item="item"
-                  :isSelected="item.title === selectedDropItem"
-                  @select="selectDropItem"
+                  :isSelected="selectedDrop(item._id)"
+                  @select="selectDropItem(item._id)"
+                  @updateUserAddress="getEditUserAddress"
                 />
               </VueSlickCarousel>
             </div>
@@ -492,7 +532,7 @@
               class="text-[12px] font-semibold text-[#000000]"
               @click="
                 {
-                  openModal('step1'), closeModal('step5');
+                  openModal('step2'), closeModal('step5');
                 }
               "
             >
@@ -558,9 +598,9 @@
                   <p class="text-[#00000099] font-normal text-sm">
                     Movement ID
                   </p>
-                  <span class="text-[#1E1E1E] font-medium text-base"
-                    >IDFCSGCMD23567890</span
-                  >
+                  <span class="text-[#1E1E1E] font-medium text-base">{{
+                    movementId
+                  }}</span>
                 </div>
                 <div>
                   <p class="text-[#00000099] font-normal text-sm">
@@ -574,7 +614,7 @@
                   </p>
                   <span
                     class="text-white font-medium text-base bg-[#0060C9] rounded-lg py-1 px-2"
-                    >Northbound</span
+                    >{{ selectedLocation?.title }}</span
                   >
                 </div>
                 <div>
@@ -582,7 +622,7 @@
                     Transportation Type
                   </p>
                   <span class="text-[#1E1E1E] font-medium text-base">{{
-                    service.transportationType?.title
+                    transportationData?.title
                   }}</span>
                 </div>
                 <div>
@@ -590,7 +630,7 @@
                     Mode of Transportation
                   </p>
                   <span class="text-[#1E1E1E] font-medium text-base">{{
-                    service.modeOfTransportation?.title
+                    modeofTransportationData?.title
                   }}</span>
                 </div>
                 <div>
@@ -631,9 +671,9 @@
               <div class="mt-6 mb-6">
                 <p class="text-[#00000099] font-normal text-sm">Quantity</p>
                 <p class="font-semibold text-base text-[#1E1E1E]">
-                  {{ service.quantityForChains }},
-                  {{ service.quantityForStraps }},
-                  {{ service.quantityForTarps }}
+                  {{ service.quantityForChains }}xChains,
+                  {{ service.quantityForStraps }}xStraps,
+                  {{ service.quantityForTarps }}xTarps
                 </p>
               </div>
               <div class="mb-5">
@@ -642,7 +682,6 @@
                 </p>
                 <p class="font-semibold text-base text-[#1E1E1E]">
                   {{ service.schedule?.time }}
-                  14 Dec, Monday 2023, 12:40 PM
                 </p>
               </div>
               <div
@@ -656,40 +695,62 @@
                   <p class="text-[#00000099] font-normal text-sm">
                     PICKUP LOCATIONS
                   </p>
-                  <div class="flex justify-between mt-3">
-                    <div>
-                      <p class="text-[#1E1E1E] font-semibold text-sm">
-                        1226 University Dr
-                      </p>
-                      <p class="text-[#1B1B1B] font-medium text-xs">
-                        Menlo Park, CA 94025, USA
-                      </p>
+                  <div
+                    class="flex mt-3 flex-col"
+                    v-for="(item, index) in selectedPickupAddresses"
+                    :key="index"
+                  >
+                    <div class="flex justify-between pb-3">
+                      <div>
+                        <p class="text-[#1E1E1E] font-semibold text-sm">
+                          {{ item?.addressDetails?.laneNumber }}
+                          {{ item?.addressDetails?.buildinName }}
+                        </p>
+                        <p class="text-[#1B1B1B] font-medium text-xs">
+                          {{ item?.addressDetails?.postalCode }}
+                        </p>
+                      </div>
+                      <div>
+                        <p class="text-[#1E1E1E] font-normal text-xs">
+                          {{ item?.contactDetails?.contactName }},
+                          {{ item?.contactDetails?.contactNumber }}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p class="text-[#1E1E1E] font-normal text-xs">
-                        Sunil Mayekar, +33 32572 48242
-                      </p>
-                    </div>
+                    <div
+                      class="w-full relative before:absolute before:inset-x-0 before:bottom- before:h-[1px] before:bg-gradient-to-r before:from-[#DDDDDD] before:to-[#FFFFFF]"
+                    ></div>
                   </div>
                 </div>
                 <div class="mt-6">
                   <p class="text-[#00000099] font-normal text-sm">
                     DROP LOCATION
                   </p>
-                  <div class="flex justify-between mt-3">
-                    <div>
-                      <p class="text-[#1E1E1E] font-semibold text-sm">
-                        1226 University Dr
-                      </p>
-                      <p class="text-[#1B1B1B] font-medium text-xs">
-                        Menlo Park, CA 94025, USA
-                      </p>
+                  <div
+                    class="flex mt-3 flex-col"
+                    v-for="(item, index) in selectedDropAddresses"
+                    :key="index"
+                  >
+                    <div class="flex justify-between pb-3">
+                      <div>
+                        <p class="text-[#1E1E1E] font-semibold text-sm">
+                          {{ item?.addressDetails?.laneNumber }}
+                          {{ item?.addressDetails?.buildinName }}
+                        </p>
+                        <p class="text-[#1B1B1B] font-medium text-xs">
+                          {{ item?.addressDetails?.postalCode }}
+                        </p>
+                      </div>
+                      <div>
+                        <p class="text-[#1E1E1E] font-normal text-xs">
+                          {{ item?.contactDetails?.contactName }},
+                          {{ item?.contactDetails?.contactNumber }}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p class="text-[#1E1E1E] font-normal text-xs">
-                        Sunil Mayekar, +33 32572 48242
-                      </p>
-                    </div>
+                    <div
+                      class="w-full relative before:absolute before:inset-x-0 before:bottom- before:h-[1px] before:bg-gradient-to-r before:from-[#DDDDDD] before:to-[#FFFFFF]"
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -742,6 +803,192 @@
           </div>
         </template>
       </Additional>
+      <Additional @click="EditUserAddress" v-if="modal.step7">
+        <template #header>
+          <div class="flex items-center gap-2 cursor-pointer">
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step1'), closeModal('step7');
+                }
+              "
+            >
+              {{ selectedItem }}
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step2'), closeModal('step7');
+                }
+              "
+            >
+              {{ modeSelectedItem }}
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+            <span class="text-[12px] font-semibold text-[#000000]">
+              Edit Address
+            </span>
+          </div>
+        </template>
+        <template #content>
+          <div class="grid grid-cols-2 mt-7">
+            <div class="flex flex-col gap-y-2">
+              <h1 class="text-[#00000099] text-base font-normal">
+                ADDRESS DETAILS
+              </h1>
+              <div class="mt-1">
+                <label
+                  for="companyName"
+                  class="block mb-2 text-sm font-medium text-[#1B1B1B]"
+                  >Building Name</label
+                >
+                <input
+                  type="text"
+                  name="CompanyName"
+                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                  placeholder="Your Building Name"
+                  v-model="formData.addressDetails.buildinName"
+                />
+                <span v-if="errors.buildinName" class="error-msg">{{
+                  errors.buildinName
+                }}</span>
+              </div>
+              <div>
+                <label
+                  for="companyName"
+                  class="block mb-2 text-sm font-medium text-[#1B1B1B]"
+                  >Postal Code</label
+                >
+                <input
+                  type="text"
+                  name="CompanyName"
+                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                  placeholder="Your Postal Code"
+                  v-model="formData.addressDetails.postalCode"
+                />
+                <span v-if="errors.postalCode" class="error-msg">{{
+                  errors.postalCode
+                }}</span>
+              </div>
+              <div>
+                <label
+                  for="companyName"
+                  class="block mb-2 text-sm font-medium text-[#1B1B1B]"
+                  >Lane Number</label
+                >
+                <input
+                  type="text"
+                  name="CompanyName"
+                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                  placeholder="Your Lane Number"
+                  v-model="formData.addressDetails.laneNumber"
+                />
+                <span v-if="errors.laneNumber" class="error-msg">{{
+                  errors.laneNumber
+                }}</span>
+              </div>
+              <div>
+                <label
+                  for="companyName"
+                  class="block mb-2 text-sm font-medium text-[#1B1B1B]"
+                  >Additional Details</label
+                >
+                <input
+                  type="text"
+                  name="CompanyName"
+                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                  placeholder="Your Additional Details"
+                  v-model="formData.addressDetails.additionalDetails"
+                />
+                <span v-if="errors.additionalDetails" class="error-msg">{{
+                  errors.additionalDetails
+                }}</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-y-2">
+              <h1 class="text-[#00000099] text-base font-normal">
+                CONTACT DETAILS
+              </h1>
+
+              <div class="mt-1">
+                <label
+                  for="ContactName"
+                  class="block mb-2 text-sm font-medium text-[#1B1B1B]"
+                  >Contact name</label
+                >
+                <input
+                  type="text"
+                  name="ContactName"
+                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                  placeholder="Your Contact name"
+                  v-model="formData.contactDetails.contactName"
+                />
+                <span v-if="errors.contactName" class="error-msg">{{
+                  errors.contactName
+                }}</span>
+              </div>
+              <div>
+                <label
+                  for="email"
+                  class="block mb-2 text-sm font-medium text-[#1B1B1B]"
+                  >Contact Email</label
+                >
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder="Your Contact Email"
+                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                  v-model="formData.contactDetails.contactEmail"
+                />
+                <span v-if="errors.contactEmail" class="error-msg">{{
+                  errors.contactEmail
+                }}</span>
+              </div>
+
+              <div>
+                <label
+                  for="ContactNo"
+                  class="block mb-2 text-sm font-medium text-[#1B1B1B]"
+                  >Contact No.</label
+                >
+                <label
+                  class="xl:w-[382px] relative flex cursor-pointer flex-col"
+                >
+                  <div class="flex justify-between">
+                    <img
+                      src="@/static/svg/usa-flag.svg"
+                      alt=""
+                      class="absolute ml-3 mb-3 mr-4 top-4 w-6 h-6"
+                    />
+                    <span
+                      class="absolute left-12 mb-3 mr-4 top-4 text-[#1E1E1E] font-normal text-base"
+                      >+1</span
+                    >
+                    <div
+                      class="border-r border-gray-400 h-[40%] absolute left-20 top-4"
+                    ></div>
+                    <input
+                      type="text"
+                      name="ContactNo"
+                      id="ContactNo"
+                      placeholder="Your Contact No."
+                      class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[15px] bg-white pl-24 focus:outline-none mb-3"
+                      v-model="formData.contactDetails.contactNumber"
+                    />
+                  </div>
+                  <span v-if="errors.contactNumber" class="error-msg">{{
+                    errors.contactNumber
+                  }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </template>
+      </Additional>
       <div>
         <RequestSuccessModal
           :isModal="isRequestSuccess"
@@ -761,24 +1008,26 @@ export default {
     return {
       service: {},
       schedule: {
-        date: new Date(),
+        date: "",
         time: "",
       },
-      addressDetails: {
-        buildinName: "",
-        postalCode: 0,
-        laneNumber: 0,
-        additionalDetails: "",
-      },
-      contactDetails: {
-        contactName: "",
-        contactEmail: "",
-        contactNumber: 0,
+      formData: {
+        addressDetails: {
+          buildinName: "",
+          postalCode: "",
+          laneNumber: "",
+          additionalDetails: "",
+        },
+        contactDetails: {
+          contactName: "",
+          contactEmail: "",
+          contactNumber: "",
+        },
       },
       selectedLabels: [],
       selectedItem: "FTL",
-      selectedPickupItem: "",
-      selectedDropItem: "",
+      selectedPickupItem: [],
+      selectedDropItem: [],
       modeSelectedItem: "",
       portSelectedLabel: "Select option",
       programeSelectedLabel: "Select option",
@@ -811,96 +1060,6 @@ export default {
         start: "00:00",
         step: "30",
         end: "23:59",
-      },
-      transportationType: [
-        {
-          title: "FTL",
-          description: "Lorem ipsum dolor sit amet Mauris risus turpis.",
-          _id: "66c43302a7eb5f1b0de6fae1",
-        },
-        {
-          title: "LTL",
-          description: "Lorem ipsum dolor sit amet Mauris risus turpis.",
-          _id: "66c43302a7eb5f1b0de6fae2",
-        },
-      ],
-      modeOfTransportation: {
-        FTL: [
-          {
-            title: "Dry Box",
-            description: "Lorem ipsum dolor sit amet Mauris risus turpis.",
-            _id: "66c43302a7eb5f1b0de6fae3",
-          },
-          {
-            title: "Reefer",
-            description: "Lorem ipsum dolor sit amet Mauris risus turpis.",
-            _id: "66c43302a7eb5f1b0de6fae4",
-          },
-          {
-            title: "Flatbed",
-            description: "Lorem ipsum dolor sit amet Mauris risus turpis.",
-            _id: "66c43302a7eb5f1b0de6fae5",
-          },
-          {
-            title: "Lowboy",
-            description: "Lorem ipsum dolor sit amet Mauris risus turpis.",
-            _id: "66c43302a7eb5f1b0de6fae6",
-          },
-          {
-            title: "Semi-Lowbo",
-            description: "Lorem ipsum dolor sit amet Mauris risus turpis.",
-            _id: "66c43302a7eb5f1b0de6fae7",
-          },
-        ],
-        LTL: [
-          {
-            title: "Pickup",
-            description: "Max weight: 12TON",
-            _id: "66daecb1b2d06b6024ad87cf",
-          },
-          {
-            title: "One Ton / 4 PLT",
-            description:
-              "Lorem ipsum dolor sit amet consectetur, Mauris risus turpis.",
-            _id: "66daecb1b2d06b6024ad87d0",
-          },
-          {
-            title: "12 Footer",
-            description:
-              "Lorem ipsum dolor sit amet consecteturr Mauris risus turpis.",
-            _id: "66daecb1b2d06b6024ad87d1",
-          },
-          {
-            title: "16 Footer",
-            description:
-              "Lorem ipsum dolor sit amet consecteturr Mauris risus turpis.",
-            _id: "66daecb1b2d06b6024ad87d2",
-          },
-          {
-            title: "18 Footer",
-            description:
-              "Lorem ipsum dolor sit amet consecteturr Mauris risus turpis.",
-            _id: "66daecb1b2d06b6024ad87d3",
-          },
-          {
-            title: "20 Footer",
-            description:
-              "Lorem ipsum dolor sit amet consecteturr Mauris risus turpis.",
-            _id: "66daecb1b2d06b6024ad87d4",
-          },
-          {
-            title: "Bobtail 22 footer",
-            description:
-              "Lorem ipsum dolor sit amet consecteturr Mauris risus turpis.",
-            _id: "66daecb1b2d06b6024ad87d5",
-          },
-          {
-            title: "Bobtail 26 footer",
-            description:
-              "Lorem ipsum dolor sit amet consecteturr Mauris risus turpis.",
-            _id: "66daecb1b2d06b6024ad87d6",
-          },
-        ],
       },
       cargoWorks: [
         {
@@ -937,8 +1096,6 @@ export default {
         centerMode: true,
         centerPadding: "0px",
         arrows: false,
-        // autoplay: true,
-        autoplaySpeed: 2000,
       },
       settings: {
         speed: 500,
@@ -948,8 +1105,6 @@ export default {
         centerMode: true,
         centerPadding: "0px",
         arrows: true,
-        // autoplay: true,
-        // autoplaySpeed: 2000,
         responsive: [
           {
             breakpoint: 1400,
@@ -998,60 +1153,7 @@ export default {
           },
         ],
       },
-      pickupLocation: [
-        {
-          title: "1226 University Dr",
-          address: "Menlo Park, CA 94025, USA",
-          details: "Sunil Mayekar, +33 32572 48242",
-        },
-        {
-          title: "12262 University Dr",
-          address: "Menlo Park, CA 94025, USA",
-          details: "Sunil Mayekar, +33 32572 48242",
-        },
-        {
-          title: "12263 University Dr",
-          address: "Menlo Park, CA 94025, USA",
-          details: "Sunil Mayekar, +33 32572 48242",
-        },
-        {
-          title: "12264 University Dr",
-          address: "Menlo Park, CA 94025, USA",
-          details: "Sunil Mayekar, +33 32572 48242",
-        },
-        {
-          title: "12265 University Dr",
-          address: "Menlo Park, CA 94025, USA",
-          details: "Sunil Mayekar, +33 32572 48242",
-        },
-      ],
-      dropLocation: [
-        {
-          title: "1226 University Dr",
-          address: "Menlo Park, CA 94025, USA",
-          details: "Sunil Mayekar, +33 32572 48242",
-        },
-        {
-          title: "12262 University Dr",
-          address: "Menlo Park, CA 94025, USA",
-          details: "Sunil Mayekar, +33 32572 48242",
-        },
-        {
-          title: "12263 University Dr",
-          address: "Menlo Park, CA 94025, USA",
-          details: "Sunil Mayekar, +33 32572 48242",
-        },
-        {
-          title: "12264 University Dr",
-          address: "Menlo Park, CA 94025, USA",
-          details: "Sunil Mayekar, +33 32572 48242",
-        },
-        {
-          title: "12265 University Dr",
-          address: "Menlo Park, CA 94025, USA",
-          details: "Sunil Mayekar, +33 32572 48242",
-        },
-      ],
+      locations: [],
       labels: [
         "Hazmat",
         "Sanitary Inspections MX",
@@ -1124,6 +1226,9 @@ export default {
         { label: "10" },
       ],
       userReference: [],
+      errors: {},
+      selectedLocation: null,
+      movementId: null,
     };
   },
   computed: {
@@ -1135,14 +1240,63 @@ export default {
     }),
     formatRef() {
       return this.userReference.map((user) => {
-        return { label: user?.contactName };
+        return {
+          label: user?.accountId,
+          contactName: user.contactName,
+        };
       });
+    },
+    selectedDropAddresses() {
+      const selectedDropLoc =
+        this.locations.length > 0
+          ? this.locations.filter((item) =>
+              this.selectedDropItem.includes(item._id)
+            )
+          : [];
+
+      return selectedDropLoc;
+    },
+    selectedPickupAddresses() {
+      const selectedPickupLoc =
+        this.locations.length > 0
+          ? this.locations.filter((item) =>
+              this.selectedPickupItem.includes(item._id)
+            )
+          : [];
+
+      return selectedPickupLoc;
+    },
+    modeofTransportationData() {
+      const modeofTransportationId = this.serviceData?.modeOfTransportation?.[
+        this.selectedItem
+      ]?.find((item) => item.title === this.modeSelectedItem);
+
+      if (!modeofTransportationId?._id) return null;
+
+      return (
+        this.serviceData?.modeOfTransportation?.[this.selectedItem]?.find(
+          (item) => item._id === modeofTransportationId?._id
+        ) || null
+      );
+    },
+    transportationData() {
+      const transportationId = this.service?.typeOfTransportation;
+      if (!transportationId) return null;
+
+      return this.serviceData?.typeOfTransportation?.find(
+        (item) => item._id === transportationId
+      );
     },
   },
   methods: {
     ...mapActions({
       fetchService: "service/fetchService",
       fetchServiceReference: "service/fetchServiceReference",
+      fetchUserAddress: "service/fetchUserAddress",
+      createOrder: "service/createOrder",
+      fetchEditUserAddress: "service/fetchEditUserAddress",
+      updateUserAddress: "service/updateUserAddress",
+      createUserAddress: "service/createUserAddress",
       openModal: "service/openModal",
       closeModal: "service/closeModal",
       previousStep: "service/previousStep",
@@ -1177,14 +1331,32 @@ export default {
     getRestrictedValue(item) {
       this.restricltedSelectedLabel = item.label;
     },
-    selectItem(item) {
+    selectTypeOfTransportationItem(item) {
       this.selectedItem = item.title;
     },
-    selectPickupItem(item) {
-      this.selectedPickupItem = item.title;
+    selectedPickup(id) {
+      return this.selectedPickupItem?.includes(id);
     },
-    selectDropItem(item) {
-      this.selectedDropItem = item.title;
+    selectPickupItem(id) {
+      if (this.selectedPickupItem.includes(id)) {
+        this.selectedPickupItem = this.selectedPickupItem.filter(
+          (selectedId) => selectedId !== id
+        );
+      } else {
+        this.selectedPickupItem.push(id);
+      }
+    },
+    selectedDrop(id) {
+      return this.selectedDropItem?.includes(id);
+    },
+    selectDropItem(id) {
+      if (this.selectedDropItem.includes(id)) {
+        this.selectedDropItem = this.selectedDropItem.filter(
+          (selectedId) => selectedId !== id
+        );
+      } else {
+        this.selectedDropItem.push(id);
+      }
     },
     modeSelectItem(item) {
       this.modeSelectedItem = item.title;
@@ -1192,51 +1364,156 @@ export default {
     getUserReferenceValue(item) {
       this.userReferenceSelectedLabel = item.label;
     },
-
     step1Next() {
-      const selectedType = this.transportationType.find(
+      const selectedType = this.serviceData?.typeOfTransportation?.find(
         (item) => item.title === this.selectedItem
       );
-      const selectedMode = this.modeOfTransportation[this.selectedItem].find(
-        (item) => item.title === this.modeSelectedItem
-      );
+      const selectedMode = this.serviceData?.modeOfTransportation?.[
+        this.selectedItem
+      ]?.find((item) => item.title === this.modeSelectedItem);
 
-      this.service.transportationType = selectedType;
-      this.service.modeOfTransportation = selectedMode;
-      console.log(this.service, "this.service");
+      this.service.typeOfTransportation = selectedType?._id;
+      if (this.selectedItem === "FTL") {
+        this.service.modeOfTransportation = {
+          ...this.service.modeOfTransportation,
+          FTL: selectedMode ? selectedMode._id : null,
+        };
+      } else if (this.selectedItem === "LTL") {
+        this.service.modeOfTransportation = {
+          ...this.service.modeOfTransportation,
+          LTL: selectedMode ? selectedMode._id : null,
+        };
+      }
       this.closeModal("step1");
       this.openModal("step2");
+      this.getUserRererence();
     },
     step2Next() {
-      this.service.port_BridgeOfCrossing = this.portSelectedLabel;
-      this.service.userReference = this.userReferenceSelectedLabel;
+      if (this.portSelectedLabel === "Select option") {
+        this.service.port_BridgeOfCrossing = this.portSelectedLabel = "";
+      } else {
+        this.service.port_BridgeOfCrossing = this.portSelectedLabel;
+      }
+      if (this.userReferenceSelectedLabel === "Select option") {
+        this.service.userReference = this.userReferenceSelectedLabel = "";
+      } else {
+        this.service.userReference = this.userReferenceSelectedLabel;
+      }
       this.service.specialRequirements = this.selectedLabels;
-      this.service.quantityForChains = this.quantitySelectedLabel;
-      this.service.quantityForStraps = this.quantityStrapsSelectedLabel;
-      this.service.quantityForTarps = this.quantityTarpsSelectedLabel;
-      this.service.restrictedTime = this.restricltedSelectedLabel;
+      if (this.quantitySelectedLabel === "Select option") {
+        this.service.quantityForChains = this.quantitySelectedLabel = "";
+      } else {
+        this.service.quantityForChains = this.quantitySelectedLabel;
+      }
+      if (this.quantityStrapsSelectedLabel === "Select option") {
+        this.service.quantityForStraps = this.quantityStrapsSelectedLabel = "";
+      } else {
+        this.service.quantityForStraps = this.quantityStrapsSelectedLabel;
+      }
+      if (this.quantityTarpsSelectedLabel === "Select option") {
+        this.service.quantityForTarps = this.quantityTarpsSelectedLabel = "";
+      } else {
+        this.service.quantityForTarps = this.quantityTarpsSelectedLabel;
+      }
+      if (this.restricltedSelectedLabel === "Select option") {
+        this.service.restrictedTime = this.restricltedSelectedLabel = "";
+      } else {
+        this.service.restrictedTime = this.restricltedSelectedLabel;
+      }
+
       this.service.schedule = this.schedule;
-      console.log(this.service, "this.service");
+      if (this.programeSelectedLabel === "Select option") {
+        this.service.programming = this.programeSelectedLabel = "";
+      } else {
+        this.service.programming = this.programeSelectedLabel;
+      }
+
       this.closeModal("step2");
       this.openModal("step3");
     },
-    step3Next() {
-      this.service.addressDetails = this.addressDetails;
-      this.service.contactDetails = this.contactDetails;
-      console.log(this.service, "this.service");
-      this.closeModal("step3");
-      this.openModal("step4");
+    async step3Next() {
+      this.errors = await this.$validateUserAddress({
+        form: this.formData,
+      });
+      if (Object.keys(this.errors).length > 0) {
+        this.$toast.open({
+          message: "Please fix the errors before submitting.",
+          type: "error",
+        });
+        return;
+      }
+      try {
+        const res = await this.createUserAddress(this.formData);
+        this.$toast.open({
+          message: res.msg,
+        });
+        this.closeModal("step3");
+        this.openModal("step4");
+        this.getUserAddress();
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    },
+    async EditUserAddress() {
+      try {
+        const res = await this.updateUserAddress(this.formData);
+        this.$toast.open({
+          message: res.msg,
+        });
+        this.closeModal("step7");
+        this.openModal("step4");
+        this.getUserAddress();
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    },
+    async getEditUserAddress(id) {
+      try {
+        const res = await this.fetchEditUserAddress({
+          id: id,
+        });
+        this.formData = res.data;
+        this.closeModal("step4");
+        this.openModal("step7");
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
     },
     step4Next() {
-      const selectedType = this.pickupLocation.find(
-        (item) => item.title === this.selectedPickupItem
-      );
-      this.service.restrictedTime = selectedType;
-
+      this.service.pickUpAddressIds = this.selectedPickupItem;
+      this.service.dropAddressIds = this.selectedDropItem;
+      this.service.typeOfService = this.selectedLocation?._id;
+      this.movementId = this.$generateNumOrCharId();
+      this.service.movementId = this.movementId;
       this.closeModal("step4");
       this.openModal("step5");
     },
-    step5Next() {
+    async step5Next() {
+      try {
+        const res = await this.createOrder(this.service);
+        this.$toast.open({
+          message: res.msg,
+        });
+        this.$cookies.remove("service");
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
       this.closeModal("step4");
       this.isRequestSuccess = true;
       document.body.style.overflow = "hidden";
@@ -1261,27 +1538,50 @@ export default {
         this.previousStep();
       }
     },
+    async getUserRererence() {
+      try {
+        const res = await this.fetchServiceReference();
+        this.userReference = res.data.commercialReference;
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    },
+    async getUserAddress() {
+      try {
+        const res = await this.fetchUserAddress();
+        this.locations = res.data;
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    },
+    async getServices() {
+      try {
+        await this.fetchService();
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    },
   },
   async mounted() {
-    try {
-      // await this.fetchService();
-    } catch (error) {
-      console.log(error);
-      this.$toast.open({
-        message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
-        type: "error",
-      });
-    }
-    try {
-      const res = await this.fetchServiceReference();
-      this.userReference = res.data.commercialReference;
-    } catch (error) {
-      console.log(error);
-      this.$toast.open({
-        message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
-        type: "error",
-      });
-    }
+    document.body.style.backgroundColor = "#ECF3FA";
+    const cookieData = JSON.parse(this.$cookies.get("service"));
+    this.selectedLocation = cookieData;
+    this.getServices();
+  },
+  beforeDestroy() {
+    document.body.style.backgroundColor = "";
   },
 };
 </script>
@@ -1292,5 +1592,10 @@ export default {
 .blur-background {
   filter: blur(4px) !important;
   -webkit-filter: blur(4px) !important;
+}
+.error-msg {
+  font-size: 14px;
+  font-weight: 400;
+  color: red;
 }
 </style>
