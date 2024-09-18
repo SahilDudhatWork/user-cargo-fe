@@ -4,6 +4,36 @@
       <AdditionalHero @prevPage="prevPage" />
     </div>
     <div class="px-10 py-10">
+      <div v-if="selectedLocation == undefined">
+        <Additional @click="handleService" v-if="modal.serviceStep">
+          <template #content>
+            <h1 class="font-bold text-[18px] text-[#000000]">
+              Services for you
+            </h1>
+            <p class="text-base font-medium text-gray-400">
+              4 different type of service you can opt
+            </p>
+            <div class="flex items-center">
+              <p class="text-sm text-[#151515] font-normal mt-3 mb-3">
+                Type of Services
+              </p>
+              <div
+                class="h-full mx-2 w-[86%] relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[#DDDDDD] before:to-[#FFFFFF]"
+              ></div>
+            </div>
+            <div class="grid grid-cols-2 gap-7">
+              <TypeOfTransportation
+                v-for="(item, index) of serviceData?.typeOfService"
+                :key="index"
+                :item="item"
+                :isSelected="item.title === selectedServiceItem"
+                @select="selectTypeOfService"
+              />
+            </div>
+          </template>
+        </Additional>
+      </div>
+
       <Additional @click="step1Next" v-if="modal.step1">
         <template #content>
           <h1 class="font-bold text-[18px] text-[#000000]">
@@ -281,13 +311,18 @@
                 >
                 <input
                   type="text"
+                  :class="
+                    errors?.buildinName
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                   name="CompanyName"
-                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                  class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                   placeholder="Your Building Name"
                   v-model="formData.addressDetails.buildinName"
                 />
-                <span v-if="errors.buildinName" class="error-msg">{{
-                  errors.buildinName
+                <span v-if="errors?.buildinName" class="error-msg">{{
+                  errors?.buildinName
                 }}</span>
               </div>
               <div>
@@ -298,8 +333,13 @@
                 >
                 <input
                   type="text"
+                  :class="
+                    errors?.postalCode
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                   name="CompanyName"
-                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                  class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                   placeholder="Your Postal Code"
                   v-model="formData.addressDetails.postalCode"
                 />
@@ -315,8 +355,13 @@
                 >
                 <input
                   type="text"
+                  :class="
+                    errors?.laneNumber
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                   name="CompanyName"
-                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                  class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                   placeholder="Your Lane Number"
                   v-model="formData.addressDetails.laneNumber"
                 />
@@ -332,8 +377,13 @@
                 >
                 <input
                   type="text"
+                  :class="
+                    errors?.additionalDetails
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                   name="CompanyName"
-                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                  class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                   placeholder="Your Additional Details"
                   v-model="formData.addressDetails.additionalDetails"
                 />
@@ -355,8 +405,13 @@
                 >
                 <input
                   type="text"
+                  :class="
+                    errors?.contactName
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                   name="ContactName"
-                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                  class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                   placeholder="Your Contact name"
                   v-model="formData.contactDetails.contactName"
                 />
@@ -374,8 +429,13 @@
                   type="email"
                   name="email"
                   id="email"
+                  :class="
+                    errors?.contactEmail
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                   placeholder="Your Contact Email"
-                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                  class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                   v-model="formData.contactDetails.contactEmail"
                 />
                 <span v-if="errors.contactEmail" class="error-msg">{{
@@ -393,15 +453,12 @@
                   class="xl:w-[382px] relative flex cursor-pointer flex-col"
                 >
                   <div class="flex justify-between">
-                    <img
-                      src="@/static/svg/usa-flag.svg"
-                      alt=""
-                      class="absolute ml-3 mb-3 mr-4 top-4 w-6 h-6"
+                    <CountryDropdown
+                      :items="countries"
+                      :selectedLabel="formData?.contactDetails?.countryCode"
+                      @getValue="getCountry"
+                      class="absolute mb-3 mr-4"
                     />
-                    <span
-                      class="absolute left-12 mb-3 mr-4 top-4 text-[#1E1E1E] font-normal text-base"
-                      >+1</span
-                    >
                     <div
                       class="border-r border-gray-400 h-[40%] absolute left-20 top-4"
                     ></div>
@@ -409,8 +466,13 @@
                       type="text"
                       name="ContactNo"
                       id="ContactNo"
+                      :class="
+                        errors?.contactNumber
+                          ? 'border border-red-600'
+                          : 'border border-gray-300'
+                      "
                       placeholder="Your Contact No."
-                      class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[15px] bg-white pl-24 focus:outline-none mb-3"
+                      class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[15px] bg-white pl-24 focus:outline-none mb-3"
                       v-model="formData.contactDetails.contactNumber"
                     />
                   </div>
@@ -959,15 +1021,12 @@
                   class="xl:w-[382px] relative flex cursor-pointer flex-col"
                 >
                   <div class="flex justify-between">
-                    <img
-                      src="@/static/svg/usa-flag.svg"
-                      alt=""
-                      class="absolute ml-3 mb-3 mr-4 top-4 w-6 h-6"
+                    <CountryDropdown
+                      :items="countries"
+                      :selectedLabel="formData?.contactDetails?.countryCode"
+                      @getValue="getCountry"
+                      class="absolute mb-3 mr-4"
                     />
-                    <span
-                      class="absolute left-12 mb-3 mr-4 top-4 text-[#1E1E1E] font-normal text-base"
-                      >+1</span
-                    >
                     <div
                       class="border-r border-gray-400 h-[40%] absolute left-20 top-4"
                     ></div>
@@ -1022,10 +1081,12 @@ export default {
           contactName: "",
           contactEmail: "",
           contactNumber: "",
+          countryCode: 1,
         },
       },
       selectedLabels: [],
       selectedItem: "FTL",
+      selectedServiceItem: "",
       selectedPickupItem: [],
       selectedDropItem: [],
       modeSelectedItem: "",
@@ -1225,7 +1286,18 @@ export default {
         { label: "9" },
         { label: "10" },
       ],
+      countries: [
+        {
+          key: 1,
+          value: 1,
+        },
+        {
+          key: 52,
+          value: 52,
+        },
+      ],
       userReference: [],
+      typeOfService: [],
       errors: {},
       selectedLocation: null,
       movementId: null,
@@ -1316,6 +1388,9 @@ export default {
     getPortValue(item) {
       this.portSelectedLabel = item.label;
     },
+    getCountry(item) {
+      this.formData.contactDetails.countryCode = item.value;
+    },
     getQuantityValue(item) {
       this.quantitySelectedLabel = item.label;
     },
@@ -1333,6 +1408,9 @@ export default {
     },
     selectTypeOfTransportationItem(item) {
       this.selectedItem = item.title;
+    },
+    selectTypeOfService(item) {
+      this.selectedServiceItem = item.title;
     },
     selectedPickup(id) {
       return this.selectedPickupItem?.includes(id);
@@ -1363,6 +1441,18 @@ export default {
     },
     getUserReferenceValue(item) {
       this.userReferenceSelectedLabel = item.label;
+    },
+    handleService() {
+      const selectedService = this.serviceData?.typeOfService?.find(
+        (item) => item.title === this.selectedServiceItem
+      );
+      this.$cookies.set("service", JSON.stringify(selectedService), {
+        expires: 7,
+      });
+      console.log(selectedService, "selectedType");
+
+      this.closeModal("serviceStep");
+      this.openModal("step1");
     },
     step1Next() {
       const selectedType = this.serviceData?.typeOfTransportation?.find(
@@ -1427,7 +1517,6 @@ export default {
       } else {
         this.service.programming = this.programeSelectedLabel;
       }
-
       this.closeModal("step2");
       this.openModal("step3");
     },
@@ -1576,9 +1665,24 @@ export default {
   },
   async mounted() {
     document.body.style.backgroundColor = "#ECF3FA";
-    const cookieData = JSON.parse(this.$cookies.get("service"));
-    this.selectedLocation = cookieData;
-    this.getServices();
+    const cookieDataRaw = this.$cookies.get("service");
+    if (cookieDataRaw) {
+      try {
+        const cookieData = JSON.parse(cookieDataRaw);
+        this.selectedLocation = cookieData;
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    }
+    if (!this.selectedLocation) {
+      this.openModal("serviceStep");
+      this.closeModal("step1");
+    }
+    await this.getServices();
   },
   beforeDestroy() {
     document.body.style.backgroundColor = "";

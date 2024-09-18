@@ -10,6 +10,7 @@ export const state = () => ({
     step5: false,
     step6: false,
     step7: false,
+    serviceStep: false,
   },
 });
 
@@ -95,10 +96,7 @@ export const actions = {
   },
   async fetchTypeOfService(ctx, payload) {
     try {
-      const response = await $axios.get(
-        "/v1/user/transitInfo/typeOfService",
-        payload
-      );
+      const response = await $axios.get("/v1/user/transitInfo/typeOfService");
       return response;
     } catch (error) {
       throw error;

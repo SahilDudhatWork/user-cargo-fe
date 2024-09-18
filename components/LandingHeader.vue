@@ -97,6 +97,17 @@
                           >Settings</a
                         >
                       </li>
+                      <li class="flex items-center gap-3 px-3" @click="logout">
+                        <img
+                          src="@/static/svg/logout.svg"
+                          alt=""
+                          class="w-6 h-6"
+                        />
+                        <a
+                          class="block py-2.5 text-[#333333] font-medium text-base"
+                          >Logout</a
+                        >
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -195,6 +206,11 @@ export default {
     },
     closeDropdown() {
       this.isDropdown = !this.isDropdown;
+    },
+    logout() {
+      this.$cookies.remove("token");
+      this.$cookies.remove("service");
+      this.$router.push("/login");
     },
   },
   mounted() {

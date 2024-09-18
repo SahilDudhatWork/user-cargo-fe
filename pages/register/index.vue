@@ -26,11 +26,19 @@
                   >
                   <input
                     type="text"
+                    :class="
+                      errors?.companyName
+                        ? 'border border-red-600'
+                        : 'border border-gray-300'
+                    "
                     name="CompanyName"
-                    class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                    class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                     placeholder="Your company name"
                     v-model="formData.companyName"
                   />
+                  <span class="error-msg" v-if="errors?.companyName">{{
+                    errors?.companyName
+                  }}</span>
                 </div>
 
                 <div>
@@ -41,11 +49,19 @@
                   >
                   <input
                     type="text"
+                    :class="
+                      errors?.contactName
+                        ? 'border border-red-600'
+                        : 'border border-gray-300'
+                    "
                     name="ContactName"
-                    class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                    class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                     placeholder="Your contact name"
                     v-model="formData.contactName"
                   />
+                  <span class="error-msg" v-if="errors?.contactName">{{
+                    errors?.contactName
+                  }}</span>
                 </div>
                 <div>
                   <label
@@ -55,12 +71,20 @@
                   >
                   <input
                     type="email"
+                    :class="
+                      errors?.email
+                        ? 'border border-red-600'
+                        : 'border border-gray-300'
+                    "
                     name="email"
                     id="email"
                     placeholder="Your Email Address"
-                    class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                    class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                     v-model="formData.email"
                   />
+                  <span class="error-msg" v-if="errors?.email">{{
+                    errors?.email
+                  }}</span>
                 </div>
                 <div class="relative mt-2">
                   <label
@@ -99,12 +123,20 @@
                   </svg>
                   <input
                     :type="password ? 'text' : 'password'"
+                    :class="
+                      errors?.password
+                        ? 'border border-red-600'
+                        : 'border border-gray-300'
+                    "
                     name="createPassword"
                     id="createPassword"
-                    class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[13px]"
+                    class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[13px]"
                     placeholder="Your password"
                     v-model="formData.password"
                   />
+                  <span class="error-msg" v-if="errors?.password">{{
+                    errors?.password
+                  }}</span>
                 </div>
                 <div class="relative mt-2">
                   <label
@@ -143,12 +175,20 @@
                   </svg>
                   <input
                     :type="confirmPassword ? 'text' : 'password'"
+                    :class="
+                      errors?.confirmPassword
+                        ? 'border border-red-600'
+                        : 'border border-gray-300'
+                    "
                     name="createPassword"
                     id="createPassword"
-                    class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[13px]"
+                    class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[13px]"
                     placeholder="Your password"
                     v-model="formData.confirmPassword"
                   />
+                  <span class="error-msg" v-if="errors?.confirmPassword">{{
+                    errors?.confirmPassword
+                  }}</span>
                 </div>
                 <div>
                   <label
@@ -168,18 +208,26 @@
                     ></div>
                     <input
                       type="text"
+                      :class="
+                        errors?.contactNumber
+                          ? 'border border-red-600'
+                          : 'border border-gray-300'
+                      "
                       name="ContactNo"
                       id="ContactNo"
                       placeholder="Your Contact No."
-                      class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[12px] bg-white pl-24 focus:outline-none mb-3"
+                      class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[12px] bg-white pl-24 focus:outline-none mb-1"
                       v-model="formData.contactNumber"
                     />
                   </div>
+                  <span class="error-msg" v-if="errors?.contactNumber">{{
+                    errors?.contactNumber
+                  }}</span>
                 </div>
                 <div>
                   <label
                     for="companyFormation"
-                    class="block mb-2 text-sm font-normal text-[#1E1E1E]"
+                    class="block mb-2 mt-2 text-sm font-normal text-[#1E1E1E]"
                     >Company Formation</label
                   >
                   <Dropdown
@@ -191,6 +239,7 @@
                 <div v-if="selectedLabel === 'USA'">
                   <inputFile
                     item-label="W9 Form"
+                    :errors="errors?.w9_Form"
                     :fileData="formData?.companyFormation?.usa?.w9_Form"
                     :file="
                       typeof formData?.companyFormation?.usa?.w9_Form ==
@@ -200,8 +249,12 @@
                     "
                     @handleFileChange="uploadW9Form"
                   />
+                  <span class="error-msg" v-if="errors?.w9_Form">{{
+                    errors?.w9_Form
+                  }}</span>
                   <inputFile
                     item-label="Utility Bill"
+                    :errors="errors?.utility_Bill"
                     :fileData="formData?.companyFormation?.usa?.utility_Bill"
                     :file="
                       typeof formData?.companyFormation?.usa?.utility_Bill ==
@@ -211,10 +264,14 @@
                     "
                     @handleFileChange="uploadUtilityBill"
                   />
+                  <span class="error-msg" v-if="errors?.utility_Bill">{{
+                    errors?.utility_Bill
+                  }}</span>
                 </div>
                 <div v-if="selectedLabel === 'MEXICO'" class="grid gap-y-2">
                   <inputFile
                     item-label="COPIA RFC Form"
+                    :errors="errors?.copia_Rfc_Form"
                     :fileData="
                       formData?.companyFormation?.maxico?.copia_Rfc_Form
                     "
@@ -227,8 +284,12 @@
                     "
                     @handleFileChange="uploadCopiaRfcForm"
                   />
+                  <span class="error-msg" v-if="errors?.copia_Rfc_Form">{{
+                    errors?.copia_Rfc_Form
+                  }}</span>
                   <inputFile
                     item-label="Constance of Fiscal Situation"
+                    :errors="errors?.constance_Of_Fiscal_Situation"
                     :fileData="
                       formData?.companyFormation.maxico
                         ?.constance_Of_Fiscal_Situation
@@ -243,8 +304,14 @@
                     "
                     @handleFileChange="uploadConstanceOfFiscalSituation"
                   />
+                  <span
+                    class="error-msg"
+                    v-if="errors?.constance_Of_Fiscal_Situation"
+                    >{{ errors?.constance_Of_Fiscal_Situation }}</span
+                  >
                   <inputFile
                     item-label="Proof of Favorable"
+                    :errors="errors?.proof_of_Favorable"
                     :fileData="
                       formData?.companyFormation?.maxico.proof_of_Favorable
                     "
@@ -257,8 +324,12 @@
                     "
                     @handleFileChange="uploadProofOfFavorable"
                   />
+                  <span class="error-msg" v-if="errors?.proof_of_Favorable">{{
+                    errors?.proof_of_Favorable
+                  }}</span>
                   <inputFile
                     item-label="Proof of Address"
+                    :errors="errors?.proof_Of_Address"
                     :fileData="
                       formData?.companyFormation?.maxico?.proof_Of_Address
                     "
@@ -271,6 +342,9 @@
                     "
                     @handleFileChange="uploadProofOfAddress"
                   />
+                  <span class="error-msg" v-if="errors?.proof_Of_Address">{{
+                    errors?.proof_Of_Address
+                  }}</span>
                 </div>
                 <div v-if="selectedLabel != 'Select option'" class="mt-1">
                   <div
@@ -388,6 +462,7 @@ export default {
     return {
       password: false,
       confirmPassword: false,
+      errors: {},
       countriesList: [
         {
           label: "USA",
@@ -461,20 +536,6 @@ export default {
     togglePassword() {
       this.password = !this.password;
     },
-    validatePasswords() {
-      if (
-        this.formData.password &&
-        this.formData.confirmPassword &&
-        this.formData.password !== this.formData.confirmPassword
-      ) {
-        this.$toast.open({
-          message: this.$i18n.t("matchPasswordMessage"),
-          type: "error",
-        });
-        return false;
-      }
-      return true;
-    },
     toggleConfirmPassword() {
       this.confirmPassword = !this.confirmPassword;
     },
@@ -539,7 +600,12 @@ export default {
     },
     async sendRegistrationRequest() {
       try {
-        if (!this.validatePasswords()) {
+        this.errors = await this.$validateFormData({ form: this.formData });
+        if (Object.keys(this.errors).length > 0) {
+          this.$toast.open({
+            message: "Please fix the errors before submitting.",
+            type: "error",
+          });
           return;
         }
         const formData = new FormData();
@@ -618,3 +684,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+.error-msg {
+  font-size: 14px;
+  font-weight: 400;
+  color: red;
+}
+</style>

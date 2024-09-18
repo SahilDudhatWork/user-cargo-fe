@@ -8,6 +8,16 @@
             alt=""
             class="w-full relative -top-[100px]"
           />
+          <button
+            type="button"
+            class="flex items-center gap-1 bg-[#000000] absolute rounded-lg left-40 px-[11px] py-1 opacity-65 top-5"
+            @click="prevPage"
+          >
+            <img src="@/static/svg/left-arrow.svg" alt="" class="" />
+            <span class="text-white font-medium text-[15px] cursor-pointer">
+              Go back
+            </span>
+          </button>
           <h1
             class="text-white font-medium text-[15px] bg-black opacity-60 py-2 px-5 absolute right-[15rem] top-12 rounded-lg cursor-pointer"
           >
@@ -16,7 +26,7 @@
         </div>
         <div class="relative -top-[7.5rem]">
           <div
-            :class="isProfile ? ' border-b border-[#EEEEEE] pb-6 ' : ''"
+            :class="step1 ? ' border-b border-[#EEEEEE] pb-6 ' : ''"
             class="sm:mx-40 mx-6 relative flex justify-between items-center"
           >
             <div class="flex gap-10 items-center relative">
@@ -28,7 +38,7 @@
                     class="w-[120px] h-[120px] object-cover rounded-full"
                   />
                   <img
-                    v-if="isProfile === false"
+                    v-if="step1 === false"
                     src="@/static/svg/profile-edit.svg"
                     alt=""
                     class="object-cover rounded-full bg-white absolute p-2 left-24 bottom-2"
@@ -49,15 +59,15 @@
             </div>
             <div>
               <button
-                @click="isProfile = !isProfile"
-                v-if="isProfile"
+                @click="editProfile"
+                v-if="step1"
                 class="border border-[#0060C9] rounded-lg text-base font-semibold text-[#0060C9] px-4 py-2.5"
               >
                 Edit Profile
               </button>
             </div>
           </div>
-          <div class="sm:mx-40 mx-6 mt-8 grid-cols-2 grid" v-if="isProfile">
+          <div class="sm:mx-40 mx-6 mt-8 grid-cols-2 grid" v-if="step1">
             <div class="border-r border-[#EEEEEE]">
               <h1 class="text-[#000000] font-bold text-lg">Service Details</h1>
               <p class="text-[#00000099] font-normal text-sm mt-4">
@@ -67,7 +77,6 @@
                 <p class="text-[#1E1E1E] font-medium text-base">
                   {{ formData.accountId }}
                 </p>
-                <img src="@/static/svg/copy.svg" alt="" class="" />
               </div>
               <p class="text-[#00000099] font-normal text-sm mt-3">
                 Account created on
@@ -79,26 +88,37 @@
             <div class="px-7">
               <h1 class="text-[#000000] font-bold text-lg">Company Details</h1>
               <p class="text-[#00000099] font-normal text-sm mt-4">
-                Carrier Info
+                Reference Info
               </p>
-              <div class="flex gap-3 items-center">
-                <img
-                  src="@/static/svg/star.svg"
-                  alt=""
-                  class="bg-[#F0F0F0] py-2.5 px-1.5 rounded-xl mt-3"
-                />
-                <div>
-                  <p class="text-[#1E1E1E] font-medium text-base">
-                    {{ formData.companyName }}
-                  </p>
-                  <p class="text-[#00000099] font-normal text-sm">
-                    Menlo Park, CA 94025, USA
-                  </p>
+              <div v-if="userReference && userReference.length > 0">
+                <div
+                  class="flex gap-3 items-center"
+                  v-for="(item, key) in userReference"
+                  :key="key"
+                >
+                  <img
+                    src="@/static/svg/star.svg"
+                    alt=""
+                    class="bg-[#F0F0F0] py-2.5 px-1.5 rounded-xl mt-3"
+                  />
+                  <div>
+                    <p class="text-[#1E1E1E] font-medium text-base">
+                      {{ item.companyName }}
+                    </p>
+                    <p class="text-[#00000099] font-normal text-sm">
+                      Menlo Park, CA 94025, USA
+                    </p>
+                  </div>
                 </div>
+              </div>
+              <div v-else>
+                <p class="text-[#000000] font-medium text-lg mt-2">
+                  Reference data not found
+                </p>
               </div>
             </div>
           </div>
-          <div class="sm:mx-40 mx-5" v-else>
+          <div class="sm:mx-40 mx-5" v-if="step2">
             <form
               class="space-y-4 md:space-y-6 mt-6"
               @submit.prevent="upateUserProfile"
@@ -512,7 +532,12 @@ export default {
   data() {
     return {
       isProfile: true,
+      step1: true,
+      step2: false,
       errors: {},
+      userReference: [],
+      previousUrl: "",
+      currentPage: "",
       countriesList: [
         {
           label: "USA",
@@ -583,6 +608,7 @@ export default {
     ...mapActions({
       profile: "auth/profile",
       updateProfile: "auth/updateProfile",
+      fetchServiceReference: "service/fetchServiceReference",
     }),
     getValue(item) {
       this.selectedLabel = item.label;
@@ -598,13 +624,6 @@ export default {
       try {
         const file = event.target.files[0];
         this.formData.companyFormation.usa.w9_Form = file;
-        // if (file) {
-        //   const reader = new FileReader();
-        //   reader.onload = (e) => {
-        //     this.formData.companyFormation.usa.w9_Form = e.target.result;
-        //   };
-        //   reader.readAsDataURL(file);
-        // }
       } catch (error) {
         console.log(error);
       }
@@ -652,6 +671,14 @@ export default {
     },
     async upateUserProfile() {
       try {
+        this.errors = await this.$validateEditFormData({ form: this.formData });
+        if (Object.keys(this.errors).length > 0) {
+          this.$toast.open({
+            message: "Please fix the errors before submitting.",
+            type: "error",
+          });
+          return;
+        }
         const formData = new FormData();
         formData.append("companyName", this.formData.companyName);
         formData.append("contactName", this.formData.contactName);
@@ -731,7 +758,6 @@ export default {
             );
           }
         }
-        console.log(this.formData.commercialReference);
         this.formData.commercialReference.forEach((ref, index) => {
           for (let key in ref) {
             let value = ref[key];
@@ -757,7 +783,8 @@ export default {
         this.$toast.open({
           message: response.msg,
         });
-        this.isProfile = true;
+        this.step1 = true;
+        this.step2 = false;
       } catch (error) {
         console.log(error);
         this.$toast.open({
@@ -766,11 +793,46 @@ export default {
         });
       }
     },
-  },
+    async getUserRererence() {
+      try {
+        const res = await this.fetchServiceReference();
+        this.userReference = res.data.commercialReference;
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    },
 
+    prevPage() {
+      if (this.step2) {
+        this.step1 = true;
+        this.step2 = false;
+      } else {
+        if (this.previousUrl) {
+          this.$router.push(this.previousUrl);
+        } else {
+          console.log("No previous URL found");
+        }
+      }
+    },
+    editProfile() {
+      this.step1 = false;
+      this.step2 = true;
+    },
+  },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.previousUrl = from.fullPath;
+      vm.currentPage = to.fullPath;
+    });
+  },
   async mounted() {
     try {
       await this.profile();
+      await this.getUserRererence();
       this.formData = await this.$lodash.cloneDeep(this.getUserProfile);
       this.selectedLabel = this.formData.companyFormationType
         ? this.formData.companyFormationType

@@ -92,7 +92,7 @@ export const actions = {
   // for login
   async verifyUserOtp(ctx, payload) {
     try {
-      const response = await $axios.post("/v1/common/otp/verify/user", payload);
+      const response = await $axios.post("/v1/user/auth/verifyOtp", payload);
       return response;
     } catch (error) {
       throw error;

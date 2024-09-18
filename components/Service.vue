@@ -66,7 +66,7 @@ export default {
     ...mapActions({
       fetchTypeOfService: "service/fetchTypeOfService",
     }),
-    handleClick(item) {
+    async handleClick(item) {
       if (item) {
         this.$cookies.set("service", JSON.stringify(item), { expires: 7 });
         this.$router.push("/additional-details");

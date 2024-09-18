@@ -186,7 +186,6 @@ export default {
   },
   methods: {
     actionButton(label) {
-      console.log(label);
       this.isOrder = label;
     },
   },
