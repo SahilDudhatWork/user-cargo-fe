@@ -18,11 +18,6 @@
               Go back
             </span>
           </button>
-          <h1
-            class="text-white font-medium text-[15px] bg-black opacity-60 py-2 px-5 absolute right-[15rem] top-12 rounded-lg cursor-pointer"
-          >
-            Change Background
-          </h1>
         </div>
         <div class="relative -top-[7.5rem]">
           <div
@@ -38,7 +33,6 @@
                     class="w-[120px] h-[120px] object-cover rounded-full"
                   />
                   <img
-                    v-if="step1 === false"
                     src="@/static/svg/profile-edit.svg"
                     alt=""
                     class="object-cover rounded-full bg-white absolute p-2 left-24 bottom-2"
@@ -250,6 +244,7 @@
                       :items="countriesList"
                       :selectedLabel="selectedLabel"
                       @getValue="getValue"
+                      :isDisabled="isDropdownDisabled"
                     />
                   </div>
                   <div v-if="selectedLabel === 'USA'">
@@ -603,6 +598,9 @@ export default {
     AccountCreatedDate() {
       return this.$moment(this.formData.createdAt).format("Do MMM YYYY");
     },
+    isDropdownDisabled() {
+      return this.getUserProfile?.companyFormationType !== "";
+    },
   },
   methods: {
     ...mapActions({
@@ -818,7 +816,8 @@ export default {
         }
       }
     },
-    editProfile() {
+    async editProfile() {
+      await this.profile();
       this.step1 = false;
       this.step2 = true;
     },

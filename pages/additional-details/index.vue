@@ -4,8 +4,8 @@
       <AdditionalHero @prevPage="prevPage" />
     </div>
     <div class="px-10 py-10">
-      <div v-if="selectedLocation == undefined">
-        <Additional @click="handleService" v-if="modal.serviceStep">
+      <div>
+        <Additional @click="handleService" v-if="modal.step1">
           <template #content>
             <h1 class="font-bold text-[18px] text-[#000000]">
               Services for you
@@ -34,7 +34,22 @@
         </Additional>
       </div>
 
-      <Additional @click="step1Next" v-if="modal.step1">
+      <Additional @click="step1Next" v-if="modal.step2">
+        <template #header>
+          <div class="flex items-center gap-2 cursor-pointer mb-3">
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step1'), closeModal('step2');
+                }
+              "
+            >
+              Service
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+          </div>
+        </template>
         <template #content>
           <h1 class="font-bold text-[18px] text-[#000000]">
             Choose Additional Details
@@ -42,6 +57,23 @@
           <p class="text-base font-medium text-gray-400">
             Lorem ipsum dolor sit amet consectetur. Digni quam ullamcorper
           </p>
+          <div class="flex items-center">
+            <p class="text-sm text-[#151515] font-normal mt-3 mb-3">
+              Port & Bridge of Crossing
+            </p>
+            <div
+              class="h-full mx-2 w-[84%] relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[#DDDDDD] before:to-[#FFFFFF]"
+            ></div>
+          </div>
+          <div class="grid grid-cols-2 gap-7">
+            <TypeOfTransportation
+              v-for="(item, index) of portList"
+              :key="index"
+              :item="item"
+              :isSelected="item.title === portSelectedLabel"
+              @select="selectTypeOfTransportationItemPortItem"
+            />
+          </div>
           <div class="flex items-center">
             <p class="text-sm text-[#151515] font-normal mt-3 mb-3">
               Type of Transportation
@@ -90,14 +122,25 @@
           </div>
         </template>
       </Additional>
-      <Additional @click="step2Next" v-if="modal.step2">
+      <Additional @click="step2Next" v-if="modal.step3">
         <template #header>
           <div class="flex items-center gap-2 cursor-pointer">
             <span
               class="text-[12px] font-semibold text-[#000000]"
               @click="
                 {
-                  openModal('step1'), closeModal('step2');
+                  openModal('step1'), closeModal('step3');
+                }
+              "
+            >
+              Service
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step2'), closeModal('step3');
                 }
               "
             >
@@ -110,17 +153,17 @@
           </div>
         </template>
         <template #content>
-          <div class="mt-5 grid grid-cols-2 gap-y-2">
+          <div class="mt-5 grid grid-cols-2 gap-y-3.5">
             <div>
               <label
                 for="email"
                 class="block mb-1 text-sm font-medium text-[#1B1B1B]"
-                >Port & Bridge of Crossing</label
+                >User Reference</label
               >
               <AdditionalDropdown
-                :items="portList"
-                :selectedLabel="portSelectedLabel"
-                @getValue="getPortValue"
+                :items="formatRef"
+                :selectedLabel="userReferenceSelectedLabel"
+                @getValue="getUserReferenceValue"
               />
             </div>
             <div>
@@ -139,16 +182,17 @@
               <label
                 for="email"
                 class="block mb-1 text-sm font-medium text-[#1B1B1B]"
-                >User Reference</label
+                >Quantity For Chains</label
               >
               <AdditionalDropdown
-                :items="formatRef"
-                :selectedLabel="userReferenceSelectedLabel"
-                @getValue="getUserReferenceValue"
+                :items="quantityChains"
+                :selectedLabel="quantitySelectedLabel"
+                @getValue="getQuantityValue"
               />
             </div>
+
             <div
-              class="mt-7 relative group cursor-pointer"
+              class="relative group cursor-pointer"
               v-if="programeSelectedLabel === 'Schedule'"
             >
               <img
@@ -172,16 +216,16 @@
               <label
                 for="email"
                 class="block mb-1 text-sm font-medium text-[#1B1B1B]"
-                >Quantity For Chains</label
+                >Quantity For Straps</label
               >
               <AdditionalDropdown
-                :items="quantityChains"
-                :selectedLabel="quantitySelectedLabel"
-                @getValue="getQuantityValue"
+                :items="quantityStraps"
+                :selectedLabel="quantityStrapsSelectedLabel"
+                @getValue="getQuantityStrapsValue"
               />
             </div>
             <div
-              class="mt-7 group relative cursor-pointer"
+              class="group relative cursor-pointer"
               v-if="programeSelectedLabel === 'Schedule'"
             >
               <img
@@ -203,19 +247,7 @@
             </div>
           </div>
           <div class="mt-4 gap-[11.5rem] flex">
-            <div class="flex flex-col gap-y-4">
-              <div>
-                <label
-                  for="email"
-                  class="block mb-1 text-sm font-medium text-[#1B1B1B]"
-                  >Quantity For Straps</label
-                >
-                <AdditionalDropdown
-                  :items="quantityStraps"
-                  :selectedLabel="quantityStrapsSelectedLabel"
-                  @getValue="getQuantityStrapsValue"
-                />
-              </div>
+            <div class="flex flex-col gap-y-3.5">
               <div>
                 <label
                   for="email"
@@ -267,14 +299,30 @@
           </div>
         </template>
       </Additional>
-      <Additional @click="step3Next" v-if="modal.step3">
+      <Additional
+        @click="step3Next"
+        :isSkipButton="true"
+        @skip="skipUserAddress"
+        v-if="modal.step4"
+      >
         <template #header>
           <div class="flex items-center gap-2 cursor-pointer">
             <span
               class="text-[12px] font-semibold text-[#000000]"
               @click="
                 {
-                  openModal('step1'), closeModal('step3');
+                  openModal('step1'), closeModal('step4');
+                }
+              "
+            >
+              Service
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step2'), closeModal('step4');
                 }
               "
             >
@@ -285,7 +333,7 @@
               class="text-[12px] font-semibold text-[#000000]"
               @click="
                 {
-                  openModal('step2'), closeModal('step3');
+                  openModal('step3'), closeModal('step4');
                 }
               "
             >
@@ -486,14 +534,25 @@
         </template>
       </Additional>
 
-      <Additional @click="step4Next" v-if="modal.step4">
+      <Additional @click="step4Next" v-if="modal.step5">
         <template #header>
           <div class="flex items-center gap-2 cursor-pointer">
             <span
               class="text-[12px] font-semibold text-[#000000]"
               @click="
                 {
-                  openModal('step1'), closeModal('step4');
+                  openModal('step1'), closeModal('step5');
+                }
+              "
+            >
+              Service
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step2'), closeModal('step5');
                 }
               "
             >
@@ -504,7 +563,7 @@
               class="text-[12px] font-semibold text-[#000000]"
               @click="
                 {
-                  openModal('step2'), closeModal('step4');
+                  openModal('step3'), closeModal('step5');
                 }
               "
             >
@@ -515,7 +574,7 @@
               class="text-[12px] font-semibold text-[#000000]"
               @click="
                 {
-                  openModal('step3'), closeModal('step4');
+                  openModal('step4'), closeModal('step5');
                 }
               "
             >
@@ -574,7 +633,7 @@
       </Additional>
       <Additional
         @click="step5Next"
-        v-if="modal.step5"
+        v-if="modal.step6"
         :class="isRequestSuccess ? 'blur-background' : ''"
       >
         <template #header>
@@ -583,7 +642,18 @@
               class="text-[12px] font-semibold text-[#000000]"
               @click="
                 {
-                  openModal('step1'), closeModal('step5');
+                  openModal('step1'), closeModal('step6');
+                }
+              "
+            >
+              Service
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step2'), closeModal('step6');
                 }
               "
             >
@@ -594,7 +664,7 @@
               class="text-[12px] font-semibold text-[#000000]"
               @click="
                 {
-                  openModal('step2'), closeModal('step5');
+                  openModal('step3'), closeModal('step6');
                 }
               "
             >
@@ -605,7 +675,7 @@
               class="text-[12px] font-semibold text-[#000000]"
               @click="
                 {
-                  openModal('step3'), closeModal('step5');
+                  openModal('step4'), closeModal('step6');
                 }
               "
             >
@@ -616,7 +686,7 @@
               class="text-[12px] font-semibold text-[#000000]"
               @click="
                 {
-                  openModal('step4'), closeModal('step5');
+                  openModal('step5'), closeModal('step6');
                 }
               "
             >
@@ -820,7 +890,7 @@
           </div>
         </template>
       </Additional>
-      <Additional v-if="modal.step6" :isShowButton="false">
+      <Additional v-if="modal.step7" :isShowButton="false">
         <template #content>
           <div>
             <div class="mt-4 flex justify-center">
@@ -865,14 +935,14 @@
           </div>
         </template>
       </Additional>
-      <Additional @click="EditUserAddress" v-if="modal.step7">
+      <Additional @click="EditUserAddress" v-if="modal.step8">
         <template #header>
           <div class="flex items-center gap-2 cursor-pointer">
             <span
               class="text-[12px] font-semibold text-[#000000]"
               @click="
                 {
-                  openModal('step1'), closeModal('step7');
+                  openModal('step1'), closeModal('step8');
                 }
               "
             >
@@ -883,7 +953,7 @@
               class="text-[12px] font-semibold text-[#000000]"
               @click="
                 {
-                  openModal('step2'), closeModal('step7');
+                  openModal('step2'), closeModal('step8');
                 }
               "
             >
@@ -1090,7 +1160,7 @@ export default {
       selectedPickupItem: [],
       selectedDropItem: [],
       modeSelectedItem: "",
-      portSelectedLabel: "Select option",
+      portSelectedLabel: "",
       programeSelectedLabel: "Select option",
       restricltedSelectedLabel: "Select option",
       quantitySelectedLabel: "Select option",
@@ -1228,10 +1298,12 @@ export default {
       ],
       portList: [
         {
-          label: "Test 1",
+          title: "Test 1",
+          description: "Lorem ipsum dolor sit amet Mauris risus turpis.",
         },
         {
-          label: "Test 2",
+          title: "Test 2",
+          description: "Lorem ipsum dolor sit amet Mauris risus turpis.",
         },
       ],
       programingList: [
@@ -1385,8 +1457,8 @@ export default {
         this.selectedLabels.push(label);
       }
     },
-    getPortValue(item) {
-      this.portSelectedLabel = item.label;
+    selectTypeOfTransportationItemPortItem(item) {
+      this.portSelectedLabel = item.title;
     },
     getCountry(item) {
       this.formData.contactDetails.countryCode = item.value;
@@ -1411,6 +1483,7 @@ export default {
     },
     selectTypeOfService(item) {
       this.selectedServiceItem = item.title;
+      this.selectedLocation = item;
     },
     selectedPickup(id) {
       return this.selectedPickupItem?.includes(id);
@@ -1443,16 +1516,8 @@ export default {
       this.userReferenceSelectedLabel = item.label;
     },
     handleService() {
-      const selectedService = this.serviceData?.typeOfService?.find(
-        (item) => item.title === this.selectedServiceItem
-      );
-      this.$cookies.set("service", JSON.stringify(selectedService), {
-        expires: 7,
-      });
-      console.log(selectedService, "selectedType");
-
-      this.closeModal("serviceStep");
-      this.openModal("step1");
+      this.closeModal("step1");
+      this.openModal("step2");
     },
     step1Next() {
       const selectedType = this.serviceData?.typeOfTransportation?.find(
@@ -1461,6 +1526,8 @@ export default {
       const selectedMode = this.serviceData?.modeOfTransportation?.[
         this.selectedItem
       ]?.find((item) => item.title === this.modeSelectedItem);
+
+      this.service.port_BridgeOfCrossing = this.portSelectedLabel;
 
       this.service.typeOfTransportation = selectedType?._id;
       if (this.selectedItem === "FTL") {
@@ -1474,16 +1541,11 @@ export default {
           LTL: selectedMode ? selectedMode._id : null,
         };
       }
-      this.closeModal("step1");
-      this.openModal("step2");
+      this.closeModal("step2");
+      this.openModal("step3");
       this.getUserRererence();
     },
     step2Next() {
-      if (this.portSelectedLabel === "Select option") {
-        this.service.port_BridgeOfCrossing = this.portSelectedLabel = "";
-      } else {
-        this.service.port_BridgeOfCrossing = this.portSelectedLabel;
-      }
       if (this.userReferenceSelectedLabel === "Select option") {
         this.service.userReference = this.userReferenceSelectedLabel = "";
       } else {
@@ -1517,8 +1579,8 @@ export default {
       } else {
         this.service.programming = this.programeSelectedLabel;
       }
-      this.closeModal("step2");
-      this.openModal("step3");
+      this.closeModal("step3");
+      this.openModal("step4");
     },
     async step3Next() {
       this.errors = await this.$validateUserAddress({
@@ -1536,8 +1598,8 @@ export default {
         this.$toast.open({
           message: res.msg,
         });
-        this.closeModal("step3");
-        this.openModal("step4");
+        this.closeModal("step4");
+        this.openModal("step5");
         this.getUserAddress();
       } catch (error) {
         console.log(error);
@@ -1547,14 +1609,19 @@ export default {
         });
       }
     },
+    async skipUserAddress() {
+      this.closeModal("step4");
+      this.openModal("step5");
+      await this.getUserAddress();
+    },
     async EditUserAddress() {
       try {
         const res = await this.updateUserAddress(this.formData);
         this.$toast.open({
           message: res.msg,
         });
-        this.closeModal("step7");
-        this.openModal("step4");
+        this.closeModal("step8");
+        this.openModal("step5");
         this.getUserAddress();
       } catch (error) {
         console.log(error);
@@ -1570,8 +1637,8 @@ export default {
           id: id,
         });
         this.formData = res.data;
-        this.closeModal("step4");
-        this.openModal("step7");
+        this.closeModal("step5");
+        this.openModal("step8");
       } catch (error) {
         console.log(error);
         this.$toast.open({
@@ -1586,8 +1653,8 @@ export default {
       this.service.typeOfService = this.selectedLocation?._id;
       this.movementId = this.$generateNumOrCharId();
       this.service.movementId = this.movementId;
-      this.closeModal("step4");
-      this.openModal("step5");
+      this.closeModal("step5");
+      this.openModal("step6");
     },
     async step5Next() {
       try {
@@ -1603,7 +1670,7 @@ export default {
           type: "error",
         });
       }
-      this.closeModal("step4");
+      this.closeModal("step6");
       this.isRequestSuccess = true;
       document.body.style.overflow = "hidden";
     },
@@ -1612,9 +1679,9 @@ export default {
       document.body.style.overflow = "";
     },
     handleClick() {
-      this.closeModal("step5");
+      this.closeModal("step6");
       this.isRequestSuccess = false;
-      this.openModal("step6");
+      this.openModal("step8");
       document.body.style.overflow = "";
     },
     requestProcess() {
@@ -1666,9 +1733,11 @@ export default {
   async mounted() {
     document.body.style.backgroundColor = "#ECF3FA";
     const cookieDataRaw = this.$cookies.get("service");
+
     if (cookieDataRaw) {
       try {
         const cookieData = JSON.parse(cookieDataRaw);
+        this.selectedServiceItem = cookieData.title;
         this.selectedLocation = cookieData;
       } catch (error) {
         console.log(error);
@@ -1677,10 +1746,6 @@ export default {
           type: "error",
         });
       }
-    }
-    if (!this.selectedLocation) {
-      this.openModal("serviceStep");
-      this.closeModal("step1");
     }
     await this.getServices();
   },

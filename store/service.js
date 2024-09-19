@@ -10,7 +10,7 @@ export const state = () => ({
     step5: false,
     step6: false,
     step7: false,
-    serviceStep: false,
+    step8: false,
   },
 });
 
