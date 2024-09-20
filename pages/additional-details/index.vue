@@ -1378,6 +1378,7 @@ export default {
   computed: {
     ...mapGetters({
       serviceData: "service/getService",
+      getUserProfile: "auth/getUserProfile",
     }),
     ...mapState({
       modal: (state) => state.service.modal,
@@ -1444,6 +1445,7 @@ export default {
       openModal: "service/openModal",
       closeModal: "service/closeModal",
       previousStep: "service/previousStep",
+      fetchTypeOfService: "service/fetchTypeOfService",
     }),
     isLabelSelected(label) {
       return this.selectedLabels?.includes(label);
@@ -1515,11 +1517,20 @@ export default {
     getUserReferenceValue(item) {
       this.userReferenceSelectedLabel = item.label;
     },
-    handleService() {
-      this.closeModal("step1");
-      this.openModal("step2");
+    async handleService() {
+      let verifyByAdmin = (await this.getUserProfile?.verifyByAdmin) || false;
+      if (verifyByAdmin) {
+        await this.getServices();
+        this.closeModal("step1");
+        this.openModal("step2");
+      } else {
+        this.$toast.open({
+          message: this.$i18n.t("adminVerificationErrorMessage"),
+          type: "error",
+        });
+      }
     },
-    step1Next() {
+    async step1Next() {
       const selectedType = this.serviceData?.typeOfTransportation?.find(
         (item) => item.title === this.selectedItem
       );
@@ -1543,7 +1554,7 @@ export default {
       }
       this.closeModal("step2");
       this.openModal("step3");
-      this.getUserRererence();
+      await this.getUserRererence();
     },
     step2Next() {
       if (this.userReferenceSelectedLabel === "Select option") {
@@ -1729,6 +1740,17 @@ export default {
         });
       }
     },
+    async getTypeOfServices() {
+      try {
+        this.fetchTypeOfService();
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    },
   },
   async mounted() {
     document.body.style.backgroundColor = "#ECF3FA";
@@ -1747,7 +1769,7 @@ export default {
         });
       }
     }
-    await this.getServices();
+    await this.getTypeOfServices();
   },
   beforeDestroy() {
     document.body.style.backgroundColor = "";

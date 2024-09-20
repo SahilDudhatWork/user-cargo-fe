@@ -97,6 +97,7 @@ export const actions = {
   async fetchTypeOfService(ctx, payload) {
     try {
       const response = await $axios.get("/v1/user/transitInfo/typeOfService");
+      ctx.commit("setService", response.data);
       return response;
     } catch (error) {
       throw error;

@@ -28,15 +28,32 @@
               <div>
                 <div class="border-[12px] border-white rounded-full">
                   <img
-                    src="@/static/Images/profile-circle-img.webp"
+                    v-if="profileURL"
+                    :src="profileURL"
                     alt=""
                     class="w-[120px] h-[120px] object-cover rounded-full"
                   />
                   <img
-                    src="@/static/svg/profile-edit.svg"
+                    v-else
+                    src="@/static/Images/profile-circle-img.webp"
                     alt=""
-                    class="object-cover rounded-full bg-white absolute p-2 left-24 bottom-2"
+                    class="w-[120px] h-[120px] object-cover rounded-full"
                   />
+
+                  <label class="cursor-pointer">
+                    <img
+                      v-if="step2"
+                      src="@/static/svg/profile-edit.svg"
+                      alt=""
+                      class="object-cover rounded-full bg-white absolute p-2 left-24 bottom-2"
+                    />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      class="hidden"
+                      @change="handleFileChange"
+                    />
+                  </label>
                 </div>
               </div>
               <div class="mt-3">
@@ -99,15 +116,18 @@
                     <p class="text-[#1E1E1E] font-medium text-base">
                       {{ item.companyName }}
                     </p>
-                    <p class="text-[#00000099] font-normal text-sm">
-                      Menlo Park, CA 94025, USA
+                    <p class="text-[#00000099] font-normal text-sm text">
+                      {{ item.contactName }}, {{ item.emailAddress }}, +{{
+                        item.countryCode
+                      }}
+                      {{ item.contactNo }}
                     </p>
                   </div>
                 </div>
               </div>
               <div v-else>
                 <p class="text-[#000000] font-medium text-lg mt-2">
-                  Reference data not found
+                  Company details not found
                 </p>
               </div>
             </div>
@@ -125,7 +145,7 @@
                     <label
                       for="ContactName"
                       class="block mb-2 text-sm font-medium text-[#1B1B1B]"
-                      >Name</label
+                      >Name *</label
                     >
                     <input
                       type="text"
@@ -148,7 +168,7 @@
                     <label
                       for="email"
                       class="block mb-2 text-sm font-medium text-[#1B1B1B]"
-                      >Email address</label
+                      >Email address *</label
                     >
                     <input
                       type="email"
@@ -172,7 +192,7 @@
                     <label
                       for="ContactNo"
                       class="block mb-2 text-sm font-medium text-[#1B1B1B]"
-                      >Contact
+                      >Contact *
                     </label>
                     <label
                       class="xl:w-[382px] relative flex cursor-pointer flex-col"
@@ -194,6 +214,7 @@
                           placeholder="Your Contact No."
                           class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[15px] bg-white pl-24 focus:outline-none mb-3"
                           v-model="formData.contactNumber"
+                          @input="validateContactInput"
                           :class="
                             errors.contactNumber
                               ? 'border border-red-600'
@@ -215,7 +236,7 @@
                     <label
                       for="Company name"
                       class="block mb-2 text-sm font-medium text-[#1B1B1B]"
-                      >Company name</label
+                      >Company name *</label
                     >
                     <input
                       type="text"
@@ -491,6 +512,7 @@
                             placeholder="Your Contact No."
                             class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[15px] bg-white pl-24 focus:outline-none mb-3"
                             v-model="reference.contactNo"
+                            @input="validateReferrenceInput(reference)"
                           />
                         </div>
                       </label>
@@ -552,6 +574,8 @@ export default {
         },
       ],
       selectedLabel: "Select option",
+      profileURL: "",
+      maxFileSize: 2000000,
       formData: {
         companyName: "",
         contactName: "",
@@ -559,6 +583,7 @@ export default {
         contactNumber: "",
         email: "",
         password: "",
+        profilePicture: "",
         companyFormationType: "",
         companyFormation: {
           usa: {
@@ -599,7 +624,10 @@ export default {
       return this.$moment(this.formData.createdAt).format("Do MMM YYYY");
     },
     isDropdownDisabled() {
-      return this.getUserProfile?.companyFormationType !== "";
+      return (
+        this.getUserProfile?.companyFormationType !== "" &&
+        this.getUserProfile?.companyFormationType != null
+      );
     },
   },
   methods: {
@@ -617,6 +645,14 @@ export default {
     },
     getReferenceCountry(item, ref) {
       ref.countryCode = item.value;
+    },
+    async validateContactInput(event) {
+      this.formData.contactNumber = await this.$validateNumber(
+        event.target.value
+      );
+    },
+    async validateReferrenceInput(reference) {
+      reference.contactNo = await this.$validateNumber(reference.contactNo);
     },
     async uploadW9Form(event) {
       try {
@@ -682,7 +718,8 @@ export default {
         formData.append("contactName", this.formData.contactName);
         formData.append("contactNumber", this.formData.contactNumber);
         formData.append("countryCode", this.formData.countryCode);
-        formData.append("email", this.formData.email);
+        formData.append("email", this.formData.email.toLowerCase());
+        formData.append("profilePicture", this.formData.profilePicture);
         formData.append(
           "companyFormationType",
           this.formData.companyFormationType
@@ -757,23 +794,33 @@ export default {
           }
         }
         this.formData.commercialReference.forEach((ref, index) => {
-          for (let key in ref) {
-            let value = ref[key];
+          let hasValidValue = Object.keys(ref).some(
+            (key) =>
+              key !== "countryCode" &&
+              key !== "accountId" &&
+              key !== "_id" &&
+              ref[key] &&
+              ref[key] !== ""
+          );
+          if (hasValidValue) {
+            for (let key in ref) {
+              let value = ref[key];
 
-            if (key === "contactNo") {
-              value = value ? `${value}` : "";
-            }
-            if (key === "countryCode") {
-              value = `${value}`;
-            }
-            if (
-              value &&
-              value != "" &&
-              value != null &&
-              key != "accountId" &&
-              key != "_id"
-            ) {
-              formData.append(`commercialReference[${index}][${key}]`, value);
+              if (key === "contactNo") {
+                value = value ? `${value}` : "";
+              }
+              if (key === "countryCode") {
+                value = `${value}`;
+              }
+              if (
+                value &&
+                value !== "" &&
+                value != null &&
+                key != "accountId" &&
+                key != "_id"
+              ) {
+                formData.append(`commercialReference[${index}][${key}]`, value);
+              }
             }
           }
         });
@@ -781,14 +828,42 @@ export default {
         this.$toast.open({
           message: response.msg,
         });
-        this.step1 = true;
-        this.step2 = false;
       } catch (error) {
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      }
+    },
+    checkFileSize(file) {
+      if (file?.size > this.maxFileSize) {
+        return false;
+      }
+      return true;
+    },
+    async handleFileChange(event) {
+      const file = event.target.files[0];
+      this.formData.profilePicture = file;
+      if (file) {
+        try {
+          if (!this.checkFileSize(file)) {
+            this.$toast.open({
+              message: this.$i18n.t("fileSizeErrorMessage"),
+              type: "error",
+            });
+            return;
+          }
+          this.profileURL = file ? URL.createObjectURL(file) : "";
+          this.formData.profilePicture = file;
+          await this.upateUserProfile();
+        } catch (error) {
+          console.log(error);
+          this.$toast.open({
+            message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+            type: "error",
+          });
+        }
       }
     },
     async getUserRererence() {
@@ -821,6 +896,43 @@ export default {
       this.step1 = false;
       this.step2 = true;
     },
+    async formatCommercialReference() {
+      if (
+        !this.getUserProfile.commercialReference ||
+        this.getUserProfile.commercialReference.length === 0
+      ) {
+        this.formData.commercialReference = [
+          {
+            companyName: "",
+            contactName: "",
+            emailAddress: "",
+            countryCode: 1,
+            contactNo: "",
+          },
+          {
+            companyName: "",
+            contactName: "",
+            emailAddress: "",
+            countryCode: 1,
+            contactNo: "",
+          },
+        ];
+      } else if (this.getUserProfile.commercialReference.length === 1) {
+        this.formData.commercialReference = [
+          this.getUserProfile.commercialReference[0],
+          {
+            companyName: "",
+            contactName: "",
+            emailAddress: "",
+            countryCode: 1,
+            contactNo: "",
+          },
+        ];
+      } else {
+        this.formData.commercialReference =
+          this.getUserProfile.commercialReference;
+      }
+    },
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -833,9 +945,11 @@ export default {
       await this.profile();
       await this.getUserRererence();
       this.formData = await this.$lodash.cloneDeep(this.getUserProfile);
+      this.profileURL = this.formData?.profilePicture || "";
       this.selectedLabel = this.formData.companyFormationType
         ? this.formData.companyFormationType
         : "Select option";
+      await this.formatCommercialReference();
     } catch (error) {
       console.log(error);
     }

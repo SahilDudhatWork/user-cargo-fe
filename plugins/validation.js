@@ -7,6 +7,15 @@ export default async (ctx, inject) => {
     return true;
   };
 
+  const validateNumber = async (value) => {
+    let number = value.replace(/\D/g, "");
+
+    if (number.length > 10) {
+      number = number.slice(0, 10);
+    }
+    return number;
+  };
+
   const validateFormData = async ({ form }) => {
     const errors = {};
     const isEmpty = (value) => {
@@ -64,37 +73,50 @@ export default async (ctx, inject) => {
       }
     }
 
-    // form.commercialReference.forEach((ref, index) => {
-    //   validateField(
-    //     ref.companyName,
-    //     `commercialReference[${index}].companyName`,
-    //     "company-name"
-    //   );
-    //   validateField(
-    //     ref.contactName,
-    //     `commercialReference[${index}].contactName`,
-    //     "contact-name"
-    //   );
-    //   validateField(
-    //     ref.emailAddress,
-    //     `commercialReference[${index}].emailAddress`,
-    //     "email"
-    //   );
-    //   if (
-    //     ref.emailAddress &&
-    //     !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ref.emailAddress)
-    //   ) {
-    //     setError(
-    //       `commercialReference[${index}].emailAddress`,
-    //       "Invalid email format"
-    //     );
-    //   }
-    //   validateField(
-    //     ref.contactNo,
-    //     `commercialReference[${index}].contactNo`,
-    //     "contact-number"
-    //   );
-    // });
+    form.commercialReference.forEach(async (ref, index) => {
+      if (
+        ref.companyName ||
+        ref.contactName ||
+        ref.emailAddress ||
+        ref.contactNo
+      ) {
+        validateField(
+          ref.companyName,
+          `commercialReference[${index}].companyName`,
+          "company-name"
+        );
+        validateField(
+          ref.contactName,
+          `commercialReference[${index}].contactName`,
+          "contact-name"
+        );
+        validateField(
+          ref.emailAddress,
+          `commercialReference[${index}].emailAddress`,
+          "email"
+        );
+        if (
+          ref.emailAddress &&
+          !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ref.emailAddress)
+        ) {
+          setError(
+            `commercialReference[${index}].emailAddress`,
+            "Invalid email format"
+          );
+        }
+        validateField(
+          ref.contactNo,
+          `commercialReference[${index}].contactNo`,
+          "contact-number"
+        );
+      }
+      if (!(await validatePhoneNumber(ref.contactNo))) {
+        setError(
+          `commercialReference[${index}].contactNo`,
+          "Invalid contact-number format"
+        );
+      }
+    });
 
     return errors;
   };
@@ -124,9 +146,9 @@ export default async (ctx, inject) => {
     if (!(await validatePhoneNumber(form.contactNumber))) {
       setError("contactNumber", "Invalid contact-number format");
     }
-    if (form.password !== form.confirmPassword) {
-      setError("confirmPassword", "Passwords do not match.");
-    }
+    // if (form.password !== form.confirmPassword) {
+    //   setError("confirmPassword", "Passwords do not match.");
+    // }
 
     if (form.companyFormationType === "USA") {
       if (!form.companyFormation.usa.w9_Form) {
@@ -153,37 +175,50 @@ export default async (ctx, inject) => {
       }
     }
 
-    // form.commercialReference.forEach((ref, index) => {
-    //   validateField(
-    //     ref.companyName,
-    //     `commercialReference[${index}].companyName`,
-    //     "company-name"
-    //   );
-    //   validateField(
-    //     ref.contactName,
-    //     `commercialReference[${index}].contactName`,
-    //     "contact-name"
-    //   );
-    //   validateField(
-    //     ref.emailAddress,
-    //     `commercialReference[${index}].emailAddress`,
-    //     "email"
-    //   );
-    //   if (
-    //     ref.emailAddress &&
-    //     !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ref.emailAddress)
-    //   ) {
-    //     setError(
-    //       `commercialReference[${index}].emailAddress`,
-    //       "Invalid email format"
-    //     );
-    //   }
-    //   validateField(
-    //     ref.contactNo,
-    //     `commercialReference[${index}].contactNo`,
-    //     "contact-number"
-    //   );
-    // });
+    form.commercialReference.forEach(async (ref, index) => {
+      if (
+        ref.companyName ||
+        ref.contactName ||
+        ref.emailAddress ||
+        ref.contactNo
+      ) {
+        validateField(
+          ref.companyName,
+          `commercialReference[${index}].companyName`,
+          "company-name"
+        );
+        validateField(
+          ref.contactName,
+          `commercialReference[${index}].contactName`,
+          "contact-name"
+        );
+        validateField(
+          ref.emailAddress,
+          `commercialReference[${index}].emailAddress`,
+          "email"
+        );
+        if (
+          ref.emailAddress &&
+          !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ref.emailAddress)
+        ) {
+          setError(
+            `commercialReference[${index}].emailAddress`,
+            "Invalid email format"
+          );
+        }
+        validateField(
+          ref.contactNo,
+          `commercialReference[${index}].contactNo`,
+          "contact-number"
+        );
+      }
+      if (!(await validatePhoneNumber(ref.contactNo))) {
+        setError(
+          `commercialReference[${index}].contactNo`,
+          "Invalid contact-number format"
+        );
+      }
+    });
 
     return errors;
   };
@@ -244,5 +279,6 @@ export default async (ctx, inject) => {
 
   inject("validateFormData", validateFormData);
   inject("validateUserAddress", validateUserAddress);
+  inject("validateNumber", validateNumber);
   inject("validateEditFormData", validateEditFormData);
 };

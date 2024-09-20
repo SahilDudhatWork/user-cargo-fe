@@ -42,6 +42,7 @@ export default {
     "~/plugins/validation.js",
     "~/plugins/uniqueIdPlugin.js",
     "~/plugins/moment.js",
+    "~/plugins/downloadFile.js",
     { src: "~/plugins/vue2-datepicker.js", mode: "client" },
     { src: "~/plugins/vue2-google-maps.js", ssr: false },
   ],

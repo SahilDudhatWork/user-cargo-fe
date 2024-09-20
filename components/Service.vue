@@ -65,11 +65,34 @@ export default {
   methods: {
     ...mapActions({
       fetchTypeOfService: "service/fetchTypeOfService",
+      fetchProfileData: "auth/profile",
     }),
     async handleClick(item) {
       if (item) {
-        this.$cookies.set("service", JSON.stringify(item), { expires: 7 });
-        this.$router.push("/additional-details");
+        let token = this.$cookies.get("token");
+        if (token) {
+          try {
+            let response = await this.fetchProfileData();
+            let verifyByAdmin = (await response?.data?.verifyByAdmin) || false;
+            if (verifyByAdmin) {
+              this.$cookies.set("service", JSON.stringify(item), {
+                expires: 7,
+              });
+              this.$router.push("/additional-details");
+            } else {
+              this.$toast.open({
+                message: this.$i18n.t("adminVerificationErrorMessage"),
+                type: "error",
+              });
+            }
+          } catch (error) {
+            this.$cookies.set("service", JSON.stringify(item), { expires: 7 });
+            this.$router.push("/additional-details");
+          }
+        } else {
+          this.$cookies.set("service", JSON.stringify(item), { expires: 7 });
+          this.$router.push("/additional-details");
+        }
       }
     },
     async getTypeOfServices() {

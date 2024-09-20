@@ -8,7 +8,11 @@ export default async function ({ store, redirect }) {
       let res = await store.dispatch("auth/tokenVerify");
 
       if (res.data.isValid == true) {
-        await store.dispatch("auth/profile");
+        try {
+          await store.dispatch("auth/profile");
+        } catch (error) {
+          return redirect("/login");
+        }
       } else {
         return redirect("/login");
       }

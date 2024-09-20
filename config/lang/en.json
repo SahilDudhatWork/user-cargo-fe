@@ -4,5 +4,8 @@
     "loginMessage":"Successfully logged in.",
     "loginOTPMessage":"OTP has been sent to your email address. Please check your inbox and use the OTP to proceed",
     "matchPasswordMessage":"Passwords do not match.",
-    "errorMessage":"Something is wrong please try again"
+    "errorMessage":"Something is wrong please try again",
+    "fileSizeErrorMessage":"File size must be less than 2MB.",
+
+    "adminVerificationErrorMessage":"You are not verified by the admin. Please contact the admin for assistanc"
 }
