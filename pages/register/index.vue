@@ -673,7 +673,10 @@ export default {
         formData.append("countryCode", this.formData.countryCode);
         formData.append("email", this.formData.email.toLowerCase());
         formData.append("password", this.formData.password);
-        if (this.formData.companyFormationType) {
+        if (
+          this.formData.companyFormationType &&
+          this.formData.companyFormationType != null
+        ) {
           formData.append(
             "companyFormationType",
             this.formData.companyFormationType

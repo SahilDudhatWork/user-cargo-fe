@@ -720,10 +720,15 @@ export default {
         formData.append("countryCode", this.formData.countryCode);
         formData.append("email", this.formData.email.toLowerCase());
         formData.append("profilePicture", this.formData.profilePicture);
-        formData.append(
-          "companyFormationType",
-          this.formData.companyFormationType
-        );
+        if (
+          this.formData.companyFormationType &&
+          this.formData.companyFormationType != null
+        ) {
+          formData.append(
+            "companyFormationType",
+            this.formData.companyFormationType
+          );
+        }
         if (this.selectedLabel === "USA") {
           delete this.formData?.companyFormation?.maxico;
           if (

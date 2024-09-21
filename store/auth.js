@@ -18,12 +18,18 @@ export const actions = {
   async signin(ctx, payload) {
     try {
       const response = await $axios.post(`/v1/user/auth/logIn`, payload);
-      // this.$cookies.set("token", response.data.accessToken, {
-      // expires: 7,
-      // path: "/",
-      // secure: true,
-      // sameSite: "Strict",
-      // });
+      this.$cookies.set("token", response.data.accessToken, {
+        // expires: 7,
+        // path: "/",
+        // secure: true,
+        // sameSite: "Strict",
+      });
+      this.$cookies.set("refreshToken", response.data.refreshToken, {
+        // expires: 7, // Uncomment if you want it to expire in 7 days
+        // path: "/",
+        // secure: true,
+        // sameSite: "Strict",
+      });
       return response;
     } catch (error) {
       throw error;
@@ -32,12 +38,6 @@ export const actions = {
   async signup(ctx, payload) {
     try {
       const response = await $axios.post("/v1/user/auth/signUp", payload);
-      this.$cookies.set("token", response.data.accessToken, {
-        // expires: 7,
-        // path: "/",
-        // secure: true,
-        // sameSite: "Strict",
-      });
       return response;
     } catch (error) {
       throw error;
@@ -83,6 +83,15 @@ export const actions = {
   async verifyOtp(ctx, payload) {
     try {
       const response = await $axios.post("/v1/common/otp/verify", payload);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+  // for refresh token
+  async refreshToken(ctx, payload) {
+    try {
+      const response = await $axios.post("/v1/user/auth/token", payload);
       return response;
     } catch (error) {
       throw error;
