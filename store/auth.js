@@ -18,18 +18,18 @@ export const actions = {
   async signin(ctx, payload) {
     try {
       const response = await $axios.post(`/v1/user/auth/logIn`, payload);
-      this.$cookies.set("token", response.data.accessToken, {
+      // this.$cookies.set("token", response.data.accessToken, {
         // expires: 7,
         // path: "/",
         // secure: true,
         // sameSite: "Strict",
-      });
-      this.$cookies.set("refreshToken", response.data.refreshToken, {
+      // });
+      // this.$cookies.set("refreshToken", response.data.refreshToken, {
         // expires: 7, // Uncomment if you want it to expire in 7 days
         // path: "/",
         // secure: true,
         // sameSite: "Strict",
-      });
+      // });
       return response;
     } catch (error) {
       throw error;
@@ -102,6 +102,9 @@ export const actions = {
   async verifyUserOtp(ctx, payload) {
     try {
       const response = await $axios.post("/v1/user/auth/verifyOtp", payload);
+       this.$cookies.set("token", response?.data?.accessToken);
+      this.$cookies.set("refreshToken", response?.data?.refreshToken);
+     
       return response;
     } catch (error) {
       throw error;
