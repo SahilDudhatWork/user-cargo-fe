@@ -581,7 +581,6 @@ export default {
   methods: {
     ...mapActions({
       signup: "auth/signup",
-      uploadImage: "auth/uploadImage",
     }),
     togglePassword() {
       this.password = !this.password;
