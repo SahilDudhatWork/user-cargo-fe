@@ -9,6 +9,7 @@
           selectedLabel === 'Select option'
             ? 'text-[#989898]'
             : 'text-[#1E1E1E]',
+          errors ? 'border border-red-600' : 'border',
         ]"
         type="button"
       >
@@ -62,6 +63,11 @@ export default {
     isSvg: {
       type: Boolean,
       default: false,
+    },
+    errors: {
+      type: String,
+      required: false,
+      default: "",
     },
   },
   data() {

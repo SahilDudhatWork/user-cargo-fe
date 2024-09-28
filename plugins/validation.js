@@ -15,6 +15,10 @@ export default async (ctx, inject) => {
     }
     return number;
   };
+  const validateAddressDetail = async (value) => {
+    let number = value.replace(/\D/g, "");
+    return number;
+  };
 
   const validateFormData = async ({ form }) => {
     const errors = {};
@@ -267,11 +271,57 @@ export default async (ctx, inject) => {
     if (!(await validatePhoneNumber(contactDetails.contactNumber))) {
       setError("contactNumber", "Invalid contact number format");
     }
-    if (!(await validatePhoneNumber(addressDetails.laneNumber))) {
-      setError("laneNumber", "Invalid lane number format");
+
+    return errors;
+  };
+
+  const validateUserRef = async ({ form }) => {
+    const errors = {};
+    const setError = (fieldName, message) => {
+      errors[fieldName] = message;
+    };
+
+    if (
+      form.userReferenceSelectedLabel == "" ||
+      form.userReferenceSelectedLabel === "Select option"
+    ) {
+      setError("userReferenceSelectedLabel", "Please select user reference.");
     }
-    if (!(await validatePhoneNumber(addressDetails.postalCode))) {
-      setError("postalCode", "Invalid postal code format");
+    if (
+      form.quantitySelectedLabel == "" ||
+      form.quantitySelectedLabel === "Select option"
+    ) {
+      setError("quantitySelectedLabel", "Please select quantity for chains.");
+    }
+    if (
+      form.quantityStrapsSelectedLabel == "" ||
+      form.quantityStrapsSelectedLabel === "Select option"
+    ) {
+      setError(
+        "quantityStrapsSelectedLabel",
+        "Please select quantity for straps."
+      );
+    }
+    if (
+      form.quantityTarpsSelectedLabel == "" ||
+      form.quantityTarpsSelectedLabel === "Select option"
+    ) {
+      setError(
+        "quantityTarpsSelectedLabel",
+        "Please select quantity for tarps."
+      );
+    }
+    if (
+      form.restricltedSelectedLabel == "" ||
+      form.restricltedSelectedLabel === "Select option"
+    ) {
+      setError("restricltedSelectedLabel", "Please select restricted time.");
+    }
+    if (
+      form.programeSelectedLabel == "" ||
+      form.programeSelectedLabel === "Select option"
+    ) {
+      setError("programeSelectedLabel", "Please select programming.");
     }
 
     return errors;
@@ -280,5 +330,7 @@ export default async (ctx, inject) => {
   inject("validateFormData", validateFormData);
   inject("validateUserAddress", validateUserAddress);
   inject("validateNumber", validateNumber);
+  inject("validateAddressDetail", validateAddressDetail);
   inject("validateEditFormData", validateEditFormData);
+  inject("validateUserRef", validateUserRef);
 };

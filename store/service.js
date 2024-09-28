@@ -1,7 +1,10 @@
 import $axios from "@/plugins/axios";
 
 export const state = () => ({
-  serviceData: {},
+  serviceData: [],
+  orderData: [],
+  userAddress: [],
+  singleOrderData: {},
   modal: {
     step1: true,
     step2: false,
@@ -18,16 +21,34 @@ export const getters = {
   getService(state) {
     return state.serviceData;
   },
+  getOrderData(state) {
+    return state.orderData;
+  },
+  getSingleOrderData(state) {
+    return state.singleOrderData;
+  },
+  getUserAddress(state) {
+    return state.userAddress;
+  },
 };
 export const mutations = {
   setService(state, payload) {
     state.serviceData = payload;
+  },
+  setSingleOrderData(state, payload) {
+    state.singleOrderData = payload;
+  },
+  setOrderData(state, payload) {
+    state.orderData = payload;
   },
   openModal(state, modalName) {
     state.modal[modalName] = true;
   },
   closeModal(state, modalName) {
     state.modal[modalName] = false;
+  },
+  setUserAddress(state, payload) {
+    state.userAddress = payload;
   },
   previousStep(state) {
     const activeStep = Object.keys(state.modal).find((key) => state.modal[key]);
@@ -67,6 +88,7 @@ export const actions = {
   async fetchUserAddress(ctx, payload) {
     try {
       const response = await $axios.get("/v1/user/address", payload);
+      ctx.commit("setUserAddress", response.data);
       return response;
     } catch (error) {
       throw error;
@@ -106,6 +128,31 @@ export const actions = {
   async fetchServiceReference(ctx, payload) {
     try {
       const response = await $axios.get("/v1/user/order/reference");
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+  async fetchOrder(ctx, payload) {
+    try {
+      const status = payload?.status || "";
+      const response = await $axios.get(
+        `/v1/user/order?status=${status}`,
+        payload
+      );
+      ctx.commit("setOrderData", response.data?.response);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+  async fetchSingleOrder(ctx, payload) {
+    try {
+      const response = await $axios.get(
+        `/v1/user/order/${payload.movementId}`,
+        payload
+      );
+      ctx.commit("setSingleOrderData", response.data);
       return response;
     } catch (error) {
       throw error;

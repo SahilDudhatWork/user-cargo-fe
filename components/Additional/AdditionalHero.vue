@@ -7,6 +7,7 @@
         class="w-full relative !-top-32 !h-[450px]"
       />
       <button
+        v-if="isGoBack"
         type="button"
         class="flex items-center gap-1 bg-[#000000] absolute rounded-lg left-40 px-[11px] py-1 opacity-65 top-5"
         @click="$emit('prevPage')"
@@ -19,3 +20,17 @@
     </div>
   </div>
 </template>
+<script>
+import { mapState } from "vuex";
+export default {
+  computed: {
+    ...mapState({
+      modal: (state) => state.service.modal,
+    }),
+    isGoBack() {
+      const step7 = this.modal.step7;
+      return !step7;
+    },
+  },
+};
+</script>

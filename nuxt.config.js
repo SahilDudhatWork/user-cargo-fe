@@ -1,14 +1,11 @@
 import local_en from "./config/lang/en.json";
-// import global_en from "./node_modules/@bizinbox/bib-ui-lib/dist/lang/global_en.json";
 
 export default {
-  // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
   server: {
     port: 3002,
     host: "0.0.0.0",
   },
-  // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: "User-Cargo-Connect-FE",
     htmlAttrs: {
@@ -23,7 +20,6 @@ export default {
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
 
-  // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     "@/assets/css/tailwind.css",
     "@/assets/css/global.css",
@@ -32,7 +28,6 @@ export default {
     "vue2-datepicker/index.css",
   ],
 
-  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: "~/plugins/v-click-outside.js", mode: "client" },
     { src: "~/plugins/vue-slick-carousel.js", mode: "client" },
@@ -47,10 +42,8 @@ export default {
     { src: "~/plugins/vue2-google-maps.js", ssr: false },
   ],
 
-  // Auto import components: https://go.nuxtjs.dev/config-components
   components: [{ path: "~/components/", pathPrefix: false }],
 
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     [
       "nuxt-i18n",
@@ -73,10 +66,8 @@ export default {
     ],
   ],
 
-  // Modules: https://go.nuxtjs.dev/config-modules
   modules: [],
 
-  // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     postcss: {
       plugins: {

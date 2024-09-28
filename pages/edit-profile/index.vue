@@ -874,7 +874,7 @@ export default {
     async getUserRererence() {
       try {
         const res = await this.fetchServiceReference();
-        this.userReference = res.data.commercialReference;
+        this.userReference = res.data;
       } catch (error) {
         console.log(error);
         this.$toast.open({

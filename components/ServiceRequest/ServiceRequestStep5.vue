@@ -1,0 +1,249 @@
+<template>
+  <div>
+    <Additional @click="step4Next">
+      <template #header>
+        <div class="flex items-center gap-2 cursor-pointer">
+          <span
+            class="text-[12px] font-semibold text-[#000000]"
+            @click="
+              {
+                openModal('step1'), closeModal('step5');
+              }
+            "
+          >
+            Service
+          </span>
+          <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+          <span
+            class="text-[12px] font-semibold text-[#000000]"
+            @click="
+              {
+                openModal('step2'), closeModal('step5');
+              }
+            "
+          >
+            {{ typeOfTransportationLabel }}
+          </span>
+          <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+          <span
+            class="text-[12px] font-semibold text-[#000000]"
+            @click="
+              {
+                openModal('step3'), closeModal('step5');
+              }
+            "
+          >
+            {{ modeOfTransportationLabel }}
+          </span>
+          <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+          <span
+            class="text-[12px] font-semibold text-[#000000]"
+            @click="
+              {
+                openModal('step4'), closeModal('step5');
+              }
+            "
+          >
+            Add Address
+          </span>
+          <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+          <span class="text-[12px] font-semibold text-[#000000]">
+            Select Address
+          </span>
+        </div>
+      </template>
+      <template #content>
+        <div class="mt-4 mb-4">
+          <GoogleMap />
+        </div>
+        <div v-if="userAddress && userAddress.length > 0">
+          <h1 class="text-[#00000099] font-normal text-base mt-4 mb-4">
+            PICKUP LOCATIONS
+          </h1>
+          <div class="ml-6 mr-7">
+            <VueSlickCarousel
+              v-if="userAddress && userAddress.length"
+              v-bind="settings"
+              class="flex justify-center"
+            >
+              <AdditionalAddress
+                v-for="(item, index) of userAddress"
+                :key="index"
+                :item="item"
+                :isSelected="selectedPickup(item._id)"
+                @select="selectPickupItem(item._id)"
+                @getUserAddress="getEditUserAddress"
+              />
+            </VueSlickCarousel>
+          </div>
+        </div>
+        <div v-if="userAddress && userAddress.length > 0">
+          <h1 class="text-[#00000099] font-normal text-base mt-4 mb-4">
+            DROP LOCATIONS
+          </h1>
+          <div class="ml-6 mr-7">
+            <VueSlickCarousel
+              v-if="userAddress && userAddress.length"
+              v-bind="settings"
+              class="flex justify-center"
+            >
+              <AdditionalAddress
+                v-for="(item, index) of userAddress"
+                :key="index"
+                :item="item"
+                :isSelected="selectedDrop(item._id)"
+                @select="selectDropItem(item._id)"
+                @updateUserAddress="getEditUserAddress"
+              />
+            </VueSlickCarousel>
+          </div>
+        </div>
+        <div v-else class="flex justify-center mt-8">
+          <h1 class="text-2xl text-[#00000099]">
+            No address found please
+            <span
+              class="text-[#0464CB] cursor-pointer"
+              @click="
+                {
+                  openModal('step4'), closeModal('step5');
+                }
+              "
+              >add-address</span
+            >
+          </h1>
+        </div>
+      </template>
+    </Additional>
+  </div>
+</template>
+<script>
+import { mapActions, mapGetters } from "vuex";
+export default {
+  props: {
+    modeOfTransportationLabel: {
+      type: String,
+      required: true,
+      default: "",
+    },
+    typeOfTransportationLabel: {
+      type: String,
+      required: true,
+      default: "",
+    },
+  },
+  data() {
+    return {
+      settings: {
+        speed: 500,
+        slidesToShow: 3,
+        dots: false,
+        swipeToSlide: false,
+        centerMode: true,
+        centerPadding: "0px",
+        arrows: true,
+        responsive: [
+          {
+            breakpoint: 1400,
+            settings: {
+              arrows: false,
+              centerMode: true,
+              centerPadding: "0px",
+              slidesToShow: 3,
+            },
+          },
+          {
+            breakpoint: 1200,
+            settings: {
+              arrows: false,
+              centerMode: true,
+              centerPadding: "0px",
+              slidesToShow: 2,
+            },
+          },
+          {
+            breakpoint: 991,
+            settings: {
+              arrows: false,
+              centerMode: true,
+              centerPadding: "0px",
+              slidesToShow: 2,
+            },
+          },
+          {
+            breakpoint: 768,
+            settings: {
+              arrows: false,
+              centerMode: true,
+              centerPadding: "0px",
+              slidesToShow: 1,
+            },
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              arrows: false,
+              centerMode: true,
+              centerPadding: "0px",
+              slidesToShow: 1,
+            },
+          },
+        ],
+      },
+      selectedPickupItem: [],
+      selectedDropItem: [],
+    };
+  },
+  computed: {
+    ...mapGetters({
+      userAddress: "service/getUserAddress",
+    }),
+  },
+  methods: {
+    ...mapActions({
+      openModal: "service/openModal",
+      closeModal: "service/closeModal",
+    }),
+    selectedPickup(id) {
+      return this.selectedPickupItem?.includes(id);
+    },
+    selectPickupItem(id) {
+      if (this.selectedPickupItem.includes(id)) {
+        this.selectedPickupItem = this.selectedPickupItem.filter(
+          (selectedId) => selectedId !== id
+        );
+      } else {
+        this.selectedPickupItem.push(id);
+      }
+    },
+    selectedDrop(id) {
+      return this.selectedDropItem?.includes(id);
+    },
+    selectDropItem(id) {
+      if (this.selectedDropItem.includes(id)) {
+        this.selectedDropItem = this.selectedDropItem.filter(
+          (selectedId) => selectedId !== id
+        );
+      } else {
+        this.selectedDropItem.push(id);
+      }
+    },
+    getEditUserAddress(id) {
+      this.$emit("getEditUserAddress", id);
+    },
+    step4Next() {
+      if (this.selectedPickupItem == "" || this.selectedDropItem == "") {
+        this.$toast.open({
+          message: "Please select the field before submitting.",
+          type: "error",
+        });
+        return;
+      }
+      let data = {
+        selectedPickupItem: this.selectedPickupItem,
+        selectedDropItem: this.selectedDropItem,
+      };
+      this.$emit("step4Next", data);
+    },
+  },
+};
+</script>
