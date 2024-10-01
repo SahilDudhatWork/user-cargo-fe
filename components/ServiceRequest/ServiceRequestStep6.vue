@@ -155,11 +155,13 @@
               <div class="flex flex-wrap gap-2">
                 <p
                   class="bg-[#0060C91A] px-2.5 rounded-[100px] flex items-center py-[2px]"
-                  v-for="(item, index) in service.specialRequirements"
+                  v-for="(
+                    item, index
+                  ) in selectedServiceItems.selectedSpecialRequirementItems"
                   :key="index"
                 >
                   <span class="text-[#0060C9] text-base font-semibold">
-                    {{ item }}
+                    {{ item?.type }}
                   </span>
                 </p>
               </div>
@@ -281,6 +283,7 @@ export default {
   computed: {
     ...mapGetters({
       userAddress: "service/getUserAddress",
+      selectedServiceItems: "service/getSelectedServiceItems",
     }),
 
     selectedDropAddresses() {

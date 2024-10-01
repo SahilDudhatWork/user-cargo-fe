@@ -47,7 +47,7 @@
             >
             <AdditionalDropdown
               :items="formatRef"
-              :selectedLabel="selectedUserReference.label"
+              :selectedLabel="selectedServiceItems.selectedUserReference.label"
               @getValue="getUserReferenceValue"
               :errors="errors?.userReferenceSelectedLabel"
             />
@@ -63,7 +63,7 @@
             >
             <AdditionalDropdown
               :items="programingList"
-              :selectedLabel="selectedPrograming"
+              :selectedLabel="selectedServiceItems?.selectedPrograming"
               @getValue="getProgramingValue"
               :errors="errors?.programeSelectedLabel"
             />
@@ -79,7 +79,7 @@
             >
             <AdditionalDropdown
               :items="quantityChains"
-              :selectedLabel="selectedQuantityChains"
+              :selectedLabel="selectedServiceItems?.selectedQuantityChains"
               @getValue="getQuantityChainsValue"
               :errors="errors?.quantitySelectedLabel"
             />
@@ -90,7 +90,7 @@
 
           <div
             class="relative group cursor-pointer"
-            v-if="selectedPrograming === 'Schedule'"
+            v-if="selectedServiceItems?.selectedPrograming === 'Schedule'"
           >
             <img
               src="@/static/svg/down-arrow.svg"
@@ -107,6 +107,7 @@
               placeholder="Select date"
               :lang="lang"
               :format="customFormat"
+              @change="updateSchedule"
             />
           </div>
           <div>
@@ -117,7 +118,7 @@
             >
             <AdditionalDropdown
               :items="quantityStraps"
-              :selectedLabel="selectedQuantityStraps"
+              :selectedLabel="selectedServiceItems?.selectedQuantityStraps"
               @getValue="getQuantityStrapsValue"
               :errors="errors?.quantityStrapsSelectedLabel"
             />
@@ -129,7 +130,7 @@
           </div>
           <div
             class="group relative cursor-pointer"
-            v-if="selectedPrograming === 'Schedule'"
+            v-if="selectedServiceItems?.selectedPrograming === 'Schedule'"
           >
             <img
               src="@/static/svg/down-arrow.svg"
@@ -146,6 +147,7 @@
               value-type="format"
               type="time"
               placeholder="HH:mm:ss"
+              @change="updateSchedule"
             ></date-picker>
           </div>
         </div>
@@ -159,7 +161,7 @@
               >
               <AdditionalDropdown
                 :items="quantityTarps"
-                :selectedLabel="selectedQuantityTarps"
+                :selectedLabel="selectedServiceItems?.selectedQuantityTarps"
                 @getValue="getQuantityTarpsValue"
                 :errors="errors?.quantityTarpsSelectedLabel"
               />
@@ -177,7 +179,7 @@
               >
               <AdditionalDropdown
                 :items="restrictedTime"
-                :selectedLabel="selectedRestrictedValue"
+                :selectedLabel="selectedServiceItems?.selectedRestrictedValue"
                 @getValue="getRestrictedValue"
                 :errors="errors?.restricltedSelectedLabel"
               />
@@ -216,7 +218,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   props: {
     modeOfTransportationLabel: {
@@ -245,24 +247,7 @@ export default {
           label: "No",
         },
       ],
-      specialRequirements: [
-        "Hazmat",
-        "Sanitary Inspections MX",
-        "MX customs dispatch",
-        "Straps",
-        "US customs dispatch",
-        "Tarps",
-        "Sanitary Inspections US",
-        "Chains",
-        "Overweight/Overdimensions",
-      ],
-      selectedSpecialRequirements: [],
-      selectedUserReference: { label: "Select option" },
-      selectedPrograming: "Select option",
-      selectedQuantityChains: "Select option",
-      selectedQuantityStraps: "Select option",
-      selectedQuantityTarps: "Select option",
-      selectedRestrictedValue: "Select option",
+      specialRequirements: [],
       programingList: [
         {
           label: "Schedule",
@@ -330,8 +315,10 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      selectedServiceItems: "service/getSelectedServiceItems",
+    }),
     formatRef() {
-      console.log("-=-", this.userReference);
       return this.userReference.map((user) => {
         return {
           key: user._id,
@@ -339,50 +326,101 @@ export default {
         };
       });
     },
+    isRequirementSelected() {
+      return (label) => {
+        return this.selectedServiceItems.selectedSpecialRequirementItems?.some(
+          (selected) => selected.type === label.type
+        );
+      };
+    },
   },
   methods: {
     ...mapActions({
       openModal: "service/openModal",
       closeModal: "service/closeModal",
+      fetchPostBridge: "service/fetchPostBridge",
       fetchServiceReference: "service/fetchServiceReference",
+      updateSelectedServiceItems: "service/updateSelectedServiceItems",
     }),
-    isRequirementSelected(label) {
-      return this.selectedSpecialRequirements?.includes(label);
-    },
     toggleLabel(item) {
-      if (this.selectedSpecialRequirements.includes(item)) {
-        this.selectedSpecialRequirements =
-          this.selectedSpecialRequirements.filter(
-            (selected) => selected !== item
-          );
+      const selectedItems =
+        this.selectedServiceItems.selectedSpecialRequirementItems || [];
+
+      let updatedItems;
+      if (selectedItems.some((selected) => selected.type === item.type)) {
+        updatedItems = selectedItems.filter(
+          (selected) => selected !== item.type
+        );
       } else {
-        this.selectedSpecialRequirements.push(item);
+        updatedItems = [...selectedItems, item];
+      }
+      const isValid = updatedItems.every((updatedItem) =>
+        this.specialRequirements.some(
+          (requirement) => requirement.type === updatedItem.type
+        )
+      );
+
+      if (isValid) {
+        this.updateSelectedServiceItems({
+          key: "selectedSpecialRequirementItems",
+          item: updatedItems,
+        });
+      } else {
+        this.updateSelectedServiceItems({
+          key: "selectedSpecialRequirementItems",
+          item: [],
+        });
       }
     },
     getRestrictedValue(item) {
-      this.selectedRestrictedValue =
-        item.label != "Select option" ? item.label : "";
+      this.updateSelectedServiceItems({
+        key: "selectedRestrictedValue",
+        item: item.label,
+      });
     },
     getQuantityTarpsValue(item) {
-      this.selectedQuantityTarps = item.label;
+      this.updateSelectedServiceItems({
+        key: "selectedQuantityTarps",
+        item: item.label,
+      });
     },
     getQuantityChainsValue(item) {
-      this.selectedQuantityChains = item.label;
+      this.updateSelectedServiceItems({
+        key: "selectedQuantityChains",
+        item: item.label,
+      });
     },
     getQuantityStrapsValue(item) {
-      this.selectedQuantityStraps = item.label;
+      this.updateSelectedServiceItems({
+        key: "selectedQuantityStraps",
+        item: item.label,
+      });
     },
     getProgramingValue(item) {
-      this.selectedPrograming = item.label;
+      this.updateSelectedServiceItems({
+        key: "selectedPrograming",
+        item: item.label,
+      });
     },
     getUserReferenceValue(item) {
-      this.selectedUserReference = item;
+      this.updateSelectedServiceItems({
+        key: "selectedUserReference",
+        item: item,
+      });
+    },
+    updateSchedule() {
+      const scheduleItem = {
+        date: this.schedule.date || "",
+        time: this.schedule.time || "",
+      };
+      this.updateSelectedServiceItems({
+        key: "schedule",
+        item: scheduleItem,
+      });
     },
     async getUserRererence() {
       try {
         const res = await this.fetchServiceReference();
-        console.log("-=res.data-", res.data);
-
         this.userReference = res.data;
       } catch (error) {
         console.log(error);
@@ -390,40 +428,64 @@ export default {
     },
     step2Next() {
       let data = {
-        selectedUserReference: this.selectedUserReference,
+        selectedUserReference: this.selectedServiceItems?.selectedUserReference,
         selectedQuantityChains:
-          this.selectedQuantityChains != "Select option"
-            ? this.selectedQuantityChains
+          this.selectedServiceItems?.selectedQuantityChains != "Select option"
+            ? this.selectedServiceItems?.selectedQuantityChains
             : "",
 
         selectedQuantityStraps:
-          this.selectedQuantityStraps != "Select option"
-            ? this.selectedQuantityStraps
+          this.selectedServiceItems?.selectedQuantityStraps != "Select option"
+            ? this.selectedServiceItems?.selectedQuantityStraps
             : "",
 
         selectedQuantityTarps:
-          this.selectedQuantityTarps != "Select option"
-            ? this.selectedQuantityTarps
+          this.selectedServiceItems?.selectedQuantityTarps != "Select option"
+            ? this.selectedServiceItems?.selectedQuantityTarps
             : "",
 
         selectedRestrictedValue:
-          this.selectedRestrictedValue != "Select option"
-            ? this.selectedRestrictedValue
+          this.selectedServiceItems?.selectedRestrictedValue != "Select option"
+            ? this.selectedServiceItems?.selectedRestrictedValue
             : "",
 
         selectedPrograming:
-          this.selectedPrograming != "Select option"
-            ? this.selectedPrograming
+          this.selectedServiceItems?.selectedPrograming != "Select option"
+            ? this.selectedServiceItems?.selectedPrograming
             : "",
 
-        selectedSpecialRequirements: this.selectedSpecialRequirements,
+        selectedSpecialRequirements:
+          this.selectedServiceItems.selectedSpecialRequirementItems,
         schedule: this.schedule,
       };
+
       this.$emit("step2Next", data);
+    },
+    async getPostBridge() {
+      try {
+        const postBridgeId = this.selectedServiceItems?.selectedPortItem?._id;
+        const res = await this.fetchPostBridge({
+          id: postBridgeId,
+        });
+        this.specialRequirements = res?.data?.requirements;
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
     },
   },
   async mounted() {
     await this.getUserRererence();
+  },
+  async beforeMount() {
+    await this.getPostBridge();
+    if (this.selectedServiceItems) {
+      this.schedule.date = this.selectedServiceItems.schedule.date;
+      this.schedule.time = this.selectedServiceItems.schedule.time;
+    }
   },
 };
 </script>

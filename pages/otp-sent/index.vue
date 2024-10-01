@@ -35,6 +35,7 @@
                 >
                   Didn’t get it?
                   <span
+                    @click="resendCode"
                     class="font-medium text-sm text-[#1E1E1E] border-b border-[#1E1E1E] cursor-pointer"
                     >Resend code</span
                   >
@@ -82,6 +83,7 @@ export default {
   methods: {
     ...mapActions({
       verifyOtp: "auth/verifyOtp",
+      sendOtp: "auth/sendOtp",
     }),
     async veryfyCode() {
       try {
@@ -105,6 +107,21 @@ export default {
 
           this.$router.push("/create-password");
         }
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    },
+    async resendCode() {
+      try {
+        let accessEmail = this.$cookies.get("email");
+        const res = await this.sendOtp({ email: accessEmail });
+        this.$toast.open({
+          message: res.msg,
+        });
       } catch (error) {
         console.log(error);
         this.$toast.open({

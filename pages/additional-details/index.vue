@@ -91,6 +91,7 @@ export default {
     ...mapGetters({
       serviceData: "service/getService",
       getUserProfile: "auth/getUserProfile",
+      selectedServiceItems: "service/getSelectedServiceItems",
     }),
     ...mapState({
       modal: (state) => state.service.modal,
@@ -99,7 +100,7 @@ export default {
       return this.service?.typeOfTransportation?.title || "FTL";
     },
     selectedModeOfTransportationLabel() {
-      return this.service.modeOfTransportation.title;
+      return this.service?.modeOfTransportation?.title;
     },
   },
   methods: {
@@ -114,12 +115,13 @@ export default {
       closeModal: "service/closeModal",
       previousStep: "service/previousStep",
       fetchTypeOfService: "service/fetchTypeOfService",
+      updateSelectedServiceItems: "service/updateSelectedServiceItems",
     }),
     async handleService(selectedService) {
       this.service.typeOfService = selectedService;
       let verifyByAdmin = (await this.getUserProfile?.verifyByAdmin) || false;
       if (verifyByAdmin) {
-        if (this.service?.typeOfService?._id == "") {
+        if (!this.service?.typeOfService?._id) {
           this.$toast.open({
             message: "Please select the field before submitting.",
             type: "error",
@@ -164,7 +166,11 @@ export default {
         return;
       }
       this.service.userReference = payload?.selectedUserReference;
-      this.service.specialRequirements = payload?.selectedSpecialRequirements;
+      const specialRequirementIds = payload?.selectedSpecialRequirements.map(
+        (req) => req._id
+      );
+
+      this.service.specialRequirements = specialRequirementIds;
       this.service.quantityForChains = payload?.selectedQuantityChains;
       this.service.quantityForStraps = payload?.selectedQuantityStraps;
       this.service.quantityForTarps = payload?.selectedQuantityTarps;
@@ -278,7 +284,7 @@ export default {
             ? { FTL: this.service.modeOfTransportation?._id }
             : { LTL: this.service.modeOfTransportation?._id };
         this.service.port_BridgeOfCrossing =
-          this.service.port_BridgeOfCrossing?.title;
+          this.service.port_BridgeOfCrossing?._id;
         this.service.typeOfTransportation =
           this.service.typeOfTransportation?._id;
 
@@ -286,6 +292,8 @@ export default {
         this.$toast.open({
           message: res.msg,
         });
+        this.isRequestSuccess = true;
+        document.body.style.overflow = "hidden";
         this.$cookies.remove("service");
       } catch (error) {
         console.log(error);
@@ -294,8 +302,6 @@ export default {
           type: "error",
         });
       }
-      this.isRequestSuccess = true;
-      document.body.style.overflow = "hidden";
     },
     closeRequestSuccessModal() {
       this.closeModal("step6");

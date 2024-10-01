@@ -5,6 +5,25 @@ export const state = () => ({
   orderData: [],
   userAddress: [],
   singleOrderData: {},
+  selectedServiceItems: {
+    selectedTypeOfTransportationItem: { title: "" },
+    selectedModeItem: { title: "" },
+    selectedPortItem: { title: "" },
+    selectedServiceItem: "",
+    selectedQuantityChains: "Select option",
+    selectedRestrictedValue: "Select option",
+    selectedQuantityTarps: "Select option",
+    selectedQuantityStraps: "Select option",
+    selectedPrograming: "Select option",
+    selectedUserReference: { label: "" },
+    selectedSpecialRequirementItems: [],
+    schedule: {
+      date: "",
+      time: "",
+    },
+    selectedPickupItems: [],
+    selectedDropItems: [],
+  },
   modal: {
     step1: true,
     step2: false,
@@ -21,6 +40,9 @@ export const getters = {
   getService(state) {
     return state.serviceData;
   },
+  getSelectedServiceItems(state) {
+    return state.selectedServiceItems;
+  },
   getOrderData(state) {
     return state.orderData;
   },
@@ -32,6 +54,11 @@ export const getters = {
   },
 };
 export const mutations = {
+  setSelectedServiceItems(state, { key, item }) {
+    if (state.selectedServiceItems[key] !== undefined) {
+      state.selectedServiceItems[key] = item;
+    }
+  },
   setService(state, payload) {
     state.serviceData = payload;
   },
@@ -60,6 +87,9 @@ export const mutations = {
   },
 };
 export const actions = {
+  updateSelectedServiceItems({ commit }, { key, item }) {
+    commit("setSelectedServiceItems", { key, item });
+  },
   async fetchService(ctx, payload) {
     try {
       const response = await $axios.get("/v1/user/transitInfo", payload);
@@ -98,6 +128,17 @@ export const actions = {
     try {
       const response = await $axios.get(
         `/v1/user/address/${payload.id}`,
+        payload
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+  async fetchPostBridge(ctx, payload) {
+    try {
+      const response = await $axios.get(
+        `/v1/user/specialRequirements/${payload.id}`,
         payload
       );
       return response;

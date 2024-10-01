@@ -320,10 +320,12 @@
         </div>
         <div>
           <button
+            @click="triggerFileUpload"
             class="bg-[#F5F9FD] text-[#0060C9] text-sm font-semibold px-[30px] py-1.5 rounded-lg"
           >
             Upload
           </button>
+          <input type="file" ref="fileInput" class="hidden" />
         </div>
       </div>
     </div>
@@ -364,6 +366,9 @@ export default {
           type: "error",
         });
       }
+    },
+    triggerFileUpload() {
+      this.$refs.fileInput.click();
     },
   },
   async asyncData({ params }) {

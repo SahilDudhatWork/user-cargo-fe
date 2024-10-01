@@ -59,7 +59,6 @@
                   class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[13px]"
                   placeholder="Type your email address"
                   v-model="password"
-                  @input="validatePasswords"
                 />
               </div>
               <a class="text-xs font-normal text-[#3683D5] cursor-pointer mt-3"
@@ -106,7 +105,6 @@
                   placeholder="Type your password"
                   class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[13px]"
                   v-model="confirmPassword"
-                  @input="validatePasswords"
                 />
               </div>
               <button
@@ -153,29 +151,25 @@ export default {
     togglePassword() {
       this.isPassword = !this.isPassword;
     },
-    validatePasswords() {
-      if (
-        this.password &&
-        this.confirmPassword &&
-        this.password !== this.confirmPassword
-      ) {
-        this.$toast.open({
-          message: this.$i18n.t("matchPasswordMessage"),
-          type: "error",
-          duration: 2000,
-          position: "bottom-right",
-        });
-      } else if (
-        this.password &&
-        this.confirmPassword &&
-        this.password === this.confirmPassword
-      ) {
-        console.log("Passwords match!");
-      }
-    },
     async changePassword() {
       try {
-        this.validatePasswords();
+        if (
+          this.password &&
+          this.confirmPassword &&
+          this.password !== this.confirmPassword
+        ) {
+          this.$toast.open({
+            message: this.$i18n.t("matchPasswordMessage"),
+            type: "error",
+          });
+          return;
+        } else if (
+          this.password &&
+          this.confirmPassword &&
+          this.password === this.confirmPassword
+        ) {
+          console.log("Passwords match!");
+        }
         if ((!this.password, !this.confirmPassword)) {
           this.$toast.open({
             message: this.$i18n.t("requiredErrorMessage"),

@@ -1,7 +1,11 @@
 <template>
   <div>
     <div>
-      <Additional @click="$emit('handleService', selectedServiceItem)">
+      <Additional
+        @click="
+          $emit('handleService', selectedServiceItems?.selectedServiceItem)
+        "
+      >
         <template #content>
           <h1 class="font-bold text-[18px] text-[#000000]">Services for you</h1>
           <p class="text-base font-medium text-gray-400">
@@ -20,7 +24,9 @@
               v-for="(item, index) of serviceData?.typeOfService"
               :key="index"
               :item="item"
-              :isSelected="item.title === selectedServiceItem.title"
+              :isSelected="
+                item.title === selectedServiceItems?.selectedServiceItem?.title
+              "
               @select="selectTypeOfService"
             />
           </div>
@@ -30,28 +36,33 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
-    return {
-      selectedServiceItem: "",
-    };
+    return {};
   },
   computed: {
     ...mapGetters({
       serviceData: "service/getService",
+      selectedServiceItems: "service/getSelectedServiceItems",
     }),
   },
   methods: {
+    ...mapActions({
+      updateSelectedServiceItems: "service/updateSelectedServiceItems",
+    }),
     selectTypeOfService(item) {
-      this.selectedServiceItem = item;
+      this.updateSelectedServiceItems({
+        key: "selectedServiceItem",
+        item: item,
+      });
     },
   },
   mounted() {
     const cookieDataRaw = this.$cookies.get("service");
     if (cookieDataRaw) {
       const cookieData = JSON.parse(cookieDataRaw);
-      this.selectedServiceItem = cookieData;
+      this.selectedServiceItems.selectedServiceItem = cookieData;
     }
   },
 };

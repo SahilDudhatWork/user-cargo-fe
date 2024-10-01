@@ -9,7 +9,12 @@
     >
       <div>
         <p class="font-bold text-[18px] text-[#000000]">{{ item?.title }}</p>
-        <p class="font-medium text-sm text-gray-400">{{ item?.description }}</p>
+        <p class="font-medium text-sm text-gray-400">
+          {{
+            item?.description ||
+            "Lorem ipsum dolor sit amet Mauris risus turpis."
+          }}
+        </p>
       </div>
       <div>
         <span

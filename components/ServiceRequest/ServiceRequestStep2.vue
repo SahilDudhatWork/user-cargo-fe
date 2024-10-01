@@ -33,10 +33,12 @@
         </div>
         <div class="grid grid-cols-2 gap-7">
           <TypeOfTransportation
-            v-for="(item, index) of portList"
+            v-for="(item, index) of formatPortItem"
             :key="index"
             :item="item"
-            :isSelected="item.title === selectedPortItem.title"
+            :isSelected="
+              item.title === selectedServiceItems?.selectedPortItem?.title
+            "
             @select="selectTypeOfTransportationItemPortItem"
           />
         </div>
@@ -53,14 +55,20 @@
             v-for="(item, index) of serviceData?.typeOfTransportation"
             :key="index"
             :item="item"
-            :isSelected="item.title === selectedTypeOfTransportationItem.title"
+            :isSelected="
+              item.title ===
+              selectedServiceItems?.selectedTypeOfTransportationItem.title
+            "
             @select="selectTypeOfTransportationItem"
           />
         </div>
         <p class="font-medium text-[13px] text-gray-400">
           Choose one of the above option to continue
         </p>
-        <div class="flex items-center">
+        <div
+          class="flex items-center"
+          v-if="selectedServiceItems?.selectedTypeOfTransportationItem?.title"
+        >
           <p class="text-sm text-[#151515] font-normal mt-3 mb-3">
             Mode of Transportation
           </p>
@@ -70,19 +78,29 @@
         </div>
         <div class="grid grid-cols-3 gap-3">
           <ModeOfTransportation
-            v-if="selectedTypeOfTransportationItem?.title === 'FTL'"
+            v-if="
+              selectedServiceItems?.selectedTypeOfTransportationItem.title ===
+              'FTL'
+            "
             v-for="(item, index) of serviceData?.modeOfTransportation?.FTL"
             :key="index"
             :item="item"
-            :isSelected="item.title === selectedModeItem.title"
+            :isSelected="
+              item.title === selectedServiceItems?.selectedModeItem?.title
+            "
             @select="modeSelectItem"
           />
           <ModeOfTransportation
-            v-if="selectedTypeOfTransportationItem?.title === 'LTL'"
+            v-if="
+              selectedServiceItems?.selectedTypeOfTransportationItem.title ===
+              'LTL'
+            "
             v-for="(item, index) of serviceData?.modeOfTransportation?.LTL"
             :key="index"
             :item="item"
-            :isSelected="item.title === selectedModeItem.title"
+            :isSelected="
+              item.title === selectedServiceItems?.selectedModeItem?.title
+            "
             @select="modeSelectItem"
           />
         </div>
@@ -95,53 +113,61 @@
 import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
-    return {
-      portList: [
-        {
-          title: "NUEVO LAREDO - LAREDO",
-          description: "Lorem ipsum dolor sit amet Mauris risus turpis.",
-        },
-        {
-          title: "COLOMBIA - LAREDO",
-          description: "Lorem ipsum dolor sit amet Mauris risus turpis.",
-        },
-      ],
-      selectedModeItem: {
-        title: "",
-      },
-      selectedTypeOfTransportationItem: {
-        title: "FTL",
-      },
-      selectedPortItem: {
-        title: "",
-      },
-    };
+    return {};
   },
   computed: {
     ...mapGetters({
       serviceData: "service/getService",
+      selectedServiceItems: "service/getSelectedServiceItems",
     }),
+    formatPortItem() {
+      return this.serviceData?.port_BridgeOfCrossing.map((user) => {
+        return {
+          _id: user._id,
+          title: user.post_bridge,
+        };
+      });
+    },
   },
   methods: {
     ...mapActions({
       openModal: "service/openModal",
       closeModal: "service/closeModal",
+      updateSelectedServiceItems: "service/updateSelectedServiceItems",
     }),
     modeSelectItem(item) {
-      this.selectedModeItem = item;
+      this.updateSelectedServiceItems({
+        key: "selectedModeItem",
+        item: item,
+      });
     },
     selectTypeOfTransportationItem(item) {
-      this.selectedTypeOfTransportationItem = item;
+      this.updateSelectedServiceItems({
+        key: "selectedTypeOfTransportationItem",
+        item: item,
+      });
     },
     selectTypeOfTransportationItemPortItem(item) {
-      this.selectedPortItem = item;
+      this.updateSelectedServiceItems({
+        key: "selectedPortItem",
+        item: item,
+      });
+      if (this.selectedServiceItems?.selectedPortItem?.title !== item?.title) {
+        this.updateSelectedServiceItems({
+          key: "selectedSpecialRequirementItems",
+          item: [],
+        });
+      }
     },
     step1Next() {
       if (
-        (this.selectedPortItem && this.selectedPortItem?.title == "") ||
-        (this.selectedTypeOfTransportationItem &&
-          this.selectedTypeOfTransportationItem?.title == "") ||
-        (this.selectedModeItem && this.selectedModeItem?.title == "")
+        (this.selectedServiceItems.selectedPortItem &&
+          this.selectedServiceItems.selectedPortItem?.title == "") ||
+        (this.selectedServiceItems.selectedTypeOfTransportationItem &&
+          this.selectedServiceItems.selectedTypeOfTransportationItem?.title ==
+            "") ||
+        (this.selectedServiceItems.selectedModeItem &&
+          this.selectedServiceItems.selectedModeItem?.title == "")
       ) {
         this.$toast.open({
           message: "Please select the field before submitting.",
@@ -149,10 +175,10 @@ export default {
         });
       } else {
         let items = {
-          selectedPortItem: this.selectedPortItem,
+          selectedPortItem: this.selectedServiceItems.selectedPortItem,
           selectedTypeOfTransportationItem:
-            this.selectedTypeOfTransportationItem,
-          selectedModeItem: this.selectedModeItem,
+            this.selectedServiceItems.selectedTypeOfTransportationItem,
+          selectedModeItem: this.selectedServiceItems.selectedModeItem,
         };
         this.$emit("step1Next", items);
       }

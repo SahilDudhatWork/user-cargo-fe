@@ -16,7 +16,7 @@
           "
           class="text-sm"
         >
-          {{ label }}
+          {{ label?.type }}
         </p>
       </div>
     </div>
@@ -27,7 +27,7 @@
 export default {
   props: {
     label: {
-      type: String,
+      type: Object,
       required: true,
     },
     isSelected: {

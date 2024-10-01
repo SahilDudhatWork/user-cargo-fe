@@ -189,49 +189,66 @@ export default {
           },
         ],
       },
-      selectedPickupItem: [],
-      selectedDropItem: [],
     };
   },
   computed: {
     ...mapGetters({
       userAddress: "service/getUserAddress",
+      selectedServiceItems: "service/getSelectedServiceItems",
     }),
+    selectedPickup() {
+      return (id) => {
+        return this.selectedServiceItems.selectedPickupItems?.includes(id);
+      };
+    },
+    selectedDrop() {
+      return (id) => {
+        return this.selectedServiceItems.selectedDropItems?.includes(id);
+      };
+    },
   },
   methods: {
     ...mapActions({
       openModal: "service/openModal",
       closeModal: "service/closeModal",
+      updateSelectedServiceItems: "service/updateSelectedServiceItems",
     }),
-    selectedPickup(id) {
-      return this.selectedPickupItem?.includes(id);
-    },
     selectPickupItem(id) {
-      if (this.selectedPickupItem.includes(id)) {
-        this.selectedPickupItem = this.selectedPickupItem.filter(
-          (selectedId) => selectedId !== id
-        );
+      const selectedItems = this.selectedServiceItems.selectedPickupItems || [];
+
+      let updatedItems;
+      if (selectedItems?.includes(id)) {
+        updatedItems = selectedItems.filter((selected) => selected !== id);
       } else {
-        this.selectedPickupItem.push(id);
+        updatedItems = [...selectedItems, id];
       }
-    },
-    selectedDrop(id) {
-      return this.selectedDropItem?.includes(id);
+      this.updateSelectedServiceItems({
+        key: "selectedPickupItems",
+        item: updatedItems,
+      });
     },
     selectDropItem(id) {
-      if (this.selectedDropItem.includes(id)) {
-        this.selectedDropItem = this.selectedDropItem.filter(
-          (selectedId) => selectedId !== id
-        );
+      const selectedItems = this.selectedServiceItems.selectedDropItems || [];
+
+      let updatedItems;
+      if (selectedItems?.includes(id)) {
+        updatedItems = selectedItems.filter((selected) => selected !== id);
       } else {
-        this.selectedDropItem.push(id);
+        updatedItems = [...selectedItems, id];
       }
+      this.updateSelectedServiceItems({
+        key: "selectedDropItems",
+        item: updatedItems,
+      });
     },
     getEditUserAddress(id) {
       this.$emit("getEditUserAddress", id);
     },
     step4Next() {
-      if (this.selectedPickupItem == "" || this.selectedDropItem == "") {
+      if (
+        this.selectedServiceItems?.selectedPickupItems == "" ||
+        this.selectedServiceItems?.selectedDropItems == ""
+      ) {
         this.$toast.open({
           message: "Please select the field before submitting.",
           type: "error",
@@ -239,8 +256,8 @@ export default {
         return;
       }
       let data = {
-        selectedPickupItem: this.selectedPickupItem,
-        selectedDropItem: this.selectedDropItem,
+        selectedPickupItem: this.selectedServiceItems?.selectedPickupItems,
+        selectedDropItem: this.selectedServiceItems?.selectedDropItems,
       };
       this.$emit("step4Next", data);
     },
