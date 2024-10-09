@@ -75,7 +75,7 @@
             <div class="flex justify-between">
               <div>
                 <h1 class="font-semibold text-[29px] text-[#1E1E1E]">
-                  $456.56
+                  ${{ totalPrice }}
                 </h1>
                 <p class="text-[#00000099] font-normal text-xs pb-6">
                   Additional charges may apply*
@@ -94,12 +94,6 @@
               Service Details
             </h1>
             <div class="grid grid-cols-2 gap-y-5">
-              <div>
-                <p class="text-[#00000099] font-normal text-sm">Movement ID</p>
-                <span class="text-[#1E1E1E] font-medium text-base">{{
-                  service?.movementId
-                }}</span>
-              </div>
               <div>
                 <p class="text-[#00000099] font-normal text-sm">Location ID</p>
                 <span class="text-[#1E1E1E] font-medium text-base">MX</span>
@@ -177,6 +171,11 @@
             <div v-if="service.schedule?.time" class="mb-5">
               <p class="text-[#00000099] font-normal text-sm">Scheduled Time</p>
               <p class="font-semibold text-base text-[#1E1E1E]">
+                {{
+                  $moment(service?.schedule?.date)
+                    .locale("en")
+                    .format("DD MMM, dddd YYYY")
+                }},
                 {{ service.schedule?.time }}
               </p>
             </div>
@@ -279,6 +278,9 @@ export default {
       type: Boolean,
       default: false,
     },
+    totalPrice: {
+      type: Number,
+    },
   },
   computed: {
     ...mapGetters({
@@ -290,7 +292,7 @@ export default {
       const selectedDropLoc =
         this.userAddress.length > 0
           ? this.userAddress.filter((item) =>
-              this.service.dropAddressIds.includes(item._id)
+              this.service.dropAddressIds?.includes(item._id)
             )
           : [];
 
@@ -300,7 +302,7 @@ export default {
       const selectedPickupLoc =
         this.userAddress.length > 0
           ? this.userAddress.filter((item) =>
-              this.service.pickUpAddressIds.includes(item._id)
+              this.service.pickUpAddressIds?.includes(item._id)
             )
           : [];
 

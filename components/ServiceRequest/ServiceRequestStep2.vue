@@ -37,7 +37,7 @@
             :key="index"
             :item="item"
             :isSelected="
-              item.title === selectedServiceItems?.selectedPortItem?.title
+              item?._id === selectedServiceItems?.selectedPortItem?._id
             "
             @select="selectTypeOfTransportationItemPortItem"
           />
@@ -56,8 +56,8 @@
             :key="index"
             :item="item"
             :isSelected="
-              item.title ===
-              selectedServiceItems?.selectedTypeOfTransportationItem.title
+              item?._id ===
+              selectedServiceItems?.selectedTypeOfTransportationItem?._id
             "
             @select="selectTypeOfTransportationItem"
           />
@@ -86,7 +86,7 @@
             :key="index"
             :item="item"
             :isSelected="
-              item.title === selectedServiceItems?.selectedModeItem?.title
+              item._id === selectedServiceItems?.selectedModeItem?._id
             "
             @select="modeSelectItem"
           />
@@ -99,7 +99,7 @@
             :key="index"
             :item="item"
             :isSelected="
-              item.title === selectedServiceItems?.selectedModeItem?.title
+              item._id === selectedServiceItems?.selectedModeItem?._id
             "
             @select="modeSelectItem"
           />

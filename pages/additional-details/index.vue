@@ -36,6 +36,7 @@
         :modeOfTransportationLabel="selectedModeOfTransportationLabel"
         :service="service"
         :isRequestSuccess="isRequestSuccess"
+        :totalPrice="totalPrice"
       />
       <ServiceRequestStep7
         v-if="modal.step7"
@@ -84,7 +85,7 @@ export default {
       isRequestSuccess: false,
       locations: [],
       errors: {},
-      movementId: null,
+      totalPrice: 0,
     };
   },
   computed: {
@@ -270,8 +271,35 @@ export default {
       let { selectedPickupItem, selectedDropItem } = payload;
       this.service.pickUpAddressIds = selectedPickupItem;
       this.service.dropAddressIds = selectedDropItem;
-      this.movementId = this.$generateNumOrCharId();
-      this.service.movementId = this.movementId;
+
+      const ChainsPrice = this.serviceData?.securingEquipment?.chains;
+      const TarpsPrice = this.serviceData?.securingEquipment?.tarps;
+      const StrapsPrice = this.serviceData?.securingEquipment?.straps;
+
+      const servicePrice = this.service.typeOfService.price || 0;
+      const transportationPrice = this.service.typeOfTransportation.price || 0;
+      const modePrice = this.service.modeOfTransportation.price || 0;
+
+      const chainTotal = this.service.quantityForChains * ChainsPrice;
+      const tarpsTotal = this.service.quantityForTarps * TarpsPrice;
+      const strapsTotal = this.service.quantityForStraps * StrapsPrice;
+      const additionalServicesTotal =
+        this.selectedServiceItems?.selectedSpecialRequirementItems?.reduce(
+          (acc, service) => acc + service.price,
+          0
+        );
+
+      const totalPrice =
+        servicePrice +
+        transportationPrice +
+        modePrice +
+        chainTotal +
+        tarpsTotal +
+        strapsTotal +
+        additionalServicesTotal;
+
+      this.totalPrice = totalPrice.toFixed(1);
+
       this.closeModal("step5");
       this.openModal("step6");
     },
@@ -279,10 +307,10 @@ export default {
       try {
         this.service.userReference = this.service.userReference?.key;
         this.service.typeOfService = this.service.typeOfService?._id;
+
         this.service.modeOfTransportation =
-          this.service.modeOfTransportation.title == "FTL"
-            ? { FTL: this.service.modeOfTransportation?._id }
-            : { LTL: this.service.modeOfTransportation?._id };
+          this.service.modeOfTransportation?._id;
+
         this.service.port_BridgeOfCrossing =
           this.service.port_BridgeOfCrossing?._id;
         this.service.typeOfTransportation =
@@ -294,7 +322,6 @@ export default {
         });
         this.isRequestSuccess = true;
         document.body.style.overflow = "hidden";
-        this.$cookies.remove("service");
       } catch (error) {
         console.log(error);
         this.$toast.open({

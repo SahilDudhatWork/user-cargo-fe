@@ -199,7 +199,7 @@
                 </p>
               </div>
             </div>
-            <div class="grid grid-cols-2">
+            <div>
               <div class="mt-4 flex flex-wrap gap-x-3 gap-y-[2px]">
                 <AdditionalLabel
                   v-for="(label, index) in specialRequirements"
@@ -288,6 +288,7 @@ export default {
         { label: "7" },
         { label: "8" },
         { label: "9" },
+        { label: "10" },
       ],
       quantityTarps: [
         { label: "1" },
@@ -299,6 +300,7 @@ export default {
         { label: "7" },
         { label: "8" },
         { label: "9" },
+        { label: "10" },
       ],
       quantityStraps: [
         { label: "1" },
@@ -349,7 +351,7 @@ export default {
       let updatedItems;
       if (selectedItems.some((selected) => selected.type === item.type)) {
         updatedItems = selectedItems.filter(
-          (selected) => selected !== item.type
+          (selected) => selected.type !== item.type
         );
       } else {
         updatedItems = [...selectedItems, item];

@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ address }}
     <GmapMap
       :center="getMapLocation"
       :zoom="12"
@@ -64,7 +63,6 @@ export default {
   },
   methods: {
     checkCenter(latLng) {
-      console.log("latLng", latLng);
       this.latLng = latLng;
       this.marker.position = { lat: latLng.lat(), lng: latLng.lng() };
     },
@@ -108,9 +106,18 @@ export default {
               addressComponents = results[0].address_components;
             }
             if (setAddress) {
+              const postalCode =
+                addressComponents.find((component) =>
+                  component.types.includes("postal_code")
+                )?.long_name || "";
+
               this.address = formattedAddress;
+              this.$emit("updateAddress", {
+                address: this.address,
+                postalCode: postalCode,
+              });
             } else {
-              this.address = "No address found";
+              this.address = "";
             }
           } else {
             console.log("Geocoder failed due to: " + status);

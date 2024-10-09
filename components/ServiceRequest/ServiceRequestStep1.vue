@@ -25,7 +25,7 @@
               :key="index"
               :item="item"
               :isSelected="
-                item.title === selectedServiceItems?.selectedServiceItem?.title
+                item._id === selectedServiceItems?.selectedServiceItem?._id
               "
               @select="selectTypeOfService"
             />

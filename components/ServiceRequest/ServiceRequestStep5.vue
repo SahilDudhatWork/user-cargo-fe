@@ -93,7 +93,7 @@
                 :item="item"
                 :isSelected="selectedDrop(item._id)"
                 @select="selectDropItem(item._id)"
-                @updateUserAddress="getEditUserAddress"
+                @getUserAddress="getEditUserAddress"
               />
             </VueSlickCarousel>
           </div>

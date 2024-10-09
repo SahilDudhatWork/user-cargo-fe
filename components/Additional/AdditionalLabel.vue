@@ -17,6 +17,7 @@
           class="text-sm"
         >
           {{ label?.type }}
+          <span v-if="label?.price"> (${{ label?.price }}) </span>
         </p>
       </div>
     </div>

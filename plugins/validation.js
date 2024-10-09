@@ -246,11 +246,6 @@ export default async (ctx, inject) => {
     validateField(addressDetails.buildinName, "buildinName", "Building-name");
     validateField(addressDetails.postalCode, "postalCode", "Postal-code");
     validateField(addressDetails.laneNumber, "laneNumber", "Lane number");
-    validateField(
-      addressDetails.additionalDetails,
-      "additionalDetails",
-      "Additional details"
-    );
 
     const contactDetails = form.contactDetails;
     validateField(contactDetails.contactName, "contactName", "Contact-name");

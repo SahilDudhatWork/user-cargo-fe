@@ -74,12 +74,14 @@
         </div>
         <div>
           <p class="text-[#00000099] font-normal text-sm">Bridge of Crossing</p>
-          <p class="text-[#1E1E1E] font-medium text-base">Colombia</p>
+          <p class="text-[#1E1E1E] font-medium text-base">
+            {{ item?.port_BridgeOfCrossing }}
+          </p>
         </div>
         <div>
           <p class="text-[#00000099] font-normal text-sm">User Reference</p>
           <p class="text-[#1E1E1E] font-medium text-base">
-            {{ item?.userReference }}
+            {{ item?.userReference?._id }}
           </p>
         </div>
       </div>

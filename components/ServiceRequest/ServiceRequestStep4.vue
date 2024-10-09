@@ -47,7 +47,7 @@
       </template>
       <template #content>
         <div class="mt-4 mb-4">
-          <GoogleMap />
+          <GoogleMap @updateAddress="setAddress" />
         </div>
         <div class="grid grid-cols-2 mt-7">
           <div class="flex flex-col gap-y-2">
@@ -130,19 +130,11 @@
               >
               <input
                 type="text"
-                :class="
-                  errors?.additionalDetails
-                    ? 'border border-red-600'
-                    : 'border border-gray-300'
-                "
                 name="CompanyName"
-                class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px] border border-gray-300"
                 placeholder="Your Additional Details"
                 v-model="addressDetails.additionalDetails"
               />
-              <span v-if="errors.additionalDetails" class="error-msg">{{
-                errors.additionalDetails
-              }}</span>
             </div>
           </div>
           <div class="flex flex-col gap-y-2">
@@ -293,6 +285,10 @@ export default {
       openModal: "service/openModal",
       closeModal: "service/closeModal",
     }),
+    setAddress({ address, postalCode }) {
+      this.addressDetails.buildinName = address;
+      this.addressDetails.postalCode = postalCode;
+    },
     getCountry(item) {
       this.contactDetails.countryCode = item.value;
     },

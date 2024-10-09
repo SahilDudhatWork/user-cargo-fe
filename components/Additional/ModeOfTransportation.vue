@@ -17,6 +17,7 @@
           "
         >
           {{ item?.title }}
+          <span v-if="item?.price"> (${{ item?.price }}) </span>
         </p>
         <p class="font-normal text-sm text-gray-400">{{ item?.description }}</p>
       </div>

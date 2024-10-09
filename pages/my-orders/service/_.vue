@@ -14,7 +14,10 @@
         <h1 class="text-[#000000] font-bold text-lg mb-4">Amount Details</h1>
         <div class="flex justify-between">
           <div>
-            <h1 class="font-semibold text-[29px] text-[#1E1E1E]">$456.56</h1>
+            <h1 class="font-semibold text-[29px] text-[#1E1E1E]">
+              {{ orderData?.amountDetails?.currency
+              }}{{ orderData?.amountDetails?.price }}
+            </h1>
             <p class="text-[#00000099] font-normal text-xs pb-6">
               Additional charges may apply*
             </p>
@@ -90,7 +93,7 @@
           <div>
             <p class="text-[#00000099] font-normal text-sm">User Reference</p>
             <span class="text-[#1E1E1E] font-medium text-base">{{
-              orderData?.userReference
+              orderData?.userReference?._id
             }}</span>
           </div>
           <div>
@@ -116,7 +119,7 @@
               :key="index"
             >
               <span class="text-[#0060C9] text-base font-semibold">
-                {{ item }}
+                {{ item?.type }}
               </span>
             </p>
           </div>
@@ -131,9 +134,21 @@
         </div>
         <div class="mb-5">
           <p class="text-[#00000099] font-normal text-sm">Scheduled Time</p>
-          <p class="font-semibold text-base text-[#1E1E1E]">
-            14 Dec, Monday 2023, 12:40 PM
-          </p>
+          <div
+            class="font-semibold text-base text-[#1E1E1E]"
+            v-if="orderData?.schedule"
+          >
+            <span v-if="orderData?.schedule?.date">
+              {{
+                $moment(orderData?.schedule?.date)
+                  .locale("en")
+                  .format("DD MMM, dddd YYYY")
+              }},
+            </span>
+            <span v-if="orderData?.schedule?.time">
+              {{ orderData?.schedule?.time }}
+            </span>
+          </div>
         </div>
       </div>
       <div class="px-9">
@@ -216,10 +231,14 @@
             />
             <div>
               <p class="text-[#1E1E1E] font-medium text-base">
-                Zayro Logistics
+                {{ orderData?.userReference?.contactName }}
               </p>
               <p class="text-[#00000099] font-normal text-sm text">
-                Menlo Park, CA 94025, USA
+                {{ orderData?.userReference?.companyName }}, +{{
+                  orderData?.userReference?.countryCode
+                }}
+                {{ orderData?.userReference?.contactNo }},
+                {{ orderData?.userReference?.emailAddress }}
               </p>
             </div>
           </div>
