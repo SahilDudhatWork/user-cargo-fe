@@ -11,7 +11,6 @@ export const state = () => ({
     selectedPortItem: { title: "" },
     selectedServiceItem: "",
     selectedQuantityChains: "Select option",
-    selectedRestrictedValue: "Select option",
     selectedQuantityTarps: "Select option",
     selectedQuantityStraps: "Select option",
     selectedPrograming: "Select option",

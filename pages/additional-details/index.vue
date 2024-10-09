@@ -153,7 +153,6 @@ export default {
         quantitySelectedLabel: payload?.selectedQuantityChains,
         quantityStrapsSelectedLabel: payload?.selectedQuantityStraps,
         quantityTarpsSelectedLabel: payload?.selectedQuantityTarps,
-        restricltedSelectedLabel: payload?.selectedRestrictedValue,
         programeSelectedLabel: payload?.selectedPrograming,
       };
       this.errors = await this.$validateUserRef({
@@ -175,7 +174,6 @@ export default {
       this.service.quantityForChains = payload?.selectedQuantityChains;
       this.service.quantityForStraps = payload?.selectedQuantityStraps;
       this.service.quantityForTarps = payload?.selectedQuantityTarps;
-      this.service.restrictedTime = payload?.selectedRestrictedValue;
       this.service.programming = payload.selectedPrograming;
       if (this.service.programming == "Schedule") {
         if (payload.schedule) {

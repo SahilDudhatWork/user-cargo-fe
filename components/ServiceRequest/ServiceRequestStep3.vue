@@ -171,22 +171,6 @@
                 >{{ errors?.quantityTarpsSelectedLabel }}</span
               >
             </div>
-            <div>
-              <label
-                for="email"
-                class="block mb-1 text-sm font-medium text-[#1B1B1B]"
-                >Restricted Time</label
-              >
-              <AdditionalDropdown
-                :items="restrictedTime"
-                :selectedLabel="selectedServiceItems?.selectedRestrictedValue"
-                @getValue="getRestrictedValue"
-                :errors="errors?.restricltedSelectedLabel"
-              />
-              <span class="error-msg" v-if="errors?.restricltedSelectedLabel">{{
-                errors?.restricltedSelectedLabel
-              }}</span>
-            </div>
           </div>
           <div>
             <div class="mt-4">
@@ -239,14 +223,6 @@ export default {
   data() {
     return {
       userReference: [],
-      restrictedTime: [
-        {
-          label: "Yes",
-        },
-        {
-          label: "No",
-        },
-      ],
       specialRequirements: [],
       programingList: [
         {
@@ -374,12 +350,6 @@ export default {
         });
       }
     },
-    getRestrictedValue(item) {
-      this.updateSelectedServiceItems({
-        key: "selectedRestrictedValue",
-        item: item.label,
-      });
-    },
     getQuantityTarpsValue(item) {
       this.updateSelectedServiceItems({
         key: "selectedQuantityTarps",
@@ -444,11 +414,6 @@ export default {
         selectedQuantityTarps:
           this.selectedServiceItems?.selectedQuantityTarps != "Select option"
             ? this.selectedServiceItems?.selectedQuantityTarps
-            : "",
-
-        selectedRestrictedValue:
-          this.selectedServiceItems?.selectedRestrictedValue != "Select option"
-            ? this.selectedServiceItems?.selectedRestrictedValue
             : "",
 
         selectedPrograming:

@@ -306,12 +306,7 @@ export default async (ctx, inject) => {
         "Please select quantity for tarps."
       );
     }
-    if (
-      form.restricltedSelectedLabel == "" ||
-      form.restricltedSelectedLabel === "Select option"
-    ) {
-      setError("restricltedSelectedLabel", "Please select restricted time.");
-    }
+
     if (
       form.programeSelectedLabel == "" ||
       form.programeSelectedLabel === "Select option"
