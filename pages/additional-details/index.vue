@@ -116,7 +116,6 @@ export default {
       closeModal: "service/closeModal",
       previousStep: "service/previousStep",
       fetchTypeOfService: "service/fetchTypeOfService",
-      updateSelectedServiceItems: "service/updateSelectedServiceItems",
     }),
     async handleService(selectedService) {
       this.service.typeOfService = selectedService;

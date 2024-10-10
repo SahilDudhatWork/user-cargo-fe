@@ -55,15 +55,9 @@
           </p>
           <p
             class="text-[#1E1E1E] font-medium text-base"
-            v-if="item?.modeOfTransportation?.FTL?.title"
+            v-if="item?.modeOfTransportation?.title"
           >
-            {{ item?.modeOfTransportation?.FTL?.title }}
-          </p>
-          <p
-            class="text-[#1E1E1E] font-medium text-base"
-            v-if="item?.modeOfTransportation?.LTL?.title"
-          >
-            {{ item?.modeOfTransportation?.LTL?.title }}
+            {{ item?.modeOfTransportation?.title }}
           </p>
         </div>
         <div>

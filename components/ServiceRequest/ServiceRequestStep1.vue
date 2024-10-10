@@ -62,7 +62,10 @@ export default {
     const cookieDataRaw = this.$cookies.get("service");
     if (cookieDataRaw) {
       const cookieData = JSON.parse(cookieDataRaw);
-      this.selectedServiceItems.selectedServiceItem = cookieData;
+      this.updateSelectedServiceItems({
+        key: "selectedServiceItem",
+        item: cookieData,
+      });
     }
   },
 };

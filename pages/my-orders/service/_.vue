@@ -81,13 +81,8 @@
             </p>
             <span
               class="text-[#1E1E1E] font-medium text-base"
-              v-if="orderData?.modeOfTransportation?.FTL?.title"
-              >{{ orderData?.modeOfTransportation?.FTL?.title }}</span
-            >
-            <span
-              class="text-[#1E1E1E] font-medium text-base"
-              v-if="orderData?.modeOfTransportation?.LTL?.title"
-              >{{ orderData?.modeOfTransportation?.LTL?.title }}</span
+              v-if="orderData?.modeOfTransportation?.title"
+              >{{ orderData?.modeOfTransportation?.title }}</span
             >
           </div>
           <div>

@@ -78,24 +78,7 @@
         </div>
         <div class="grid grid-cols-3 gap-3">
           <ModeOfTransportation
-            v-if="
-              selectedServiceItems?.selectedTypeOfTransportationItem.title ===
-              'FTL'
-            "
-            v-for="(item, index) of serviceData?.modeOfTransportation?.FTL"
-            :key="index"
-            :item="item"
-            :isSelected="
-              item._id === selectedServiceItems?.selectedModeItem?._id
-            "
-            @select="modeSelectItem"
-          />
-          <ModeOfTransportation
-            v-if="
-              selectedServiceItems?.selectedTypeOfTransportationItem.title ===
-              'LTL'
-            "
-            v-for="(item, index) of serviceData?.modeOfTransportation?.LTL"
+            v-for="(item, index) in filteredTransportationItems"
             :key="index"
             :item="item"
             :isSelected="
@@ -120,6 +103,11 @@ export default {
       serviceData: "service/getService",
       selectedServiceItems: "service/getSelectedServiceItems",
     }),
+    filteredTransportationItems() {
+      const selectedType =
+        this.selectedServiceItems?.selectedTypeOfTransportationItem?.title;
+      return this.serviceData?.modeOfTransportation?.[selectedType] || [];
+    },
     formatPortItem() {
       return this.serviceData?.port_BridgeOfCrossing.map((user) => {
         return {
