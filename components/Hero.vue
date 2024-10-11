@@ -40,7 +40,7 @@ export default {
 
 @media (min-width: 768px) and (max-width: 1150px) {
   .hero-section {
-    background: linear-gradient(270deg, rgba(7, 18, 26, 0) 40%, #07121a 100%),
+    background: linear-gradient(270deg, rgba(7, 18, 26, 0) 100%, #07121a 100%),
       url("@/static/Images/hero-truck-img.webp") no-repeat;
     background-size: 60% 100%;
     background-position: right center;
@@ -58,7 +58,7 @@ export default {
 }
 @media (min-width: 1150px) {
   .hero-section {
-    background: linear-gradient(270deg, rgba(7, 18, 26, 0) 40%, #07121a 100%),
+    background: linear-gradient(270deg, rgba(7, 18, 26, 0) 100%, #07121a 100%),
       url("@/static/Images/hero-truck-img.webp") no-repeat;
     background-size: 80% 100%;
     background-position: right center;

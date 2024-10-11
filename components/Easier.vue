@@ -30,7 +30,7 @@
         <img
           src="@/static/Images/container-img.webp"
           alt=""
-          class="w-[1000px] h-[450px] sm:block hidden"
+          class="w-[1000px] h-[450px] sm:block hidden rounded-2xl"
         />
         <img
           src="@/static/Images/right-circle-img.webp"

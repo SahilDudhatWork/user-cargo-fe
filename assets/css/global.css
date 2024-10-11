@@ -48,10 +48,6 @@
   .hero-bg-image{
     background-image: url('@/static/Images/hero-bg-img.webp');
   }
-  .hero-truck-image{
-    background-image: url('@/static/Images/hero-truck-img.webp');
-  }
-
   .\[\&\.active\]\:after\:bg-gradient-to-r.active::after {
     content: "";
     background: #ffffff;
