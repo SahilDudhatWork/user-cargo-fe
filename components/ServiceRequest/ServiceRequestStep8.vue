@@ -11,7 +11,7 @@
               }
             "
           >
-            {{ typeOfTransportationLabel }}
+            {{ service?.typeOfTransportation?.title }}
           </span>
           <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
           <span
@@ -22,7 +22,7 @@
               }
             "
           >
-            {{ modeOfTransportationLabel }}
+            {{ service?.modeOfTransportation?.title }}
           </span>
           <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
           <span class="text-[12px] font-semibold text-[#000000]">
@@ -227,22 +227,17 @@
 <script>
 export default {
   props: {
-    modeOfTransportationLabel: {
-      type: String,
-      required: true,
-      default: "",
-    },
-    typeOfTransportationLabel: {
-      type: String,
-      required: true,
-      default: "",
-    },
     formData: {
       type: Object,
       required: true,
       default: null,
     },
     errors: {
+      type: Object,
+      required: true,
+      default: null,
+    },
+    service: {
       type: Object,
       required: true,
       default: null,
@@ -268,9 +263,11 @@ export default {
         event.target.value
       );
     },
-    setAddress({ address, postalCode }) {
+    setAddress({ address, postalCode, lat, long }) {
       this.formData.addressDetails.buildinName = address;
       this.formData.addressDetails.postalCode = postalCode;
+      this.formData.addressDetails.lat = lat;
+      this.formData.addressDetails.long = long;
     },
     async validatePostalCodeInput(event) {
       this.formData.addressDetails.postalCode =

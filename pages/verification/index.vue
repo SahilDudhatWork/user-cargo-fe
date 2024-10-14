@@ -98,13 +98,11 @@ export default {
             otpString += this.otp[i];
           }
           const accessEmail = this.$cookies.get("email");
-          const res = await this.verifyUserOtp({
+          await this.verifyUserOtp({
             email: accessEmail,
             otp: parseInt(otpString),
           });
-          // this.$cookies.set("token", res.data.accessToken);
           this.$cookies.remove("email");
-
           this.$router.push("/additional-details");
         }
       } catch (error) {

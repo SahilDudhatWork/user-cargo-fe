@@ -109,7 +109,7 @@ export default {
       return this.serviceData?.modeOfTransportation?.[selectedType] || [];
     },
     formatPortItem() {
-      return this.serviceData?.port_BridgeOfCrossing.map((user) => {
+      return this.serviceData?.port_BridgeOfCrossing?.map((user) => {
         return {
           _id: user._id,
           title: user.post_bridge,

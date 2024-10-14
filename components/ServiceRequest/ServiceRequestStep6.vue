@@ -25,7 +25,7 @@
               }
             "
           >
-            {{ typeOfTransportationLabel }}
+            {{ service?.typeOfTransportation?.title }}
           </span>
           <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
           <span
@@ -36,7 +36,7 @@
               }
             "
           >
-            {{ modeOfTransportationLabel }}
+            {{ service?.modeOfTransportation?.title }}
           </span>
           <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
           <span
@@ -112,7 +112,7 @@
                   Transportation Type
                 </p>
                 <span class="text-[#1E1E1E] font-medium text-base">{{
-                  typeOfTransportationLabel
+                  service?.typeOfTransportation?.title
                 }}</span>
               </div>
               <div>
@@ -120,7 +120,7 @@
                   Mode of Transportation
                 </p>
                 <span class="text-[#1E1E1E] font-medium text-base">{{
-                  modeOfTransportationLabel
+                  service?.modeOfTransportation?.title
                 }}</span>
               </div>
               <div>
@@ -259,16 +259,6 @@
 import { mapActions, mapGetters } from "vuex";
 export default {
   props: {
-    modeOfTransportationLabel: {
-      type: String,
-      required: true,
-      default: "",
-    },
-    typeOfTransportationLabel: {
-      type: String,
-      required: true,
-      default: "",
-    },
     service: {
       type: Object,
       required: true,
@@ -279,7 +269,7 @@ export default {
       default: false,
     },
     totalPrice: {
-      type: Number,
+      type: String,
     },
   },
   computed: {

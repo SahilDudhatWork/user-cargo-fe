@@ -115,6 +115,8 @@ export default {
               this.$emit("updateAddress", {
                 address: this.address,
                 postalCode: postalCode,
+                lat: this.marker.position.lat,
+                long: this.marker.position.lng,
               });
             } else {
               this.address = "";

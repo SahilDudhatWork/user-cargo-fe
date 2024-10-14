@@ -22,7 +22,7 @@
               }
             "
           >
-            {{ typeOfTransportationLabel }}
+            {{ service?.typeOfTransportation?.title }}
           </span>
           <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
           <span
@@ -33,7 +33,7 @@
               }
             "
           >
-            {{ modeOfTransportationLabel }}
+            {{ service?.modeOfTransportation?.title }}
           </span>
         </div>
       </template>
@@ -205,19 +205,14 @@
 import { mapActions, mapGetters } from "vuex";
 export default {
   props: {
-    modeOfTransportationLabel: {
-      type: String,
-      required: true,
-      default: "",
-    },
-    typeOfTransportationLabel: {
-      type: String,
-      required: true,
-      default: "",
-    },
     errors: {
       type: Object,
       required: true,
+    },
+    service: {
+      type: Object,
+      required: true,
+      default: null,
     },
   },
   data() {

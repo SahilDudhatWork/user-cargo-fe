@@ -5,6 +5,7 @@ export const state = () => ({
   orderData: [],
   userAddress: [],
   singleOrderData: {},
+  orderPaginationData: {},
   selectedServiceItems: {
     selectedTypeOfTransportationItem: { title: "" },
     selectedModeItem: { title: "" },
@@ -51,12 +52,18 @@ export const getters = {
   getUserAddress(state) {
     return state.userAddress;
   },
+  getOrderPaginationData(state) {
+    return state.orderPaginationData;
+  },
 };
 export const mutations = {
   setSelectedServiceItems(state, { key, item }) {
     if (state.selectedServiceItems[key] !== undefined) {
       state.selectedServiceItems[key] = item;
     }
+  },
+  setOrderPaginationData(state, payload) {
+    state.orderPaginationData = payload;
   },
   setService(state, payload) {
     state.serviceData = payload;
@@ -109,6 +116,17 @@ export const actions = {
   async createOrder(ctx, payload) {
     try {
       const response = await $axios.post("/v1/user/order", payload);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+  async createCoordinatesPrice(ctx, payload) {
+    try {
+      const response = await $axios.post(
+        "/v1/user/order/coordinatesPrice",
+        payload
+      );
       return response;
     } catch (error) {
       throw error;
@@ -176,11 +194,14 @@ export const actions = {
   async fetchOrder(ctx, payload) {
     try {
       const status = payload?.status || "";
+      const page = payload?.page || "";
+      const limit = payload?.limit || "";
       const response = await $axios.get(
-        `/v1/user/order?status=${status}`,
+        `/v1/user/order?status=${status}&page=${page}&limit=${limit}`,
         payload
       );
-      ctx.commit("setOrderData", response.data?.response);
+      ctx.commit("setOrderData", response.data.response);
+      ctx.commit("setOrderPaginationData", response.data.pagination);
       return response;
     } catch (error) {
       throw error;

@@ -10,30 +10,25 @@
         v-if="modal.step3"
         @step2Next="step2Next"
         :errors="errors"
-        :typeOfTransportationLabel="selectedTypeOfTransportationLabel"
-        :modeOfTransportationLabel="selectedModeOfTransportationLabel"
+        :service="service"
       />
       <ServiceRequestStep4
         v-if="modal.step4"
         @step3Next="step3Next"
         :isSkipButton="true"
-        :typeOfTransportationLabel="selectedTypeOfTransportationLabel"
-        :modeOfTransportationLabel="selectedModeOfTransportationLabel"
         :errors="errors"
         @skipUserAddress="skipUserAddress"
+        :service="service"
       />
       <ServiceRequestStep5
         v-if="modal.step5"
         @step4Next="step4Next"
-        :typeOfTransportationLabel="selectedTypeOfTransportationLabel"
-        :modeOfTransportationLabel="selectedModeOfTransportationLabel"
+        :service="service"
         @getEditUserAddress="getEditUserAddress"
       />
       <ServiceRequestStep6
         v-if="modal.step6"
         @step5Next="step5Next"
-        :typeOfTransportationLabel="selectedTypeOfTransportationLabel"
-        :modeOfTransportationLabel="selectedModeOfTransportationLabel"
         :service="service"
         :isRequestSuccess="isRequestSuccess"
         :totalPrice="totalPrice"
@@ -44,9 +39,8 @@
       />
       <ServiceRequestStep8
         v-if="modal.step8"
+        :service="service"
         @editUserAddress="editUserAddress"
-        :typeOfTransportationLabel="selectedTypeOfTransportationLabel"
-        :modeOfTransportationLabel="selectedModeOfTransportationLabel"
         :formData="formData"
         :errors="errors"
       />
@@ -98,10 +92,10 @@ export default {
       modal: (state) => state.service.modal,
     }),
     selectedTypeOfTransportationLabel() {
-      return this.service?.typeOfTransportation?.title || "FTL";
+      return this.service?.typeOfTransportation?.title || "";
     },
     selectedModeOfTransportationLabel() {
-      return this.service?.modeOfTransportation?.title;
+      return this.service?.modeOfTransportation?.title || "";
     },
   },
   methods: {
@@ -116,6 +110,7 @@ export default {
       closeModal: "service/closeModal",
       previousStep: "service/previousStep",
       fetchTypeOfService: "service/fetchTypeOfService",
+      createCoordinatesPrice: "service/createCoordinatesPrice",
     }),
     async handleService(selectedService) {
       this.service.typeOfService = selectedService;
@@ -264,41 +259,55 @@ export default {
         });
       }
     },
-    step4Next(payload) {
-      let { selectedPickupItem, selectedDropItem } = payload;
-      this.service.pickUpAddressIds = selectedPickupItem;
-      this.service.dropAddressIds = selectedDropItem;
+    async step4Next(payload) {
+      try {
+        let { selectedPickupItem, selectedDropItem } = payload;
+        this.service.pickUpAddressIds = selectedPickupItem;
+        this.service.dropAddressIds = selectedDropItem;
 
-      const ChainsPrice = this.serviceData?.securingEquipment?.chains;
-      const TarpsPrice = this.serviceData?.securingEquipment?.tarps;
-      const StrapsPrice = this.serviceData?.securingEquipment?.straps;
+        const ChainsPrice = this.serviceData?.securingEquipment?.chains || 0;
+        const TarpsPrice = this.serviceData?.securingEquipment?.tarps || 0;
+        const StrapsPrice = this.serviceData?.securingEquipment?.straps || 0;
 
-      const servicePrice = this.service.typeOfService.price || 0;
-      const transportationPrice = this.service.typeOfTransportation.price || 0;
-      const modePrice = this.service.modeOfTransportation.price || 0;
+        const servicePrice = this.service?.typeOfService?.price || 0;
+        const transportationPrice =
+          this.service?.typeOfTransportation?.price || 0;
+        const modePrice = this.service?.modeOfTransportation?.price || 0;
 
-      const chainTotal = this.service.quantityForChains * ChainsPrice;
-      const tarpsTotal = this.service.quantityForTarps * TarpsPrice;
-      const strapsTotal = this.service.quantityForStraps * StrapsPrice;
-      const additionalServicesTotal =
-        this.selectedServiceItems?.selectedSpecialRequirementItems?.reduce(
-          (acc, service) => acc + service.price,
-          0
-        );
+        const chainTotal = this.service?.quantityForChains * ChainsPrice || 0;
+        const tarpsTotal = this.service?.quantityForTarps * TarpsPrice || 0;
+        const strapsTotal = this.service?.quantityForStraps * StrapsPrice || 0;
+        const additionalServicesTotal =
+          this.selectedServiceItems?.selectedSpecialRequirementItems?.reduce(
+            (acc, service) => acc + (service.price || 0),
+            0
+          ) || 0;
 
-      const totalPrice =
-        servicePrice +
-        transportationPrice +
-        modePrice +
-        chainTotal +
-        tarpsTotal +
-        strapsTotal +
-        additionalServicesTotal;
-
-      this.totalPrice = totalPrice.toFixed(1);
-
-      this.closeModal("step5");
-      this.openModal("step6");
+        const totalPrice =
+          servicePrice +
+          transportationPrice +
+          modePrice +
+          chainTotal +
+          tarpsTotal +
+          strapsTotal +
+          additionalServicesTotal;
+        const formData = {
+          pickUpAddressIds: this.service.pickUpAddressIds,
+          dropAddressIds: this.service.dropAddressIds,
+        };
+        const res = await this.createCoordinatesPrice(formData);
+        const finalTotalPrice = totalPrice + (res.data.price || 0);
+        this.totalPrice = finalTotalPrice.toFixed(1).toString();
+        console.log(this.totalPrice, "this.totalPrice");
+        this.closeModal("step5");
+        this.openModal("step6");
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
     },
     async step5Next() {
       try {

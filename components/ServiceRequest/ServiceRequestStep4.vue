@@ -26,7 +26,7 @@
               }
             "
           >
-            {{ typeOfTransportationLabel }}
+            {{ service?.typeOfTransportation?.title }}
           </span>
           <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
           <span
@@ -37,7 +37,7 @@
               }
             "
           >
-            {{ modeOfTransportationLabel }}
+            {{ service?.modeOfTransportation?.title }}
           </span>
           <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
           <span class="text-[12px] font-semibold text-[#000000]">
@@ -235,16 +235,6 @@
 import { mapActions } from "vuex";
 export default {
   props: {
-    modeOfTransportationLabel: {
-      type: String,
-      required: true,
-      default: "",
-    },
-    typeOfTransportationLabel: {
-      type: String,
-      required: true,
-      default: "",
-    },
     isSkipButton: {
       type: Boolean,
       required: true,
@@ -252,6 +242,11 @@ export default {
     errors: {
       type: Object,
       required: true,
+    },
+    service: {
+      type: Object,
+      required: true,
+      default: null,
     },
   },
   data() {
@@ -271,6 +266,8 @@ export default {
         postalCode: "",
         laneNumber: "",
         additionalDetails: "",
+        lat: "",
+        long: "",
       },
       contactDetails: {
         contactName: "",
@@ -285,9 +282,11 @@ export default {
       openModal: "service/openModal",
       closeModal: "service/closeModal",
     }),
-    setAddress({ address, postalCode }) {
+    setAddress({ address, postalCode, lat, long }) {
       this.addressDetails.buildinName = address;
       this.addressDetails.postalCode = postalCode;
+      this.addressDetails.lat = lat;
+      this.addressDetails.long = long;
     },
     getCountry(item) {
       this.contactDetails.countryCode = item.value;
