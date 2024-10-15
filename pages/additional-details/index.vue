@@ -33,6 +33,11 @@
         :isRequestSuccess="isRequestSuccess"
         :totalPrice="totalPrice"
       />
+      <checkout
+        v-if="modal.stepCheckout"
+        :totalPrice="totalPrice"
+        @approvePayment="sendServiceRequest"
+      />
       <ServiceRequestStep7
         v-if="modal.step7"
         @requestProcess="requestProcess"
@@ -311,6 +316,18 @@ export default {
     },
     async step5Next() {
       try {
+        this.openModal("stepCheckout");
+        this.closeModal("step6");
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    },
+    async sendServiceRequest(payload) {
+      try {
         this.service.userReference = this.service.userReference?.key;
         this.service.typeOfService = this.service.typeOfService?._id;
 
@@ -321,11 +338,17 @@ export default {
           this.service.port_BridgeOfCrossing?._id;
         this.service.typeOfTransportation =
           this.service.typeOfTransportation?._id;
-
+        this.service.paymentDetail = {
+          id: payload.id,
+          status: payload.status,
+          payment_source: payload.payment_source,
+        };
         const res = await this.createOrder(this.service);
         this.$toast.open({
           message: res.msg,
         });
+        this.closeModal("stepCheckout");
+        this.openModal("step7");
         this.isRequestSuccess = true;
         document.body.style.overflow = "hidden";
       } catch (error) {
@@ -337,15 +360,11 @@ export default {
       }
     },
     closeRequestSuccessModal() {
-      this.closeModal("step6");
       this.isRequestSuccess = false;
-      this.openModal("step7");
       document.body.style.overflow = "";
     },
     handleClick() {
-      this.closeModal("step6");
       this.isRequestSuccess = false;
-      this.openModal("step7");
       document.body.style.overflow = "";
     },
     requestProcess() {
