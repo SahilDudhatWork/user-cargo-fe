@@ -30,6 +30,7 @@ export const state = () => ({
     step3: false,
     step4: false,
     step5: false,
+    stepCheckout: false,
     step6: false,
     step7: false,
     step8: false,
@@ -214,6 +215,14 @@ export const actions = {
         payload
       );
       ctx.commit("setSingleOrderData", response.data);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+  async capturePayment(ctx, payload) {
+    try {
+      const response = await $axios.post(`/v1/user/payPal/capture`, payload);
       return response;
     } catch (error) {
       throw error;
