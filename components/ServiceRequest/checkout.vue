@@ -11,8 +11,10 @@
               class="h-full mx-2 w-[86%] relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[#DDDDDD] before:to-[#FFFFFF]"
             ></div>
           </div>
-          <div class="grid grid-cols-2 gap-7">
-            <div id="paypal-button"></div>
+          <div class="flex justify-center">
+            <div class="w-6/12">
+              <div id="paypal-button"></div>
+            </div>
           </div>
         </template>
       </Additional>
@@ -20,7 +22,7 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 export default {
   props: {
     totalPrice: {

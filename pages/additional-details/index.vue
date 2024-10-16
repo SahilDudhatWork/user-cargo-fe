@@ -303,7 +303,6 @@ export default {
         const res = await this.createCoordinatesPrice(formData);
         const finalTotalPrice = totalPrice + (res.data.price || 0);
         this.totalPrice = finalTotalPrice.toFixed(1).toString();
-        console.log(this.totalPrice, "this.totalPrice");
         this.closeModal("step5");
         this.openModal("step6");
       } catch (error) {
