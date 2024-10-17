@@ -455,9 +455,4 @@ export default {
 .mx-datepicker {
   width: 382px !important;
 }
-.error-msg {
-  font-size: 14px;
-  font-weight: 400;
-  color: red;
-}
 </style>

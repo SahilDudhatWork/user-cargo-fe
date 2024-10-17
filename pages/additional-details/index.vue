@@ -428,9 +428,4 @@ export default {
   filter: blur(4px) !important;
   -webkit-filter: blur(4px) !important;
 }
-.error-msg {
-  font-size: 14px;
-  font-weight: 400;
-  color: red;
-}
 </style>
