@@ -70,7 +70,12 @@ export default {
       console.log("handleMapClick", e);
     },
     getUpdatedLocation(e) {
-      console.log(e, "e");
+      this.marker.position = {
+        lat: e.latLng.lat(),
+        lng: e.latLng.lng(),
+      };
+      this.latLng = this.marker.position;
+      this.getAddress();
     },
     async getAddress(setAddress = true) {
       try {

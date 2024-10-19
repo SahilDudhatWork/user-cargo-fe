@@ -34,7 +34,7 @@
         <div class="mt-4 mb-4">
           <GoogleMap @updateAddress="setAddress" />
         </div>
-        <div class="grid grid-cols-2 mt-7">
+        <div class="grid sm:grid-cols-2 grid-cols-1 gap-4 mt-7">
           <div class="flex flex-col gap-y-2">
             <h1 class="text-[#00000099] text-base font-normal">
               ADDRESS DETAILS

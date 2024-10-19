@@ -7,7 +7,7 @@
         </div>
         <div class="max-w-4xl mx-auto z-50 bg-white rounded-2xl">
           <div
-            class="flex flex-col items-center justify-center overflow-hidden px-5 w-[326px]"
+            class="flex flex-col items-center justify-center overflow-hidden px-5 sm:w-[326px] w-[250px]"
           >
             <div class="mt-7 mb-4">
               <img

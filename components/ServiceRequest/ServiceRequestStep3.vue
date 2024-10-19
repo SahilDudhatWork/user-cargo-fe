@@ -38,7 +38,9 @@
         </div>
       </template>
       <template #content>
-        <div class="mt-5 grid grid-cols-2 gap-y-3.5">
+        <div
+          class="mt-5 grid sm:grid-cols-2 grid-cols-1 xl:gap-y-3.5 xl:gap-0 gap-4"
+        >
           <div>
             <label
               for="email"
@@ -89,14 +91,14 @@
           </div>
 
           <div
-            class="relative group cursor-pointer"
+            class="relative group cursor-pointer datepicker-container"
             v-if="selectedServiceItems?.selectedPrograming === 'Schedule'"
           >
-            <img
+            <!-- <img
               src="@/static/svg/down-arrow.svg"
               alt=""
               class="absolute right-[12.5rem] top-6 z-50 group-hover:hidden"
-            />
+            /> -->
             <img
               src="@/static/svg/datepicker.svg"
               alt=""
@@ -132,11 +134,11 @@
             class="group relative cursor-pointer"
             v-if="selectedServiceItems?.selectedPrograming === 'Schedule'"
           >
-            <img
+            <!-- <img
               src="@/static/svg/down-arrow.svg"
               alt=""
               class="absolute right-[12.5rem] top-6 z-50 group-hover:hidden"
-            />
+            /> -->
             <img
               src="@/static/svg/time.svg"
               alt=""
@@ -151,26 +153,22 @@
             ></date-picker>
           </div>
         </div>
-        <div class="mt-4 gap-[11.5rem] flex">
-          <div class="flex flex-col gap-y-3.5">
-            <div>
-              <label
-                for="email"
-                class="block mb-1 text-sm font-medium text-[#1B1B1B]"
-                >Quantity For Tarps</label
-              >
-              <AdditionalDropdown
-                :items="quantityTarps"
-                :selectedLabel="selectedServiceItems?.selectedQuantityTarps"
-                @getValue="getQuantityTarpsValue"
-                :errors="errors?.quantityTarpsSelectedLabel"
-              />
-              <span
-                class="error-msg"
-                v-if="errors?.quantityTarpsSelectedLabel"
-                >{{ errors?.quantityTarpsSelectedLabel }}</span
-              >
-            </div>
+        <div class="mt-4 grid sm:grid-cols-2 grid-cols-1 gap-4">
+          <div class="flex flex-col">
+            <label
+              for="email"
+              class="block mb-1 text-sm font-medium text-[#1B1B1B]"
+              >Quantity For Tarps</label
+            >
+            <AdditionalDropdown
+              :items="quantityTarps"
+              :selectedLabel="selectedServiceItems?.selectedQuantityTarps"
+              @getValue="getQuantityTarpsValue"
+              :errors="errors?.quantityTarpsSelectedLabel"
+            />
+            <span class="error-msg" v-if="errors?.quantityTarpsSelectedLabel">{{
+              errors?.quantityTarpsSelectedLabel
+            }}</span>
           </div>
           <div>
             <div class="mt-4">
@@ -452,7 +450,34 @@ export default {
 };
 </script>
 <style scoped>
-.mx-datepicker {
-  width: 382px !important;
+@media (min-width: 1440px) {
+  .mx-datepicker {
+    width: 382px !important;
+  }
+}
+@media (max-width: 1025px) and (min-width: 768px) {
+  .mx-datepicker {
+    width: 432px !important;
+  }
+}
+@media (max-width: 768px) and (min-width: 426px) {
+  .mx-datepicker {
+    width: 304px !important;
+  }
+}
+@media (max-width: 425px) and (min-width: 376px) {
+  .mx-datepicker {
+    width: 361px !important;
+  }
+}
+@media (max-width: 375px) and (min-width: 321px) {
+  .mx-datepicker {
+    width: 311px !important;
+  }
+}
+@media (max-width: 320px) {
+  .mx-datepicker {
+    width: auto !important;
+  }
 }
 </style>

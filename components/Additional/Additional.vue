@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="flex justify-center relative -top-36">
-      <div class="bg-white rounded-2xl px-8 py-8 w-[65%]">
+      <div class="bg-white rounded-2xl sm:px-8 px-4 py-8 xl:w-[65%] w-full">
         <slot name="header"></slot>
         <slot name="content"></slot>
-        <div class="flex justify-end gap-4">
+        <div class="flex justify-end gap-4 sm:flex-row flex-col">
           <button
             v-if="isSkipButton"
             @click="$emit('skip')"

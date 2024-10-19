@@ -3,7 +3,7 @@
     <div>
       <AdditionalHero @prevPage="prevPage" />
     </div>
-    <div class="px-10 py-10">
+    <div class="sm:px-10 px-4 py-10">
       <ServiceRequestStep1 @handleService="handleService" v-if="modal.step1" />
       <ServiceRequestStep2 @step1Next="step1Next" v-if="modal.step2" />
       <ServiceRequestStep3
@@ -370,7 +370,10 @@ export default {
       this.$router.push("/my-orders");
     },
     prevPage() {
-      if (this.modal.step1 === true) {
+      if (this.modal.step8) {
+        this.modal.step8 = false;
+        this.modal.step5 = true;
+      } else if (this.modal.step1) {
         this.$router.push("/");
       } else {
         this.previousStep();

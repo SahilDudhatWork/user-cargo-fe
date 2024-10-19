@@ -186,14 +186,17 @@
   border-color: #E8E8E8 !important;
 }
 
-.mx-datepicker-main{ 
-  left: 957.5px !important;
-  position: absolute !important;
-}
-.mx-datepicker-main .mx-time{ 
-  width: 382px !important;
-}
 
-.mx-datepicker-main .mx-calendar {
-  width: 382px !important;
+@media (min-width: 1441px) {
+  .mx-datepicker-main{ 
+    left: 957.5px !important;
+    position: absolute !important;
+  }
+  .mx-datepicker-main .mx-time{ 
+    width: 382px !important;
+  }
+  
+  .mx-datepicker-main .mx-calendar {
+    width: 382px !important;
+  }
 }

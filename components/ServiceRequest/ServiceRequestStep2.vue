@@ -31,7 +31,7 @@
             class="h-full mx-2 w-[84%] relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[#DDDDDD] before:to-[#FFFFFF]"
           ></div>
         </div>
-        <div class="grid grid-cols-2 gap-7">
+        <div class="grid sm:grid-cols-2 grid-cols-1 gap-7">
           <TypeOfTransportation
             v-for="(item, index) of formatPortItem"
             :key="index"
@@ -50,7 +50,7 @@
             class="h-full mx-2 w-[86%] relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[#DDDDDD] before:to-[#FFFFFF]"
           ></div>
         </div>
-        <div class="grid grid-cols-2 gap-7">
+        <div class="grid sm:grid-cols-2 grid-cols-1 gap-7">
           <TypeOfTransportation
             v-for="(item, index) of serviceData?.typeOfTransportation"
             :key="index"
@@ -76,7 +76,7 @@
             class="h-full mx-2 w-[85%] relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[#DDDDDD] before:to-[#FFFFFF]"
           ></div>
         </div>
-        <div class="grid grid-cols-3 gap-3">
+        <div class="grid xl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-3">
           <ModeOfTransportation
             v-for="(item, index) in filteredTransportationItems"
             :key="index"

@@ -13,8 +13,8 @@
           <p class="text-gray-300 font-normal text-base">
             4 different type of service you can opt
           </p>
-          <div class="grid grid-cols-2 mt-8">
-            <div class="w-full">
+          <div class="grid sm:grid-cols-2 mt-8">
+            <div class="w-full hidden sm:block">
               <img
                 src="@/static/Images/trueck1-image.webp"
                 alt=""
@@ -42,7 +42,7 @@
                   <img
                     src="@/static/svg/side-arrow.svg"
                     alt=""
-                    class="w-6 h-6 pt-2"
+                    class="w-6 h-6 pt-2 absolute"
                   />
                 </div>
               </div>

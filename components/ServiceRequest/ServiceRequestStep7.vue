@@ -21,7 +21,7 @@
           <div class="flex justify-center">
             <button
               @click="requestProcess"
-              class="font-semibold text-base text-white bg-[#0060C9] rounded-xl py-[15px] px-[87px] mt-6 mb-5 focus:outline-none"
+              class="font-semibold text-base text-white bg-[#0060C9] rounded-xl py-[15px] sm:px-[87px] px-[60px] mt-6 mb-5 focus:outline-none"
             >
               View Request
             </button>

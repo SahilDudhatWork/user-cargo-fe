@@ -29,7 +29,7 @@
           {{ item.movementId }}
         </p>
       </div>
-      <div class="grid grid-cols-5 mt-3 gap-y-5">
+      <div class="grid lg:grid-cols-5 sm:grid-cols-4 grid-cols-1 mt-3 gap-y-5">
         <div>
           <p class="text-[#00000099] font-normal text-sm mb-1">Location</p>
           <span

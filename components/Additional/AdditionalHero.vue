@@ -9,7 +9,7 @@
       <button
         v-if="isGoBack"
         type="button"
-        class="flex items-center gap-1 bg-[#000000] absolute rounded-lg left-40 px-[11px] py-1 opacity-65 top-5"
+        class="flex items-center gap-1 bg-[#000000] absolute rounded-lg sm:left-40 left-8 px-[11px] py-1 opacity-65 top-5"
         @click="$emit('prevPage')"
       >
         <img src="@/static/svg/left-arrow.svg" alt="" class="" />

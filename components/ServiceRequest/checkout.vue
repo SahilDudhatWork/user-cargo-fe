@@ -8,11 +8,11 @@
           <div class="flex items-center">
             <p class="text-sm text-[#151515] font-normal mt-3 mb-3">Paypal</p>
             <div
-              class="h-full mx-2 w-[86%] relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[#DDDDDD] before:to-[#FFFFFF]"
+              class="h-full mx-2 lg:w-[86%] w-full relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[#DDDDDD] before:to-[#FFFFFF]"
             ></div>
           </div>
           <div class="flex justify-center">
-            <div class="w-6/12">
+            <div class="sm:w-6/12">
               <div id="paypal-button"></div>
             </div>
           </div>

@@ -4,7 +4,7 @@
       class="pt-[17px] pb-[19px] !rounded-bl-[16px] !rounded-br-[16px] bg-white relative !z-50"
       style="box-shadow: 0px 6px 20px 0px #00000012"
     >
-      <header class="sm:mx-40 mx-6 flex justify-between relative">
+      <header class="lg:mx-40 mx-6 flex justify-between relative">
         <div class="flex items-center gap-12">
           <nuxt-link to="/">
             <img src="@/static/Images/header-logo.webp" alt="" />
@@ -24,7 +24,7 @@
         <div
           v-if="isDropdown"
           v-click-outside="closeDropdown"
-          class="z-50 absolute right-[10rem] top-3 bg-white divide-y divide-gray-100 rounded-2xl shadow flex flex-col items-center dropdown-content"
+          class="z-50 absolute lg:right-[10rem] right-4 top-3 bg-white divide-y divide-gray-100 rounded-2xl shadow flex flex-col items-center dropdown-content"
           style="box-shadow: rgba(0, 0, 0, 0.5) 0px 6px 50px 0px"
         >
           <ul class="py-2 cursor-pointer" @click="closeDropdown">

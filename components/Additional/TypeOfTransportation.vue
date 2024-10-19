@@ -10,7 +10,6 @@
       <div>
         <p class="font-bold text-[18px] text-[#000000]">
           {{ item?.title }}
-          <span v-if="item?.price"> (${{ item?.price }}) </span>
         </p>
         <p class="font-medium text-sm text-gray-400">
           {{
@@ -29,7 +28,7 @@
           <img
             src="@/static/svg/true.svg"
             alt=""
-            class="w-[12px] h-[12px]"
+            class="sm:w-[12px] xs:w-[12px] w-[22px] h-[12px]"
             v-if="isSelected"
           />
         </span>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="xl:mx-40 mx-5 mt-14">
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between sm:flex-row flex-col">
         <div class="border border-[#ECECEC] rounded-lg flex w-[205px]">
           <button
             @click="setStatus('Pending')"
@@ -247,7 +247,7 @@ export default {
     viewDetails(id) {
       this.$router.push(`my-orders/service/${id}`);
     },
-    async getOrder(payload) {
+    async getOrder(payload = { page: 1, limit: 10 }) {
       try {
         let { page, limit } = payload;
         page = page || 1;

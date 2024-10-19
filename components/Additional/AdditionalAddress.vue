@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="rounded-2xl py-[12px] px-4 mb-3 flex justify-between cursor-pointer w-[320px] mx-3"
+      class="rounded-2xl py-[12px] px-3 mb-3 flex justify-between cursor-pointer mx-3 xl:w-[340px] lg:w-[265px] sm:w-[270px]"
       :class="
         isSelected ? 'border border-[#3683D5]' : 'border border-[#E7E7E7] '
       "
@@ -13,14 +13,14 @@
             class="rounded flex"
             :class="
               isSelected
-                ? 'bg-[#034790] p-1'
+                ? 'bg-[#034790] px-[3px] py-[1px]'
                 : ' p-[7px] border border-gray-400'
             "
           >
             <img
               src="@/static/svg/true.svg"
               alt=""
-              class="w-[9px] h-[9px]"
+              class="xl:w-[15px] lg:w-[20px] sm:w-[20px] xs:w-[25px] w-[70px] h-[15px]"
               v-if="isSelected"
             />
           </span>

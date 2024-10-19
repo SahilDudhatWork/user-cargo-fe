@@ -5,70 +5,76 @@
       :class="isRequestSuccess ? 'blur-background' : ''"
     >
       <template #header>
-        <div class="flex items-center gap-2 cursor-pointer">
-          <span
-            class="text-[12px] font-semibold text-[#000000]"
-            @click="
-              {
-                openModal('step1'), closeModal('step6');
-              }
-            "
-          >
-            Service
-          </span>
-          <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
-          <span
-            class="text-[12px] font-semibold text-[#000000]"
-            @click="
-              {
-                openModal('step2'), closeModal('step6');
-              }
-            "
-          >
-            {{ service?.typeOfTransportation?.title }}
-          </span>
-          <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
-          <span
-            class="text-[12px] font-semibold text-[#000000]"
-            @click="
-              {
-                openModal('step3'), closeModal('step6');
-              }
-            "
-          >
-            {{ service?.modeOfTransportation?.title }}
-          </span>
-          <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
-          <span
-            class="text-[12px] font-semibold text-[#000000]"
-            @click="
-              {
-                openModal('step4'), closeModal('step6');
-              }
-            "
-          >
-            Add Address
-          </span>
-          <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
-          <span
-            class="text-[12px] font-semibold text-[#000000]"
-            @click="
-              {
-                openModal('step5'), closeModal('step6');
-              }
-            "
-          >
-            Select Address
-          </span>
-          <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+        <div
+          class="flex items-center gap-2 cursor-pointer sm:flex-row flex-col"
+        >
+          <div class="flex items-center gap-2">
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step1'), closeModal('step6');
+                }
+              "
+            >
+              Service
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step2'), closeModal('step6');
+                }
+              "
+            >
+              {{ service?.typeOfTransportation?.title }}
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step3'), closeModal('step6');
+                }
+              "
+            >
+              {{ service?.modeOfTransportation?.title }}
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+          </div>
+          <div class="flex items-center gap-2">
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step4'), closeModal('step6');
+                }
+              "
+            >
+              Add Address
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step5'), closeModal('step6');
+                }
+              "
+            >
+              Select Address
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+          </div>
           <span class="text-[12px] font-semibold text-[#000000]">
             Movement Detail
           </span>
         </div>
       </template>
       <template #content>
-        <div class="grid grid-cols-2 mt-9">
-          <div class="border-r border-[#EEEEEE] px-7">
+        <div class="grid sm:grid-cols-2 grid-cols-1 mt-9">
+          <div class="border-r border-[#EEEEEE] lg:px-7">
             <h1 class="text-[#000000] font-bold text-lg mb-4">
               Amount Details
             </h1>
@@ -93,7 +99,7 @@
             <h1 class="text-[#000000] font-bold text-lg mb-4 mt-5">
               Service Details
             </h1>
-            <div class="grid grid-cols-2 gap-y-5">
+            <div class="grid sm:grid-cols-2 grid-cols-1 gap-y-5">
               <div>
                 <p class="text-[#00000099] font-normal text-sm">Location ID</p>
                 <span class="text-[#1E1E1E] font-medium text-base">MX</span>
@@ -141,7 +147,7 @@
               </div>
             </div>
           </div>
-          <div class="px-9">
+          <div class="sm:px-9">
             <h1 class="text-[#00000099] font-normal text-sm">
               Special Requirements
             </h1>

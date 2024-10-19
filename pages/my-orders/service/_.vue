@@ -9,7 +9,7 @@
         Service Details: {{ orderData?.movementId }}
       </h1>
     </div>
-    <div class="grid grid-cols-2 mt-9">
+    <div class="grid sm:grid-cols-2 grid-cols-1 mt-9">
       <div class="border-r border-[#EEEEEE]">
         <h1 class="text-[#000000] font-bold text-lg mb-4">Amount Details</h1>
         <div class="flex justify-between">
@@ -49,7 +49,7 @@
             </button>
           </div>
         </div>
-        <div class="grid grid-cols-2 gap-y-5">
+        <div class="grid lg:grid-cols-2 grid-cols-1 gap-y-5">
           <div>
             <p class="text-[#00000099] font-normal text-sm">Movement ID</p>
             <span class="text-[#1E1E1E] font-medium text-base">{{
@@ -146,7 +146,7 @@
           </div>
         </div>
       </div>
-      <div class="px-9">
+      <div class="sm:px-9">
         <div class="!mt-10">
           <p class="text-[#000000] font-bold text-lg mb-4">Address Details</p>
           <div>
@@ -315,7 +315,9 @@
             class="w-16 h-16"
           />
         </div>
-        <div class="font-normal text-sm text-[#1E1E1E] max-w-[260px]">
+        <div
+          class="font-normal text-sm text-[#1E1E1E] sm:max-w-[260px] max-w-[200px]"
+        >
           You received an
           <span class="font-semibold">QR code </span>
           from carrier for further verification with driver.

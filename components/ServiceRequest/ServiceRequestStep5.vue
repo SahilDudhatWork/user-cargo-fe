@@ -2,54 +2,60 @@
   <div>
     <Additional @click="step4Next">
       <template #header>
-        <div class="flex items-center gap-2 cursor-pointer">
-          <span
-            class="text-[12px] font-semibold text-[#000000]"
-            @click="
-              {
-                openModal('step1'), closeModal('step5');
-              }
-            "
-          >
-            Service
-          </span>
-          <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
-          <span
-            class="text-[12px] font-semibold text-[#000000]"
-            @click="
-              {
-                openModal('step2'), closeModal('step5');
-              }
-            "
-          >
-            {{ service?.typeOfTransportation?.title }}
-          </span>
-          <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
-          <span
-            class="text-[12px] font-semibold text-[#000000]"
-            @click="
-              {
-                openModal('step3'), closeModal('step5');
-              }
-            "
-          >
-            {{ service?.modeOfTransportation?.title }}
-          </span>
-          <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
-          <span
-            class="text-[12px] font-semibold text-[#000000]"
-            @click="
-              {
-                openModal('step4'), closeModal('step5');
-              }
-            "
-          >
-            Add Address
-          </span>
-          <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
-          <span class="text-[12px] font-semibold text-[#000000]">
-            Select Address
-          </span>
+        <div
+          class="flex items-center gap-2 cursor-pointer sm:flex-row flex-col"
+        >
+          <div class="flex items-center gap-2">
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step1'), closeModal('step5');
+                }
+              "
+            >
+              Service
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step2'), closeModal('step5');
+                }
+              "
+            >
+              {{ service?.typeOfTransportation?.title }}
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step3'), closeModal('step5');
+                }
+              "
+            >
+              {{ service?.modeOfTransportation?.title }}
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+          </div>
+          <div class="flex items-center gap-2">
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step4'), closeModal('step5');
+                }
+              "
+            >
+              Add Address
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+            <span class="text-[12px] font-semibold text-[#000000]">
+              Select Address
+            </span>
+          </div>
         </div>
       </template>
       <template #content>
@@ -138,12 +144,12 @@ export default {
         arrows: true,
         responsive: [
           {
-            breakpoint: 1400,
+            breakpoint: 1500,
             settings: {
               arrows: false,
               centerMode: true,
               centerPadding: "0px",
-              slidesToShow: 3,
+              slidesToShow: 2,
             },
           },
           {
@@ -156,12 +162,12 @@ export default {
             },
           },
           {
-            breakpoint: 991,
+            breakpoint: 1024,
             settings: {
               arrows: false,
               centerMode: true,
               centerPadding: "0px",
-              slidesToShow: 2,
+              slidesToShow: 3,
             },
           },
           {
@@ -170,7 +176,7 @@ export default {
               arrows: false,
               centerMode: true,
               centerPadding: "0px",
-              slidesToShow: 1,
+              slidesToShow: 2,
             },
           },
           {

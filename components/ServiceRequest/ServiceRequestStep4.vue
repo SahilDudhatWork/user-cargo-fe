@@ -6,40 +6,44 @@
       @skip="$emit('skipUserAddress')"
     >
       <template #header>
-        <div class="flex items-center gap-2 cursor-pointer">
-          <span
-            class="text-[12px] font-semibold text-[#000000]"
-            @click="
-              {
-                openModal('step1'), closeModal('step4');
-              }
-            "
-          >
-            Service
-          </span>
-          <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
-          <span
-            class="text-[12px] font-semibold text-[#000000]"
-            @click="
-              {
-                openModal('step2'), closeModal('step4');
-              }
-            "
-          >
-            {{ service?.typeOfTransportation?.title }}
-          </span>
-          <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
-          <span
-            class="text-[12px] font-semibold text-[#000000]"
-            @click="
-              {
-                openModal('step3'), closeModal('step4');
-              }
-            "
-          >
-            {{ service?.modeOfTransportation?.title }}
-          </span>
-          <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+        <div
+          class="flex items-center gap-2 cursor-pointer sm:flex-row flex-col"
+        >
+          <div class="flex items-center gap-2">
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step1'), closeModal('step4');
+                }
+              "
+            >
+              Service
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step2'), closeModal('step4');
+                }
+              "
+            >
+              {{ service?.typeOfTransportation?.title }}
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+            <span
+              class="text-[12px] font-semibold text-[#000000]"
+              @click="
+                {
+                  openModal('step3'), closeModal('step4');
+                }
+              "
+            >
+              {{ service?.modeOfTransportation?.title }}
+            </span>
+            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+          </div>
           <span class="text-[12px] font-semibold text-[#000000]">
             Add Address
           </span>
@@ -49,7 +53,7 @@
         <div class="mt-4 mb-4">
           <GoogleMap @updateAddress="setAddress" />
         </div>
-        <div class="grid grid-cols-2 mt-7">
+        <div class="grid sm:grid-cols-2 grid-cols-1 mt-7 gap-4">
           <div class="flex flex-col gap-y-2">
             <h1 class="text-[#00000099] text-base font-normal">
               ADDRESS DETAILS

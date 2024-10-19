@@ -6,11 +6,11 @@
           <img
             src="@/static/Images/profile-truck.webp"
             alt=""
-            class="w-full relative -top-[100px]"
+            class="w-full relative lg:-top-[100px] sm:-top-[70px] -top-[50px] sm:h-auto h-[100px]"
           />
           <button
             type="button"
-            class="flex items-center gap-1 bg-[#000000] absolute rounded-lg left-40 px-[11px] py-1 opacity-65 top-5"
+            class="flex items-center gap-1 bg-[#000000] absolute rounded-lg sm:left-40 left-4 px-[11px] py-1 opacity-65 sm:top-5 top-0"
             @click="prevPage"
           >
             <img src="@/static/svg/left-arrow.svg" alt="" class="" />
@@ -19,12 +19,14 @@
             </span>
           </button>
         </div>
-        <div class="relative -top-[7.5rem]">
+        <div class="relative lg:-top-[7.5rem] sm:-top-[6rem] -top-[5rem]">
           <div
             :class="step1 ? ' border-b border-[#EEEEEE] pb-6 ' : ''"
-            class="sm:mx-40 mx-6 relative flex justify-between items-center"
+            class="lg:mx-40 mx-6 relative flex justify-between items-center sm:flex-row flex-col"
           >
-            <div class="flex gap-10 items-center relative">
+            <div
+              class="flex sm:gap-10 items-center relative sm:flex-row flex-col"
+            >
               <div>
                 <div class="border-[12px] border-white rounded-full">
                   <img
@@ -45,7 +47,7 @@
                       v-if="step2"
                       src="@/static/svg/profile-edit.svg"
                       alt=""
-                      class="object-cover rounded-full bg-white absolute p-2 left-24 bottom-2"
+                      class="object-cover rounded-full bg-white absolute p-2 left-24 sm:bottom-2"
                     />
                     <input
                       type="file"
@@ -72,13 +74,16 @@
               <button
                 @click="editProfile"
                 v-if="step1"
-                class="border border-[#0060C9] rounded-lg text-base font-semibold text-[#0060C9] px-4 py-2.5"
+                class="border border-[#0060C9] rounded-lg text-base font-semibold text-[#0060C9] px-4 py-2.5 sm:mt-0 mt-4"
               >
                 Edit Profile
               </button>
             </div>
           </div>
-          <div class="sm:mx-40 mx-6 mt-8 grid-cols-2 grid" v-if="step1">
+          <div
+            class="sm:mx-40 mx-6 mt-8 sm:grid-cols-2 grid-cols-1 grid"
+            v-if="step1"
+          >
             <div class="border-r border-[#EEEEEE]">
               <h1 class="text-[#000000] font-bold text-lg">Service Details</h1>
               <p class="text-[#00000099] font-normal text-sm mt-4">
@@ -96,7 +101,7 @@
                 {{ AccountCreatedDate }}
               </p>
             </div>
-            <div class="px-7">
+            <div class="sm:px-7 sm:mt-0 mt-4">
               <h1 class="text-[#000000] font-bold text-lg">Company Details</h1>
               <p class="text-[#00000099] font-normal text-sm mt-4">
                 Reference Info
@@ -132,14 +137,14 @@
               </div>
             </div>
           </div>
-          <div class="sm:mx-40 mx-5" v-if="step2">
+          <div class="xl:mx-40 mx-5" v-if="step2">
             <form
               class="space-y-4 md:space-y-6 mt-6"
               @submit.prevent="upateUserProfile"
             >
               <div>
                 <div
-                  class="grid grid-cols-3 gap-y-2 border-b border-[#EEEEEE] py-2"
+                  class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 xl:gap-12 gap-4 gap-y-2 border-b border-[#EEEEEE] py-2"
                 >
                   <div>
                     <label
@@ -231,7 +236,9 @@
                 <h1 class="text-[#000000] font-bold text-lg mt-3">
                   Company Details
                 </h1>
-                <div class="grid grid-cols-3 border-b border-[#EEEEEE] py-4">
+                <div
+                  class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 xl:gap-12 gap-4 border-b border-[#EEEEEE] py-4"
+                >
                   <div>
                     <label
                       for="Company name"
@@ -398,7 +405,9 @@
                   <h1 class="text-[#000000] font-bold text-lg mt-3">
                     Commercial Reference {{ key + 1 }}
                   </h1>
-                  <div class="grid grid-cols-3 gap-y-2 mt-4">
+                  <div
+                    class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 xl:gap-12 gap-4 gap-y-2 mt-4"
+                  >
                     <div>
                       <label
                         for="Company name"
