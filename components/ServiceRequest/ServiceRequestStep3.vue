@@ -43,18 +43,23 @@
         >
           <div>
             <label
-              for="email"
-              class="block mb-1 text-sm font-medium text-[#1B1B1B]"
+              for="User Reference"
+              class="block mb-2 text-sm font-normal text-[#4B4B4B]"
               >User Reference</label
             >
-            <AdditionalDropdown
-              :items="formatRef"
-              :selectedLabel="selectedServiceItems.selectedUserReference.label"
-              @getValue="getUserReferenceValue"
-              :errors="errors?.userReferenceSelectedLabel"
+            <input
+              type="text"
+              placeholder="User Reference"
+              class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[15px] focus:outline-none"
+              v-model="userReference"
+              :class="
+                errors?.userReference
+                  ? 'border border-red-600'
+                  : 'border border-gray-300'
+              "
             />
-            <span class="error-msg" v-if="errors?.userReferenceSelectedLabel">{{
-              errors?.userReferenceSelectedLabel
+            <span class="error-msg" v-if="errors?.userReference">{{
+              errors?.userReference
             }}</span>
           </div>
           <div>
@@ -215,7 +220,7 @@ export default {
   },
   data() {
     return {
-      userReference: [],
+      userReference: null,
       specialRequirements: [],
       programingList: [
         {
@@ -285,18 +290,15 @@ export default {
       ],
     };
   },
+  watch: {
+    userReference(value) {
+      this.updateSelectedServiceItems({ key: "userReference", item: value });
+    },
+  },
   computed: {
     ...mapGetters({
       selectedServiceItems: "service/getSelectedServiceItems",
     }),
-    formatRef() {
-      return this.userReference.map((user) => {
-        return {
-          key: user._id,
-          label: user?.contactName,
-        };
-      });
-    },
     isRequirementSelected() {
       return (label) => {
         return this.selectedServiceItems.selectedSpecialRequirementItems?.some(
@@ -367,12 +369,6 @@ export default {
         item: item.label,
       });
     },
-    getUserReferenceValue(item) {
-      this.updateSelectedServiceItems({
-        key: "selectedUserReference",
-        item: item,
-      });
-    },
     updateSchedule() {
       const scheduleItem = {
         date: this.schedule.date || "",
@@ -383,17 +379,9 @@ export default {
         item: scheduleItem,
       });
     },
-    async getUserRererence() {
-      try {
-        const res = await this.fetchServiceReference();
-        this.userReference = res.data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
     step2Next() {
       let data = {
-        selectedUserReference: this.selectedServiceItems?.selectedUserReference,
+        userReference: this.userReference,
         selectedQuantityChains:
           this.selectedServiceItems?.selectedQuantityChains != "Select option"
             ? this.selectedServiceItems?.selectedQuantityChains
@@ -437,14 +425,12 @@ export default {
       }
     },
   },
-  async mounted() {
-    await this.getUserRererence();
-  },
   async beforeMount() {
     await this.getPostBridge();
-    if (this.selectedServiceItems) {
-      this.schedule.date = this.selectedServiceItems.schedule.date;
-      this.schedule.time = this.selectedServiceItems.schedule.time;
+    this.userReference = this.selectedServiceItems.userReference || null;
+    if (this.selectedServiceItems?.schedule) {
+      this.schedule.date = this.selectedServiceItems?.schedule?.date;
+      this.schedule.time = this.selectedServiceItems?.schedule?.time;
     }
   },
 };

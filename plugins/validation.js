@@ -276,11 +276,8 @@ export default async (ctx, inject) => {
       errors[fieldName] = message;
     };
 
-    if (
-      form.userReferenceSelectedLabel == "" ||
-      form.userReferenceSelectedLabel === "Select option"
-    ) {
-      setError("userReferenceSelectedLabel", "Please select user reference.");
+    if (!form.userReference) {
+      setError("userReference", "user reference is required");
     }
     if (
       form.quantitySelectedLabel == "" ||

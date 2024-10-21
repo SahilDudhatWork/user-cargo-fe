@@ -15,7 +15,7 @@ export const state = () => ({
     selectedQuantityTarps: "Select option",
     selectedQuantityStraps: "Select option",
     selectedPrograming: "Select option",
-    selectedUserReference: { label: "" },
+    userReference: null,
     selectedSpecialRequirementItems: [],
     schedule: {
       date: "",

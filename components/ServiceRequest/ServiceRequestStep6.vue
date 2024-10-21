@@ -134,7 +134,7 @@
                   User Reference
                 </p>
                 <span class="text-[#1E1E1E] font-medium text-base">{{
-                  service?.userReference?.label
+                  service?.userReference
                 }}</span>
               </div>
               <div>

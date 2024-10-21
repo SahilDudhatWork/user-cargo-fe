@@ -148,7 +148,7 @@ export default {
     },
     async step2Next(payload) {
       const label = {
-        userReferenceSelectedLabel: payload?.selectedUserReference?.label,
+        userReference: payload?.userReference,
         quantitySelectedLabel: payload?.selectedQuantityChains,
         quantityStrapsSelectedLabel: payload?.selectedQuantityStraps,
         quantityTarpsSelectedLabel: payload?.selectedQuantityTarps,
@@ -164,7 +164,7 @@ export default {
         });
         return;
       }
-      this.service.userReference = payload?.selectedUserReference;
+      this.service.userReference = payload?.userReference;
       const specialRequirementIds = payload?.selectedSpecialRequirements.map(
         (req) => req._id
       );
@@ -327,7 +327,7 @@ export default {
     },
     async sendServiceRequest(payload) {
       try {
-        this.service.userReference = this.service.userReference?.key;
+        this.service.userReference = this.service.userReference;
         this.service.typeOfService = this.service.typeOfService?._id;
 
         this.service.modeOfTransportation =
