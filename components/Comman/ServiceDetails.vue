@@ -8,18 +8,13 @@
         <div>
           <h1 class="text-[#000000] font-bold text-lg">Service Details</h1>
         </div>
-        <div v-if="item?.status">
+        <div>
           <button
-            class="bg-[#FFAA00] rounded font-medium text-[10px] text-[#FEFEFE] px-4 py-1"
+            v-if="formattedStatus"
+            :style="{ backgroundColor: buttonColor }"
+            class="rounded font-medium text-[10px] text-[#FEFEFE] px-4 py-1"
           >
-            {{ item?.status }}
-          </button>
-        </div>
-        <div v-if="item?.status === 'Completed'">
-          <button
-            class="bg-[#3ECC48] rounded font-medium text-[10px] text-[#FEFEFE] px-4 py-1"
-          >
-            COMPLETED
+            {{ formattedStatus }}
           </button>
         </div>
       </div>
@@ -75,7 +70,7 @@
         <div>
           <p class="text-[#00000099] font-normal text-sm">User Reference</p>
           <p class="text-[#1E1E1E] font-medium text-base">
-            {{ item?.userReference?._id }}
+            {{ item?.userReference }}
           </p>
         </div>
       </div>
@@ -98,6 +93,28 @@ export default {
     item: {
       type: Object,
       required: true,
+    },
+  },
+  computed: {
+    formattedStatus() {
+      if (this.item?.status === "NewAssignments") {
+        return "NEW-ASSIGNMENTS";
+      } else if (this.item?.status === "Pending") {
+        return "PENDING";
+      } else if (this.item?.status === "Completed") {
+        return "COMPLETED";
+      }
+      return null;
+    },
+    buttonColor() {
+      if (this.item?.status === "NewAssignments") {
+        return "#023770";
+      } else if (this.item?.status === "Pending") {
+        return "#FFAA00";
+      } else if (this.item?.status === "Completed") {
+        return "#3ECC48";
+      }
+      return "#FFAA00";
     },
   },
 };

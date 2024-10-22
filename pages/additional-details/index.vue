@@ -116,6 +116,7 @@ export default {
       previousStep: "service/previousStep",
       fetchTypeOfService: "service/fetchTypeOfService",
       createCoordinatesPrice: "service/createCoordinatesPrice",
+      validateUserReference: "service/validateUserReference",
     }),
     async handleService(selectedService) {
       this.service.typeOfService = selectedService;
@@ -164,24 +165,33 @@ export default {
         });
         return;
       }
-      this.service.userReference = payload?.userReference;
-      const specialRequirementIds = payload?.selectedSpecialRequirements.map(
-        (req) => req._id
-      );
-
-      this.service.specialRequirements = specialRequirementIds;
-      this.service.quantityForChains = payload?.selectedQuantityChains;
-      this.service.quantityForStraps = payload?.selectedQuantityStraps;
-      this.service.quantityForTarps = payload?.selectedQuantityTarps;
-      this.service.programming = payload.selectedPrograming;
-      if (this.service.programming == "Schedule") {
-        if (payload.schedule) {
-          this.service.schedule = payload.schedule;
+      try {
+        await this.validateUserReference({
+          userReference: payload?.userReference,
+        });
+        this.service.userReference = payload?.userReference;
+        const specialRequirementIds = payload?.selectedSpecialRequirements.map(
+          (req) => req._id
+        );
+        this.service.specialRequirements = specialRequirementIds;
+        this.service.quantityForChains = payload?.selectedQuantityChains;
+        this.service.quantityForStraps = payload?.selectedQuantityStraps;
+        this.service.quantityForTarps = payload?.selectedQuantityTarps;
+        this.service.programming = payload.selectedPrograming;
+        if (this.service.programming == "Schedule") {
+          if (payload.schedule) {
+            this.service.schedule = payload.schedule;
+          }
         }
+        this.closeModal("step3");
+        this.openModal("step4");
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
       }
-
-      this.closeModal("step3");
-      this.openModal("step4");
     },
     async step3Next(payload) {
       let { addressDetails, contactDetails } = payload;

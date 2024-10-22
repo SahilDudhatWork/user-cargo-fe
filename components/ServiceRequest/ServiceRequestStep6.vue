@@ -174,7 +174,7 @@
                 {{ service.quantityForTarps }}xTarps
               </p>
             </div>
-            <div v-if="service.schedule?.time" class="mb-5">
+            <div v-if="service.schedule" class="mb-5">
               <p class="text-[#00000099] font-normal text-sm">Scheduled Time</p>
               <p class="font-semibold text-base text-[#1E1E1E]">
                 {{

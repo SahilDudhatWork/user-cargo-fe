@@ -122,6 +122,17 @@ export const actions = {
       throw error;
     }
   },
+  async validateUserReference(ctx, payload) {
+    try {
+      const response = await $axios.post(
+        "/v1/user/order/reference/validate",
+        payload
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
   async createCoordinatesPrice(ctx, payload) {
     try {
       const response = await $axios.post(

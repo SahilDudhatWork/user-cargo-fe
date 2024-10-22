@@ -37,15 +37,11 @@
           </h1>
           <div class="mr-8 mb-4 mt-5">
             <button
-              class="bg-[#FFAA00] rounded font-medium text-[10px] text-[#FEFEFE] px-4 py-1"
+              v-if="formattedStatus"
+              :style="{ backgroundColor: buttonColor }"
+              class="rounded font-medium text-[10px] text-[#FEFEFE] px-4 py-1"
             >
-              {{ orderData?.status }}
-            </button>
-            <button
-              v-if="orderData?.status == 'Completed'"
-              class="bg-[#3ECC48] rounded font-medium text-[10px] text-[#FEFEFE] px-4 py-1"
-            >
-              COMPLETED
+              {{ formattedStatus }}
             </button>
           </div>
         </div>
@@ -88,7 +84,7 @@
           <div>
             <p class="text-[#00000099] font-normal text-sm">User Reference</p>
             <span class="text-[#1E1E1E] font-medium text-base">{{
-              orderData?.userReference?._id
+              orderData?.userReference
             }}</span>
           </div>
           <div>
@@ -127,7 +123,13 @@
             {{ orderData?.quantityForTarps }}xTarps
           </p>
         </div>
-        <div class="mb-5">
+        <div
+          class="mb-5"
+          v-if="
+            orderData?.schedule?.date !== null ||
+            orderData?.schedule?.time !== null
+          "
+        >
           <p class="text-[#00000099] font-normal text-sm">Scheduled Time</p>
           <div
             class="font-semibold text-base text-[#1E1E1E]"
@@ -216,7 +218,7 @@
 
     <div>
       <div class="grid grid-cols-2">
-        <div>
+        <div v-if="orderData?.status === 'Pending'">
           <h1 class="text-[#00000099] font-normal text-sm">Carrier Info</h1>
           <div class="flex gap-3 items-center">
             <img
@@ -226,17 +228,20 @@
             />
             <div>
               <p class="text-[#1E1E1E] font-medium text-base">
-                {{ orderData?.userReference?.contactName }}
+                {{ orderData?.carrierData?.contactName }}
               </p>
               <p class="text-[#00000099] font-normal text-sm text">
-                {{ orderData?.userReference?.companyName }}, +{{
-                  orderData?.userReference?.countryCode
+                {{ orderData?.carrierData?.companyName }}, +{{
+                  orderData?.carrierData?.countryCode
                 }}
-                {{ orderData?.userReference?.contactNo }},
-                {{ orderData?.userReference?.emailAddress }}
+                {{ orderData?.carrierData?.contactNumber }},
+                {{ orderData?.carrierData?.email }}
               </p>
             </div>
           </div>
+          <div
+            class="w-full relative h-[3px] border-b border-[#E6E6E6] mb-6 mt-6"
+          ></div>
         </div>
         <!-- <div>
           <h1 class="text-[#00000099] font-normal text-sm">Operator Info</h1>
@@ -304,16 +309,10 @@
           </div>
         </div>
       </div> -->
-      <div
-        class="w-full relative h-[3px] border-b border-[#E6E6E6] mb-6 mt-6"
-      ></div>
+
       <div class="flex gap-4">
         <div>
-          <img
-            src="../../../static/Images/scanner.webp"
-            alt=""
-            class="w-16 h-16"
-          />
+          <img src="@/static/Images/scanner.webp" alt="" class="w-16 h-16" />
         </div>
         <div
           class="font-normal text-sm text-[#1E1E1E] sm:max-w-[260px] max-w-[200px]"
@@ -322,6 +321,12 @@
           <span class="font-semibold">QR code </span>
           from carrier for further verification with driver.
         </div>
+      </div>
+      <div
+        class="w-full relative h-[3px] border-b border-[#E6E6E6] mb-6 mt-6"
+      ></div>
+      <div class="mt-5">
+        <ProofOfPhotography />
       </div>
     </div>
     <div class="flex justify-center mt-32 mb-5">
@@ -362,6 +367,26 @@ export default {
     ...mapGetters({
       orderData: "service/getSingleOrderData",
     }),
+    formattedStatus() {
+      if (this.orderData?.status === "NewAssignments") {
+        return "NEW-ASSIGNMENTS";
+      } else if (this.orderData?.status === "Pending") {
+        return "PENDING";
+      } else if (this.orderData?.status === "Completed") {
+        return "COMPLETED";
+      }
+      return null;
+    },
+    buttonColor() {
+      if (this.orderData?.status === "NewAssignments") {
+        return "#023770";
+      } else if (this.orderData?.status === "Pending") {
+        return "#FFAA00";
+      } else if (this.orderData?.status === "Completed") {
+        return "#3ECC48";
+      }
+      return "#FFAA00";
+    },
   },
   methods: {
     ...mapActions({
