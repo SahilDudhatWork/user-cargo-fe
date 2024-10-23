@@ -95,27 +95,31 @@
             }}</span>
           </div>
 
-          <div
-            class="relative group cursor-pointer datepicker-container"
-            v-if="selectedServiceItems?.selectedPrograming === 'Schedule'"
-          >
+          <div v-if="selectedServiceItems?.selectedPrograming === 'Schedule'">
+            <label
+              for="date"
+              class="block mb-1 text-sm font-normal text-[#4B4B4B]"
+              >Date</label
+            >
             <!-- <img
               src="@/static/svg/down-arrow.svg"
               alt=""
               class="absolute right-[12.5rem] top-6 z-50 group-hover:hidden"
             /> -->
-            <img
-              src="@/static/svg/datepicker.svg"
-              alt=""
-              class="absolute z-50 top-4 left-2.5"
-            />
-            <DatePicker
-              v-model="schedule.date"
-              placeholder="Select date"
-              :lang="lang"
-              :format="customFormat"
-              @change="updateSchedule"
-            />
+            <div class="relative group cursor-pointer datepicker-container">
+              <img
+                src="@/static/svg/datepicker.svg"
+                alt=""
+                class="absolute z-50 top-4 left-2.5"
+              />
+              <DatePicker
+                v-model="schedule.date"
+                placeholder="Select date"
+                :lang="lang"
+                :format="customFormat"
+                @change="updateSchedule"
+              />
+            </div>
           </div>
           <div>
             <label
@@ -135,27 +139,31 @@
               >{{ errors?.quantityStrapsSelectedLabel }}</span
             >
           </div>
-          <div
-            class="group relative cursor-pointer"
-            v-if="selectedServiceItems?.selectedPrograming === 'Schedule'"
-          >
+          <div v-if="selectedServiceItems?.selectedPrograming === 'Schedule'">
+            <label
+              for="time"
+              class="block mb-1 text-sm font-normal text-[#4B4B4B]"
+              >Time</label
+            >
             <!-- <img
               src="@/static/svg/down-arrow.svg"
               alt=""
               class="absolute right-[12.5rem] top-6 z-50 group-hover:hidden"
             /> -->
-            <img
-              src="@/static/svg/time.svg"
-              alt=""
-              class="absolute z-50 top-4 left-2.5"
-            />
-            <date-picker
-              v-model="schedule.time"
-              value-type="format"
-              type="time"
-              placeholder="HH:mm:ss"
-              @change="updateSchedule"
-            ></date-picker>
+            <div class="group relative cursor-pointer">
+              <img
+                src="@/static/svg/time.svg"
+                alt=""
+                class="absolute z-50 top-4 left-2.5"
+              />
+              <date-picker
+                v-model="schedule.time"
+                value-type="format"
+                type="time"
+                placeholder="HH:mm:ss"
+                @change="updateSchedule"
+              ></date-picker>
+            </div>
           </div>
         </div>
         <div class="mt-4 grid sm:grid-cols-2 grid-cols-1 gap-4">

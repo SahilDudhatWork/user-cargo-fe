@@ -2,7 +2,9 @@
   <div>
     <div class="xl:mx-40 mx-5 mt-14">
       <div class="flex items-center justify-between sm:flex-row flex-col">
-        <div class="border border-[#ECECEC] rounded-lg flex w-[205px]">
+        <div
+          class="border border-[#ECECEC] rounded-lg flex sm:w-[320px] w-[315px]"
+        >
           <button
             @click="setStatus('Pending')"
             :class="
@@ -13,6 +15,17 @@
             class="rounded-lg text-sm px-5 py-2"
           >
             Requests
+          </button>
+          <button
+            @click="setStatus('InProgress')"
+            :class="
+              orderStatus === 'InProgress'
+                ? 'bg-[#0060C9] font-semibold text-[#F5F9FD]'
+                : 'text-[#686868] font-normal bg-white'
+            "
+            class="rounded-lg text-sm px-5 py-2"
+          >
+            In-Progress
           </button>
           <button
             @click="setStatus('Completed')"
@@ -29,7 +42,7 @@
         <div>
           <div
             v-if="orderData?.length > 0"
-            class="mt-4 flex justify-end gap-5 items-center mb-10"
+            class="mt-4 flex justify-end sm:gap-5 gap-4 items-center mb-10"
           >
             <span>{{ paginationText }}</span>
             <button

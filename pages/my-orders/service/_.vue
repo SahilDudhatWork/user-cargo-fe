@@ -218,7 +218,7 @@
 
     <div>
       <div class="grid grid-cols-2">
-        <div v-if="orderData?.status === 'Pending'">
+        <div v-if="$checkUserUpload(orderData?.status)">
           <h1 class="text-[#00000099] font-normal text-sm">Carrier Info</h1>
           <div class="flex gap-3 items-center">
             <img
@@ -310,28 +310,30 @@
         </div>
       </div> -->
 
-      <div class="flex gap-4">
-        <div>
-          <img src="@/static/Images/scanner.webp" alt="" class="w-16 h-16" />
+      <div v-if="$checkQr(orderData?.status)">
+        <div class="flex gap-4">
+          <div>
+            <img :src="orderData?.qrCode" alt="" class="w-16 h-16" />
+          </div>
+          <div
+            class="font-normal text-sm text-[#1E1E1E] sm:max-w-[260px] max-w-[200px]"
+          >
+            You received an
+            <span class="font-semibold">QR code </span>
+            from carrier for further verification with driver.
+          </div>
         </div>
         <div
-          class="font-normal text-sm text-[#1E1E1E] sm:max-w-[260px] max-w-[200px]"
-        >
-          You received an
-          <span class="font-semibold">QR code </span>
-          from carrier for further verification with driver.
-        </div>
+          class="w-full relative h-[3px] border-b border-[#E6E6E6] mb-6 mt-6"
+        ></div>
       </div>
-      <div
-        class="w-full relative h-[3px] border-b border-[#E6E6E6] mb-6 mt-6"
-      ></div>
-      <div class="mt-5">
+      <div class="mt-5" v-if="$checkProofOfPhotography(orderData?.status)">
         <ProofOfPhotography />
       </div>
     </div>
     <div class="flex justify-center mt-32 mb-5">
       <div
-        class="rounded-2xl text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] flex justify-between py-3 px-5 gap-14 items-center"
+        class="rounded-2xl text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] flex justify-between py-3 px-5 sm:gap-14 gap-2 items-center"
       >
         <div>
           <h1 class="text-[#FFFFFF] text-sm font-semibold">Upload Document</h1>
@@ -346,7 +348,12 @@
           >
             Upload
           </button>
-          <input type="file" ref="fileInput" class="hidden" />
+          <input
+            type="file"
+            ref="fileInput"
+            class="hidden"
+            @change="handleFileUpload"
+          />
         </div>
       </div>
     </div>
@@ -372,6 +379,8 @@ export default {
         return "NEW-ASSIGNMENTS";
       } else if (this.orderData?.status === "Pending") {
         return "PENDING";
+      } else if (this.orderData?.status === "InProgress") {
+        return "IN-PROGRESS";
       } else if (this.orderData?.status === "Completed") {
         return "COMPLETED";
       }
@@ -381,17 +390,47 @@ export default {
       if (this.orderData?.status === "NewAssignments") {
         return "#023770";
       } else if (this.orderData?.status === "Pending") {
+        return "#989898";
+      } else if (this.orderData?.status === "InProgress") {
         return "#FFAA00";
       } else if (this.orderData?.status === "Completed") {
         return "#3ECC48";
       }
-      return "#FFAA00";
+      return "#000000";
     },
   },
   methods: {
     ...mapActions({
       fetchSingleOrder: "service/fetchSingleOrder",
+      uploadFile: "service/uploadFile",
     }),
+
+    handleFileUpload(event) {
+      this.documents = event.target.files[0];
+      if (this.documents) {
+        this.uploadDocumentFile();
+      }
+    },
+    async uploadDocumentFile() {
+      try {
+        const formData = new FormData();
+        formData.append("documents", this.documents);
+        formData.append("movementId", this.movementId);
+        const res = await this.uploadFile({
+          id: this.movementId,
+          data: formData,
+        });
+        this.$toast.open({
+          message: res.msg,
+        });
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    },
     actionButton(label) {
       this.isOrder = label;
     },

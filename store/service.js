@@ -144,6 +144,14 @@ export const actions = {
       throw error;
     }
   },
+  async uploadFile(ctx, { id, data }) {
+    try {
+      const response = await $axios.post(`/v1/common/qr&proof&doc/${id}`, data);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
   async fetchUserAddress(ctx, payload) {
     try {
       const response = await $axios.get("/v1/user/address", payload);

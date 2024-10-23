@@ -101,6 +101,8 @@ export default {
         return "NEW-ASSIGNMENTS";
       } else if (this.item?.status === "Pending") {
         return "PENDING";
+      } else if (this.item?.status === "InProgress") {
+        return "IN-PROGRESS";
       } else if (this.item?.status === "Completed") {
         return "COMPLETED";
       }
@@ -110,11 +112,13 @@ export default {
       if (this.item?.status === "NewAssignments") {
         return "#023770";
       } else if (this.item?.status === "Pending") {
+        return "#989898";
+      } else if (this.item?.status === "InProgress") {
         return "#FFAA00";
       } else if (this.item?.status === "Completed") {
         return "#3ECC48";
       }
-      return "#FFAA00";
+      return "#000000";
     },
   },
 };
