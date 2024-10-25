@@ -328,7 +328,7 @@
         ></div>
       </div>
       <div class="mt-5" v-if="$checkProofOfPhotography(orderData?.status)">
-        <ProofOfPhotography />
+        <ProofOfPhotography :orderData="orderData" />
       </div>
     </div>
     <div class="flex justify-center mt-32 mb-5">
