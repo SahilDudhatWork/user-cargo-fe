@@ -2,9 +2,7 @@
   <div>
     <div class="xl:mx-40 mx-5 mt-14">
       <div class="flex items-center justify-between sm:flex-row flex-col">
-        <div
-          class="border border-[#ECECEC] rounded-lg flex sm:w-[320px] w-[315px]"
-        >
+        <div class="border border-[#ECECEC] rounded-lg flex w-[315px]">
           <button
             @click="setStatus('Pending')"
             :class="

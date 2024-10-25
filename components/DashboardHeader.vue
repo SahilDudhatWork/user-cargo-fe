@@ -5,7 +5,7 @@
       style="box-shadow: 0px 6px 20px 0px #00000012"
     >
       <header class="lg:mx-40 mx-6 flex justify-between relative">
-        <div class="flex items-center gap-12">
+        <div class="flex items-center gap-12 focus-visible:outline-none">
           <nuxt-link to="/">
             <img src="@/static/Images/header-logo.webp" alt="" />
           </nuxt-link>
@@ -76,6 +76,7 @@ export default {
     },
     logout() {
       this.$cookies.remove("token");
+      this.$cookies.remove("refreshToken");
       this.$router.push("/login");
     },
   },

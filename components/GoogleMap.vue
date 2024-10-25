@@ -57,7 +57,6 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      console.log("true");
       this.geocoder = new google.maps.Geocoder();
     }, 1000);
   },

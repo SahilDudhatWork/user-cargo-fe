@@ -331,7 +331,7 @@
         <ProofOfPhotography :orderData="orderData" />
       </div>
     </div>
-    <div class="flex justify-center mt-32 mb-5">
+    <div class="flex justify-center mt-32 mb-5" v-if="!orderData?.documents">
       <div
         class="rounded-2xl text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] flex justify-between py-3 px-5 sm:gap-14 gap-2 items-center"
       >
@@ -423,6 +423,7 @@ export default {
         this.$toast.open({
           message: res.msg,
         });
+        await this.getSingleOrder();
       } catch (error) {
         console.log(error);
         this.$toast.open({
