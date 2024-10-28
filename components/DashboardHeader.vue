@@ -15,7 +15,17 @@
             class="flex bg-[#ECF3FA] cursor-pointer py-[4px] items-center rounded-lg pl-1 pr-3 gap-1"
             @click="isDropdown = !isDropdown"
           >
-            <img src="@/static/Images/dashboard-header-logo.webp" alt="" />
+            <img
+              :src="profileData?.profilePicture"
+              alt=""
+              v-if="profileData?.profilePicture"
+              class="w-[29px] h-[29px]"
+            />
+            <img
+              src="@/static/Images/dashboard-header-logo.webp"
+              alt=""
+              v-else
+            />
             <img src="@/static/svg/blue-down-arrow.svg" alt="" />
           </div>
         </div>
@@ -64,11 +74,17 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
       isDropdown: false,
     };
+  },
+  computed: {
+    ...mapGetters({
+      profileData: "auth/getUserProfile",
+    }),
   },
   methods: {
     closeDropdown() {

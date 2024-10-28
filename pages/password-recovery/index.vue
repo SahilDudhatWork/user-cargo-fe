@@ -58,6 +58,7 @@
 import { mapActions } from "vuex";
 
 export default {
+  middleware: "guest",
   data() {
     return {
       forgetEmail: "",
@@ -75,7 +76,10 @@ export default {
             type: "error",
           });
         } else {
-          const res = await this.sendOtp({ email: this.forgetEmail });
+          const res = await this.sendOtp({
+            email: this.forgetEmail,
+            otp_type: "forgot",
+          });
           this.$toast.open({
             message: res.msg,
           });

@@ -57,7 +57,7 @@
                   name="createPassword"
                   id="createPassword"
                   class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[13px]"
-                  placeholder="Type your email address"
+                  placeholder="New Password"
                   v-model="password"
                 />
               </div>
@@ -102,7 +102,7 @@
                   :type="isPassword ? 'text' : 'password'"
                   name="password"
                   id="password"
-                  placeholder="Type your password"
+                  placeholder="Re-enter password"
                   class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[13px]"
                   v-model="confirmPassword"
                 />
@@ -133,6 +133,7 @@
 import { mapActions } from "vuex";
 
 export default {
+  middleware: "guest",
   data() {
     return {
       password: "",

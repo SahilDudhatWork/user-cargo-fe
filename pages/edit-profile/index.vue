@@ -807,6 +807,7 @@ export default {
             );
           }
         }
+
         this.formData.commercialReference.forEach((ref, index) => {
           let hasValidValue = Object.keys(ref).some(
             (key) =>
@@ -832,7 +833,30 @@ export default {
             }
           }
         });
+        const commercialRef1 = this.formData.commercialReference[0];
+        const commercialRef2 = this.formData.commercialReference[1];
+        if (
+          commercialRef2 &&
+          !commercialRef1.companyName &&
+          !commercialRef1.contactName
+        ) {
+          this.$toast.open({
+            message: "Please add commercial reference 1",
+            type: "error",
+          });
+          return;
+        }
         const response = await this.updateProfile(formData);
+        await this.profile();
+        this.formData = await this.$lodash.cloneDeep(this.getUserProfile);
+        this.profileURL = this.formData?.profilePicture || "";
+        this.selectedLabel =
+          this.formData.companyFormationType &&
+          this.formData.companyFormationType != "" &&
+          this.formData.companyFormationType != null
+            ? this.formData.companyFormationType
+            : "Select option";
+        await this.formatCommercialReference();
         this.$toast.open({
           message: response.msg,
         });
@@ -954,9 +978,12 @@ export default {
       await this.getUserRererence();
       this.formData = await this.$lodash.cloneDeep(this.getUserProfile);
       this.profileURL = this.formData?.profilePicture || "";
-      this.selectedLabel = this.formData.companyFormationType
-        ? this.formData.companyFormationType
-        : "Select option";
+      this.selectedLabel =
+        this.formData.companyFormationType &&
+        this.formData.companyFormationType != "" &&
+        this.formData.companyFormationType != null
+          ? this.formData.companyFormationType
+          : "Select option";
       await this.formatCommercialReference();
     } catch (error) {
       console.log(error);

@@ -508,6 +508,7 @@
 <script>
 import { mapActions } from "vuex";
 export default {
+  middleware: "guest",
   data() {
     return {
       password: false,
@@ -735,6 +736,19 @@ export default {
             }
           }
         });
+        const commercialRef1 = this.formData.commercialReference[0];
+        const commercialRef2 = this.formData.commercialReference[1];
+        if (
+          commercialRef2 &&
+          !commercialRef1.companyName &&
+          !commercialRef1.contactName
+        ) {
+          this.$toast.open({
+            message: "Please add commercial reference 1",
+            type: "error",
+          });
+          return;
+        }
         const response = await this.signup(formData);
         this.$toast.open({
           message: response.msg,

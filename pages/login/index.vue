@@ -16,7 +16,7 @@
             <form class="space-y-4 md:space-y-6 mt-6" @submit.prevent="login">
               <div>
                 <label
-                  for="email"
+                  for="Email Address"
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >Email Address</label
                 >
@@ -32,7 +32,7 @@
               <div>
                 <div class="relative">
                   <label
-                    for="createPassword"
+                    for="Password"
                     class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                     >Password</label
                   >
@@ -142,6 +142,7 @@ export default {
     togglePassword() {
       this.isPassword = !this.isPassword;
     },
+
     async login() {
       try {
         if ((!this.formData.email, !this.formData.password)) {
@@ -151,7 +152,7 @@ export default {
           });
         } else {
           this.formData.email = this.formData?.email.toLowerCase();
-          const res = await this.signin(this.formData);
+          await this.signin(this.formData);
           this.$cookies.set("email", this.formData?.email, {
             expires: 1,
           });
