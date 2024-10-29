@@ -7,7 +7,18 @@
             class="text-[12px] font-semibold text-[#000000]"
             @click="
               {
-                openModal('step1'), closeModal('step8');
+                openModal('step1'), closeModal('step6');
+              }
+            "
+          >
+            Service
+          </span>
+          <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+          <span
+            class="text-[12px] font-semibold text-[#000000]"
+            @click="
+              {
+                openModal('step2'), closeModal('step8');
               }
             "
           >
@@ -18,7 +29,7 @@
             class="text-[12px] font-semibold text-[#000000]"
             @click="
               {
-                openModal('step2'), closeModal('step8');
+                openModal('step3'), closeModal('step8');
               }
             "
           >
@@ -41,7 +52,7 @@
             </h1>
             <div class="mt-1">
               <label
-                for="companyName"
+                for="Building Name"
                 class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                 >Building Name</label
               >
@@ -63,7 +74,7 @@
             </div>
             <div>
               <label
-                for="companyName"
+                for="Postal Code"
                 class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                 >Postal Code</label
               >
@@ -86,7 +97,7 @@
             </div>
             <div>
               <label
-                for="companyName"
+                for="Lane Number"
                 class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                 >Lane Number</label
               >
@@ -109,7 +120,7 @@
             </div>
             <div>
               <label
-                for="companyName"
+                for="Additional Details"
                 class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                 >Additional Details</label
               >
@@ -137,7 +148,7 @@
 
             <div class="mt-1">
               <label
-                for="ContactName"
+                for="Contact name"
                 class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                 >Contact name</label
               >
@@ -159,7 +170,7 @@
             </div>
             <div>
               <label
-                for="email"
+                for="Contact Email"
                 class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                 >Contact Email</label
               >
@@ -183,7 +194,7 @@
 
             <div>
               <label
-                for="ContactNo"
+                for="Contact No"
                 class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                 >Contact No.</label
               >
@@ -225,6 +236,7 @@
   </div>
 </template>
 <script>
+import { mapActions } from "vuex";
 export default {
   props: {
     formData: {
@@ -258,6 +270,10 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      openModal: "service/openModal",
+      closeModal: "service/closeModal",
+    }),
     async validateContactInput(event) {
       this.formData.contactDetails.contactNumber = await this.$validateNumber(
         event.target.value

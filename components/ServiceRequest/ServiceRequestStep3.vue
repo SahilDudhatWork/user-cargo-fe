@@ -101,11 +101,6 @@
               class="block mb-1 text-sm font-normal text-[#4B4B4B]"
               >Date</label
             >
-            <!-- <img
-              src="@/static/svg/down-arrow.svg"
-              alt=""
-              class="absolute right-[12.5rem] top-6 z-50 group-hover:hidden"
-            /> -->
             <div class="relative group cursor-pointer datepicker-container">
               <img
                 src="@/static/svg/datepicker.svg"
@@ -145,11 +140,6 @@
               class="block mb-1 text-sm font-normal text-[#4B4B4B]"
               >Time</label
             >
-            <!-- <img
-              src="@/static/svg/down-arrow.svg"
-              alt=""
-              class="absolute right-[12.5rem] top-6 z-50 group-hover:hidden"
-            /> -->
             <div class="group relative cursor-pointer">
               <img
                 src="@/static/svg/time.svg"
@@ -160,7 +150,7 @@
                 v-model="schedule.time"
                 value-type="format"
                 type="time"
-                placeholder="HH:mm:ss"
+                placeholder="Select time"
                 @change="updateSchedule"
               ></date-picker>
             </div>

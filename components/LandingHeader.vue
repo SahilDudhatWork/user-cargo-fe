@@ -209,6 +209,7 @@ export default {
     },
     logout() {
       this.$cookies.remove("token");
+      this.$cookies.remove("refreshToken");
       this.$cookies.remove("service");
       this.$router.push("/login");
     },

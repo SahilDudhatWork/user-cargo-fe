@@ -357,6 +357,24 @@
         </div>
       </div>
     </div>
+    <div v-if="orderData?.status === 'Completed' && !isUploadComplete">
+      <UploadDocument
+        v-if="!orderData?.ratings?.userToCarrier"
+        title="Movement Completed"
+        description="share your experience with us."
+        buttonText="Share Review"
+        @handleClick="shareRiview"
+        :showInput="false"
+      />
+    </div>
+    <div>
+      <ShareReviewModal
+        :isModal="isShareReviewModal"
+        :orderData="orderData"
+        @handleSubmit="handleShareRiview"
+        @closeModal="closeShareReviewModal"
+      />
+    </div>
   </div>
 </template>
 
@@ -368,6 +386,9 @@ export default {
   data() {
     return {
       movementId: null,
+      isShareReviewModal: false,
+      isProofOfPhotography: false,
+      isUploadComplete: false,
     };
   },
   computed: {
@@ -403,13 +424,43 @@ export default {
     ...mapActions({
       fetchSingleOrder: "service/fetchSingleOrder",
       uploadFile: "service/uploadFile",
+      createRating: "service/createRating",
     }),
-
+    shareRiview() {
+      this.isShareReviewModal = !this.isShareReviewModal;
+    },
     handleFileUpload(event) {
       this.documents = event.target.files[0];
       if (this.documents) {
         this.uploadDocumentFile();
       }
+    },
+    async handleShareRiview(formData) {
+      try {
+        const reviewData = {
+          rating: formData.rating,
+          experience: formData.experience,
+        };
+        const res = await this.createRating({
+          id: this.movementId,
+          data: reviewData,
+        });
+        this.$toast.open({
+          message: res.msg,
+        });
+        this.isUploadComplete = true;
+        this.isShareReviewModal = false;
+        await this.getSingleOrder();
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    },
+    closeShareReviewModal() {
+      this.isShareReviewModal = false;
     },
     async uploadDocumentFile() {
       try {

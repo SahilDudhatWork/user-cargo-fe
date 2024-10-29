@@ -19,7 +19,7 @@
             >
               <div>
                 <label
-                  for="email"
+                  for="Email Address"
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >Email Address</label
                 >

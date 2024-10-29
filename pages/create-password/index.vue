@@ -19,7 +19,7 @@
             >
               <div class="relative">
                 <label
-                  for="createPassword"
+                  for="Create Password"
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >Create Password</label
                 >
@@ -66,7 +66,7 @@
               >
               <div class="!m-0 relative">
                 <label
-                  for="password"
+                  for="Password"
                   class="block mb-2 text-sm font-normal text-[#4B4B4B] mt-3"
                   >Password</label
                 >

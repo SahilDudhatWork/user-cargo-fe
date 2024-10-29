@@ -47,7 +47,7 @@
                       v-if="step2"
                       src="@/static/svg/profile-edit.svg"
                       alt=""
-                      class="object-cover rounded-full bg-white absolute p-2 left-24 sm:bottom-2"
+                      class="object-cover rounded-full bg-white absolute p-2 left-24 sm:!bottom-2 bottom-[100px]"
                     />
                     <input
                       type="file"
@@ -148,7 +148,7 @@
                 >
                   <div>
                     <label
-                      for="ContactName"
+                      for="Name"
                       class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                       >Name *</label
                     >
@@ -171,7 +171,7 @@
                   </div>
                   <div>
                     <label
-                      for="email"
+                      for="Email address"
                       class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                       >Email address *</label
                     >
@@ -195,7 +195,7 @@
                   </div>
                   <div>
                     <label
-                      for="ContactNo"
+                      for="Contact"
                       class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                       >Contact *
                     </label>
@@ -436,7 +436,7 @@
                     </div>
                     <div>
                       <label
-                        for="ContactName"
+                        for="Contact name"
                         class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                         >Contact name</label
                       >
@@ -462,7 +462,7 @@
                     </div>
                     <div>
                       <label
-                        for="email"
+                        for="Email Address"
                         class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                         >Email Address</label
                       >
@@ -490,7 +490,7 @@
                     </div>
                     <div>
                       <label
-                        for="ContactNo"
+                        for="Contact No"
                         class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                         >Contact No.</label
                       >
@@ -837,8 +837,11 @@ export default {
         const commercialRef2 = this.formData.commercialReference[1];
         if (
           commercialRef2 &&
-          !commercialRef1.companyName &&
-          !commercialRef1.contactName
+          (commercialRef1.companyName ||
+            commercialRef1.contactName ||
+            commercialRef2.companyName ||
+            commercialRef2.contactName) &&
+          (!commercialRef1.companyName || !commercialRef1.contactName)
         ) {
           this.$toast.open({
             message: "Please add commercial reference 1",

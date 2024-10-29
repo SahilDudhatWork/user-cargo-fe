@@ -60,7 +60,7 @@
             </h1>
             <div class="mt-1">
               <label
-                for="companyName"
+                for="Building Name"
                 class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                 >Building Name</label
               >
@@ -82,7 +82,7 @@
             </div>
             <div>
               <label
-                for="companyName"
+                for="Postal Code"
                 class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                 >Postal Code</label
               >
@@ -105,7 +105,7 @@
             </div>
             <div>
               <label
-                for="companyName"
+                for="Lane Number"
                 class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                 >Lane Number</label
               >
@@ -128,7 +128,7 @@
             </div>
             <div>
               <label
-                for="companyName"
+                for="Additional Details"
                 class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                 >Additional Details</label
               >
@@ -148,7 +148,7 @@
 
             <div class="mt-1">
               <label
-                for="ContactName"
+                for="Contact name"
                 class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                 >Contact name</label
               >
@@ -170,7 +170,7 @@
             </div>
             <div>
               <label
-                for="email"
+                for="Contact Email"
                 class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                 >Contact Email</label
               >
@@ -194,7 +194,7 @@
 
             <div>
               <label
-                for="ContactNo"
+                for="Contact No"
                 class="block mb-2 text-sm font-medium text-[#1B1B1B]"
                 >Contact No.</label
               >

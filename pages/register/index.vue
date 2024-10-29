@@ -20,7 +20,7 @@
               <div class="overflow-y-scroll h-[500px]">
                 <div>
                   <label
-                    for="companyName"
+                    for="Company name"
                     class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                     >Company name *</label
                   >
@@ -43,7 +43,7 @@
 
                 <div>
                   <label
-                    for="ContactName"
+                    for="Contact name"
                     class="block mb-2 text-sm font-normal text-[#4B4B4B] mt-2"
                     >Contact name *</label
                   >
@@ -65,7 +65,7 @@
                 </div>
                 <div>
                   <label
-                    for="email"
+                    for="Email Address"
                     class="block mb-2 text-sm font-normal text-[#4B4B4B] mt-2"
                     >Email Address *</label
                   >
@@ -88,7 +88,7 @@
                 </div>
                 <div class="relative mt-2">
                   <label
-                    for="createPassword"
+                    for="Create Password"
                     class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                     >Create Password *</label
                   >
@@ -140,7 +140,7 @@
                 </div>
                 <div class="relative mt-2">
                   <label
-                    for="createPassword"
+                    for="Confirm Password"
                     class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                     >Confirm Password *</label
                   >
@@ -192,7 +192,7 @@
                 </div>
                 <div>
                   <label
-                    for="ContactNo"
+                    for="Contact"
                     class="block mb-2 text-sm font-normal text-[#4B4B4B] mt-2"
                     >Contact *</label
                   >
@@ -227,7 +227,7 @@
                 </div>
                 <div>
                   <label
-                    for="companyFormation"
+                    for="Company Formation"
                     class="block mb-2 mt-2 text-sm font-normal text-[#1E1E1E]"
                     >Company Formation</label
                   >
@@ -384,7 +384,7 @@
                     </div>
                     <div>
                       <label
-                        for="ContactName"
+                        for="Contact name"
                         class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                         >Contact name</label
                       >
@@ -410,7 +410,7 @@
                     </div>
                     <div>
                       <label
-                        for="email"
+                        for="Email Address"
                         class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                         >Email Address</label
                       >
@@ -438,7 +438,7 @@
                     </div>
                     <div>
                       <label
-                        for="ContactNo"
+                        for="Contact No"
                         class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                         >Contact No.</label
                       >
@@ -740,8 +740,11 @@ export default {
         const commercialRef2 = this.formData.commercialReference[1];
         if (
           commercialRef2 &&
-          !commercialRef1.companyName &&
-          !commercialRef1.contactName
+          (commercialRef1.companyName ||
+            commercialRef1.contactName ||
+            commercialRef2.companyName ||
+            commercialRef2.contactName) &&
+          (!commercialRef1.companyName || !commercialRef1.contactName)
         ) {
           this.$toast.open({
             message: "Please add commercial reference 1",

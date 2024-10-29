@@ -194,6 +194,14 @@ export const actions = {
       throw error;
     }
   },
+  async createRating(ctx, { id, data }) {
+    try {
+      const response = await $axios.post(`/v1/user/rating/${id}`, data);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
   async fetchTypeOfService(ctx, payload) {
     try {
       const response = await $axios.get("/v1/user/transitInfo/typeOfService");
