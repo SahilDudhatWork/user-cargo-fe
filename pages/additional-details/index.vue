@@ -15,7 +15,7 @@
       <ServiceRequestStep4
         v-if="modal.step4"
         @step3Next="step3Next"
-        :isSkipButton="true"
+        :isSkipButton="false"
         :errors="errors"
         @skipUserAddress="skipUserAddress"
         :service="service"
@@ -92,6 +92,7 @@ export default {
       serviceData: "service/getService",
       getUserProfile: "auth/getUserProfile",
       selectedServiceItems: "service/getSelectedServiceItems",
+      getAddressType: "service/getAddressType",
     }),
     ...mapState({
       modal: (state) => state.service.modal,
@@ -183,8 +184,11 @@ export default {
             this.service.schedule = payload.schedule;
           }
         }
+        this.getUserAddress();
+
         this.closeModal("step3");
-        this.openModal("step4");
+        // this.openModal("step4");
+        this.openModal("step5");
       } catch (error) {
         console.log(error);
         this.$toast.open({
@@ -195,9 +199,11 @@ export default {
     },
     async step3Next(payload) {
       let { addressDetails, contactDetails } = payload;
+
       this.formData = {
         addressDetails,
         contactDetails,
+        addressType: this.getAddressType,
       };
       this.errors = await this.$validateUserAddress({
         form: this.formData,
@@ -423,10 +429,22 @@ export default {
         });
       }
     },
+    async resetModal() {
+      this.openModal("step1");
+      this.closeModal("step2");
+      this.closeModal("step3");
+      this.closeModal("step4");
+      this.closeModal("step5");
+      this.closeModal("step6");
+      this.closeModal("stepCheckout");
+      this.closeModal("step7");
+      this.closeModal("step8");
+    },
   },
   async mounted() {
     document.body.style.backgroundColor = "#ECF3FA";
     await this.getTypeOfServices();
+    await this.resetModal();
   },
   beforeDestroy() {
     document.body.style.backgroundColor = "";

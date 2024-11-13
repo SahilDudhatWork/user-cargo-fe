@@ -41,7 +41,7 @@
             <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
           </div>
           <div class="flex items-center gap-2">
-            <span
+            <!-- <span
               class="text-[12px] font-semibold text-[#000000]"
               @click="
                 {
@@ -50,8 +50,8 @@
               "
             >
               Add Address
-            </span>
-            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
+            </span> -->
+            <!-- <img src="@/static/svg/short-side-arrow.svg" alt="" class="" /> -->
             <span class="text-[12px] font-semibold text-[#000000]">
               Select Address
             </span>
@@ -62,18 +62,31 @@
         <div class="mt-4 mb-4">
           <GoogleMap />
         </div>
-        <div v-if="userAddress && userAddress.length > 0">
-          <h1 class="text-[#00000099] font-normal text-base mt-4 mb-4">
-            PICKUP LOCATIONS
-          </h1>
+        <div v-if="listOfPickupAddress && listOfPickupAddress.length > 0">
+          <div class="flex">
+            <h1 class="text-[#00000099] font-normal text-base mt-4 mb-4">
+              PICKUP LOCATIONS
+              <span
+                class="text-[#0464CB] cursor-pointer ml-2"
+                @click="
+                  {
+                    openModal('step4'),
+                      closeModal('step5'),
+                      addressType('PickUp');
+                  }
+                "
+                >Add-address</span
+              >
+            </h1>
+          </div>
           <div class="ml-6 mr-7">
             <VueSlickCarousel
-              v-if="userAddress && userAddress.length"
+              v-if="listOfPickupAddress && listOfPickupAddress.length"
               v-bind="settings"
               class="flex justify-center"
             >
               <AdditionalAddress
-                v-for="(item, index) of userAddress"
+                v-for="(item, index) of listOfPickupAddress"
                 :key="index"
                 :item="item"
                 :isSelected="selectedPickup(item._id)"
@@ -83,18 +96,31 @@
             </VueSlickCarousel>
           </div>
         </div>
-        <div v-if="userAddress && userAddress.length > 0">
-          <h1 class="text-[#00000099] font-normal text-base mt-4 mb-4">
-            DROP LOCATIONS
-          </h1>
+        <div v-if="listOfDropAddress && listOfDropAddress.length > 0">
+          <div class="flex">
+            <h1 class="text-[#00000099] font-normal text-base mt-4 mb-4">
+              DROP LOCATIONS
+              <span
+                class="text-[#0464CB] cursor-pointer ml-2"
+                @click="
+                  {
+                    openModal('step4'),
+                      closeModal('step5'),
+                      addressType('Drop');
+                  }
+                "
+                >Add-address</span
+              >
+            </h1>
+          </div>
           <div class="ml-6 mr-7">
             <VueSlickCarousel
-              v-if="userAddress && userAddress.length"
+              v-if="listOfDropAddress && listOfDropAddress.length"
               v-bind="settings"
               class="flex justify-center"
             >
               <AdditionalAddress
-                v-for="(item, index) of userAddress"
+                v-for="(item, index) of listOfDropAddress"
                 :key="index"
                 :item="item"
                 :isSelected="selectedDrop(item._id)"
@@ -197,6 +223,12 @@ export default {
       userAddress: "service/getUserAddress",
       selectedServiceItems: "service/getSelectedServiceItems",
     }),
+    listOfPickupAddress() {
+      return this.userAddress.filter((x) => x.addressType == "PickUp");
+    },
+    listOfDropAddress() {
+      return this.userAddress.filter((x) => x.addressType == "Drop");
+    },
     selectedPickup() {
       return (id) => {
         return this.selectedServiceItems.selectedPickupItems?.includes(id);
@@ -213,6 +245,7 @@ export default {
       openModal: "service/openModal",
       closeModal: "service/closeModal",
       updateSelectedServiceItems: "service/updateSelectedServiceItems",
+      addressType: "service/addressType",
     }),
     selectPickupItem(id) {
       const selectedItems = this.selectedServiceItems.selectedPickupItems || [];

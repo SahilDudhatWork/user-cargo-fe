@@ -35,11 +35,15 @@ export const state = () => ({
     step7: false,
     step8: false,
   },
+  addressType: "",
 });
 
 export const getters = {
   getService(state) {
     return state.serviceData;
+  },
+  getAddressType(state) {
+    return state.addressType;
   },
   getSelectedServiceItems(state) {
     return state.selectedServiceItems;
@@ -92,10 +96,16 @@ export const mutations = {
       state.modal[Object.keys(state.modal)[activeIndex - 1]] = true;
     }
   },
+  setAddressType(state, payload) {
+    state.addressType = payload;
+  },
 };
 export const actions = {
   updateSelectedServiceItems({ commit }, { key, item }) {
     commit("setSelectedServiceItems", { key, item });
+  },
+  addressType(ctx, payload) {
+    ctx.commit("setAddressType", payload);
   },
   async fetchService(ctx, payload) {
     try {
