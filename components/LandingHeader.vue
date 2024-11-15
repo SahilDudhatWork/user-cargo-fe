@@ -90,6 +90,7 @@
                           </span>
                         </li>
                       </nuxt-link>
+                      <nuxt-link to="/settings/notifications">
                       <li class="flex items-center gap-3 px-3">
                         <img src="@/static/svg/settings-sliders.svg" alt="" />
                         <a
@@ -97,6 +98,7 @@
                           >Settings</a
                         >
                       </li>
+                    </nuxt-link>
                       <li class="flex items-center gap-3 px-3" @click="logout">
                         <img
                           src="@/static/svg/logout.svg"

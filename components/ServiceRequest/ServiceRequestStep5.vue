@@ -62,7 +62,7 @@
         <div class="mt-4 mb-4">
           <GoogleMap />
         </div>
-        <div v-if="listOfPickupAddress && listOfPickupAddress.length > 0">
+        <div>
           <div class="flex">
             <h1 class="text-[#00000099] font-normal text-base mt-4 mb-4">
               PICKUP LOCATIONS
@@ -79,7 +79,7 @@
               >
             </h1>
           </div>
-          <div class="ml-6 mr-7">
+          <div class="ml-6 mr-7" v-if="listOfPickupAddress && listOfPickupAddress.length > 0">
             <VueSlickCarousel
               v-if="listOfPickupAddress && listOfPickupAddress.length"
               v-bind="settings"
@@ -95,8 +95,13 @@
               />
             </VueSlickCarousel>
           </div>
+          <div v-else class="mb-6 text-center">
+            <span  class="text-[#00000099] font-normal text-base mt-4 mb-4 ml-3">
+              You don't have any address in address-list
+            </span>
+          </div>
         </div>
-        <div v-if="listOfDropAddress && listOfDropAddress.length > 0">
+        <div>
           <div class="flex">
             <h1 class="text-[#00000099] font-normal text-base mt-4 mb-4">
               DROP LOCATIONS
@@ -113,7 +118,7 @@
               >
             </h1>
           </div>
-          <div class="ml-6 mr-7">
+          <div class="ml-6 mr-7" v-if="listOfDropAddress &&listOfDropAddress.length > 0">
             <VueSlickCarousel
               v-if="listOfDropAddress && listOfDropAddress.length"
               v-bind="settings"
@@ -129,20 +134,11 @@
               />
             </VueSlickCarousel>
           </div>
-        </div>
-        <div v-else class="flex justify-center mt-8">
-          <h1 class="text-2xl text-[#00000099]">
-            No address found please
-            <span
-              class="text-[#0464CB] cursor-pointer"
-              @click="
-                {
-                  openModal('step4'), closeModal('step5');
-                }
-              "
-              >add-address</span
-            >
-          </h1>
+          <div v-else class="text-center">
+            <span  class="text-[#00000099] font-normal text-base mt-4 mb-4 ml-3">
+              You don't have any address in address-list
+            </span>
+          </div>
         </div>
       </template>
     </Additional>

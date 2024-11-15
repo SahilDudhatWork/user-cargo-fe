@@ -54,12 +54,14 @@
                 </span>
               </li>
             </nuxt-link>
+            <nuxt-link to="/settings/notifications">
             <li class="flex items-center gap-3 px-[18px]">
               <img src="@/static/svg/settings-sliders.svg" alt="" />
               <a class="block py-2.5 text-[#333333] font-medium text-base"
                 >Settings</a
               >
             </li>
+          </nuxt-link>
             <li class="flex items-center gap-3 px-[18px]" @click="logout">
               <img src="@/static/svg/logout.svg" alt="" class="w-6 h-6" />
               <a class="block py-2.5 text-[#333333] font-medium text-base"

@@ -13,9 +13,11 @@ export default {
   middleware: "auth",
   mounted() {
     const serviceRoutePattern = /^\/my-orders\/service\/[a-zA-Z0-9]+$/;
+    const settingsRoutePattern = /^\/settings\/[a-zA-Z0-9]+$/;
     if (
       this.$route.fullPath != "/edit-profile" &&
       this.$route.fullPath != "/my-orders" &&
+      !settingsRoutePattern.test(this.$route.fullPath) &&
       !serviceRoutePattern.test(this.$route.fullPath)
     ) {
       document.body.style.backgroundColor = "#ECF3FA";
@@ -31,11 +33,11 @@ export default {
 .main-layout {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Full height of the viewport */
+  min-height: 100vh;
 }
 
 main {
-  flex-grow: 1; /* Main content takes available space */
+  flex-grow: 1;
 }
 
 footer {
