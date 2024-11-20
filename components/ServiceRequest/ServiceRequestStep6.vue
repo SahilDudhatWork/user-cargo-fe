@@ -48,17 +48,6 @@
               class="text-[12px] font-semibold text-[#000000]"
               @click="
                 {
-                  openModal('step4'), closeModal('step6');
-                }
-              "
-            >
-              Add Address
-            </span>
-            <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
-            <span
-              class="text-[12px] font-semibold text-[#000000]"
-              @click="
-                {
                   openModal('step5'), closeModal('step6');
                 }
               "
@@ -85,11 +74,6 @@
                 </h1>
                 <p class="text-[#00000099] font-normal text-xs pb-6">
                   Additional charges may apply*
-                </p>
-              </div>
-              <div>
-                <p class="text-[#000000] font-normal text-sm mt-2">
-                  Payment Mode: Cash
                 </p>
               </div>
             </div>
@@ -148,30 +132,55 @@
             </div>
           </div>
           <div class="sm:px-9">
-            <h1 class="text-[#00000099] font-normal text-sm">
-              Special Requirements
-            </h1>
-            <div class="mt-1">
-              <div class="flex flex-wrap gap-2">
-                <p
-                  class="bg-[#0060C91A] px-2.5 rounded-[100px] flex items-center py-[2px]"
-                  v-for="(
-                    item, index
-                  ) in selectedServiceItems.selectedSpecialRequirementItems"
-                  :key="index"
-                >
-                  <span class="text-[#0060C9] text-base font-semibold">
-                    {{ item?.type }}
-                  </span>
-                </p>
+            <div
+              v-if="
+                selectedServiceItems.selectedSpecialRequirementItems &&
+                selectedServiceItems.selectedSpecialRequirementItems.length
+              "
+            >
+              <h1 class="text-[#00000099] font-normal text-sm">
+                Special Requirements
+              </h1>
+              <div class="mt-1">
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <p
+                    class="bg-[#0060C91A] px-2.5 rounded-[100px] flex items-center py-[2px]"
+                    v-for="(
+                      item, index
+                    ) in selectedServiceItems.selectedSpecialRequirementItems"
+                    :key="index"
+                  >
+                    <span class="text-[#0060C9] text-base font-semibold">
+                      {{ item?.type }}
+                    </span>
+                  </p>
+                </div>
               </div>
             </div>
-            <div class="mt-6 mb-6">
+            <div
+              class="mt-6 mb-6"
+              v-if="
+                service.quantityForChains ||
+                service.quantityForStraps ||
+                service.quantityForTarps
+              "
+            >
               <p class="text-[#00000099] font-normal text-sm">Quantity</p>
               <p class="font-semibold text-base text-[#1E1E1E]">
-                {{ service.quantityForChains }}xChains,
-                {{ service.quantityForStraps }}xStraps,
-                {{ service.quantityForTarps }}xTarps
+                <span
+                  v-if="
+                    service.quantityForChains &&
+                    (service.quantityForChains > 1 || service.quantityForStraps)
+                  "
+                >
+                  {{ service.quantityForChains }}xChains
+                </span>
+                <span v-if="service.quantityForStraps">
+                  {{ service.quantityForStraps }}xStraps</span
+                >
+                <span v-if="service.quantityForTarps">
+                  {{ service.quantityForTarps }}xTarps</span
+                >
               </p>
             </div>
             <div v-if="service.schedule" class="mb-5">

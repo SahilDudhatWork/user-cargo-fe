@@ -78,7 +78,7 @@
               errors?.programeSelectedLabel
             }}</span>
           </div>
-          <div>
+          <div v-if="selectedSpecialRequirementType.includes('Chains')">
             <label
               for="email"
               class="block mb-1 text-sm font-medium text-[#1B1B1B]"
@@ -116,7 +116,7 @@
               />
             </div>
           </div>
-          <div>
+          <div v-if="selectedSpecialRequirementType.includes('Straps')">
             <label
               for="email"
               class="block mb-1 text-sm font-medium text-[#1B1B1B]"
@@ -157,7 +157,10 @@
           </div>
         </div>
         <div class="mt-4 grid sm:grid-cols-2 grid-cols-1 gap-4">
-          <div class="flex flex-col">
+          <div
+            class="flex flex-col"
+            v-if="selectedSpecialRequirementType.includes('Tarps')"
+          >
             <label
               for="email"
               class="block mb-1 text-sm font-medium text-[#1B1B1B]"
@@ -304,6 +307,11 @@ export default {
         );
       };
     },
+    selectedSpecialRequirementType() {
+      return this.selectedServiceItems.selectedSpecialRequirementItems.map(
+        (item) => item.type
+      );
+    },
   },
   methods: {
     ...mapActions({
@@ -380,20 +388,26 @@ export default {
     step2Next() {
       let data = {
         userReference: this.userReference,
-        selectedQuantityChains:
-          this.selectedServiceItems?.selectedQuantityChains != "Select option"
-            ? this.selectedServiceItems?.selectedQuantityChains
-            : "",
+        ...(this.selectedSpecialRequirementType.includes("Chains") && {
+          selectedQuantityChains:
+            this.selectedServiceItems?.selectedQuantityChains != "Select option"
+              ? this.selectedServiceItems?.selectedQuantityChains
+              : "",
+        }),
 
-        selectedQuantityStraps:
-          this.selectedServiceItems?.selectedQuantityStraps != "Select option"
-            ? this.selectedServiceItems?.selectedQuantityStraps
-            : "",
+        ...(this.selectedSpecialRequirementType.includes("Straps") && {
+          selectedQuantityStraps:
+            this.selectedServiceItems?.selectedQuantityStraps != "Select option"
+              ? this.selectedServiceItems?.selectedQuantityStraps
+              : "",
+        }),
 
-        selectedQuantityTarps:
-          this.selectedServiceItems?.selectedQuantityTarps != "Select option"
-            ? this.selectedServiceItems?.selectedQuantityTarps
-            : "",
+        ...(this.selectedSpecialRequirementType.includes("Tarps") && {
+          selectedQuantityTarps:
+            this.selectedServiceItems?.selectedQuantityTarps != "Select option"
+              ? this.selectedServiceItems?.selectedQuantityTarps
+              : "",
+        }),
 
         selectedPrograming:
           this.selectedServiceItems?.selectedPrograming != "Select option"

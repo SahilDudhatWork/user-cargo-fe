@@ -3,80 +3,69 @@
     <DashboardHeader />
     <main class="flex-grow">
       <div class="lg:mx-44 mx-6">
-    <div class="flex">
-      <div class="w-[400px] h-[500px]">
-        <ul>
-          <li v-for="(item,key) in sidebarItems" :key="key" class="border-b pb-4 pt-4 pl-6 cursor-pointer" :class=" {'bg-[#F5F9FD] text-white': previousPath === item.href}
-                  ">
-              <nuxt-link :to="item.href">
-            <h1 class="text-[#000000] font-bold text-lg">
-              {{item.name}}
-          </h1>
-          <span class="text-[#00000099] font-normal text-sm">{{item.description}}</span>
-        </nuxt-link>
-          </li>
-        </ul>
-      </div>
-      <div class="w-full">
-          <Nuxt />
-      </div>
-    </div>
-    <div class="mt-4 mb-10">
-            <VueSlickCarousel v-bind="cargoWorkSettings">
-              <div
-                v-for="(item, index) of cargoWorks"
-                :key="index"
-                class="bg-[#F5F9FD] px-4 py-[15px] rounded-2xl"
+        <div class="flex">
+          <div class="relative">
+            <ul
+              class="lg:w-[400px] sm:w-[300px] w-[150px] h-[500px] overflow-y-auto scroll-container relative"
+            >
+              <li
+                v-for="(item, key) in sidebarItems"
+                :key="key"
+                class="border-b pb-4 pt-4 pl-6 cursor-pointer"
+                :class="{
+                  'bg-[#F5F9FD] text-white':
+                    previousPath === formatPath(item.slug),
+                }"
               >
-                <p class="font-medium text-base text-[#4B4B4B]">
-                  {{ item.title }}
-                </p>
-                <p class="text-[#4B4B4B] font-light text-sm mt-1">
-                  {{ item.description }}
-                </p>
-              </div>
-            </VueSlickCarousel>
+                <nuxt-link :to="formatPath(item.slug)">
+                  <h1 class="text-[#000000] font-bold text-lg">
+                    {{ item.title }}
+                  </h1>
+                  <span class="text-[#00000099] font-normal text-sm">{{
+                    item.subTitle
+                  }}</span>
+                </nuxt-link>
+              </li>
+            </ul>
+            <div
+              class="absolute bottom-0 left-0 w-full h-20 pointer-events-none bg-gradient-to-t from-white to-transparent"
+            ></div>
           </div>
-   </div>
+          <div class="w-full">
+            <Nuxt />
+          </div>
+        </div>
+        <div class="mt-4 mb-10">
+          <VueSlickCarousel v-bind="cargoWorkSettings">
+            <div
+              v-for="(item, index) of cargoWorks"
+              :key="index"
+              class="bg-[#F5F9FD] px-4 py-[15px] rounded-2xl"
+            >
+              <p class="font-medium text-base text-[#4B4B4B]">
+                {{ item.title }}
+              </p>
+              <p class="text-[#4B4B4B] font-light text-sm mt-1">
+                {{ item.description }}
+              </p>
+            </div>
+          </VueSlickCarousel>
+        </div>
+      </div>
     </main>
     <Footer />
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   middleware: "auth",
-  data(){
-    return{
-      previousPath:"/settings/notifications",
-      sidebarItems:[
-      {
-        name:"Notifications",
-        description:"Email/ SMS",
-        href:"/settings/notifications"
-      },
-      {
-        name:"About Us",
-        description:"Our Journey & vision",
-        href:"/settings/about-us"
-      },
-      {
-        name:"Privacy Policy",
-        description:"About our policies",
-        href:"/settings/privacy-policy"
-      },
-      {
-        name:"Terms & Condition",
-        description:"Our terms & condition",
-        href:"/settings/terms-condition"
-      },
-      {
-        name:"Logout",
-        description:"Logout/ Delete account",
-        href:"/settings/logout"
-      },
-    ],
-    cargoWorkSettings: {
+  data() {
+    return {
+      previousPath: "/settings/notifications",
+      sidebarItems: [],
+      cargoWorkSettings: {
         speed: 500,
         slidesToShow: 1,
         dots: true,
@@ -112,65 +101,64 @@ export default {
             " Lorem ipsum dolor sit amet consectetur. Nunc tortor nibh ornare bibendum viverra amet amet risus.",
         },
       ],
-    }
+    };
   },
   watch: {
     "$route.path"(newPath) {
       this.previousPath = this.$router.history.current.fullPath;
-      this.updateActiveTab(newPath);
       this.setBackgroundColor(newPath);
     },
   },
-  methods:{
-    updateActiveTab(path) {
-    this.sidebarItems.forEach((tab) => {
-      if (path.startsWith(tab.href)) {
-        tab.isActive = true;
-        this.previousPath = tab.href;
-      } else {
-        tab.isActive = false;
-      }
-    });
-  },
-  setBackgroundColor(path) {
-      const settingsRoutePattern = /^\/settings\/(notifications|about-us|privacy-policy|terms-condition|logout|Logout)$/;
+  methods: {
+    ...mapActions({
+      fetchSettings: "settings/fetchSettings",
+    }),
+    formatPath(slug) {
+      return `/settings/${slug}`;
+    },
+    setBackgroundColor(path) {
+      const settingsRoutePattern = /^\/settings\/.+$/;
       if (!settingsRoutePattern.test(path)) {
         document.body.style.backgroundColor = "#ECF3FA";
       } else {
         document.body.style.backgroundColor = "";
       }
     },
+    async getSettings() {
+      try {
+        const res = await this.fetchSettings();
+        this.sidebarItems = res.data;
+        const notifications = {
+          title: "Notifications",
+          subTitle: "Email/ SMS",
+          slug: "notifications",
+        };
+        const logout = {
+          title: "Logout",
+          subTitle: "Logout/ Delete account",
+          slug: "logout",
+        };
+
+        this.sidebarItems = [notifications, ...res.data, logout];
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
-  beforeMount() {
-    this.updateActiveTab(this.$router.history.current.fullPath);
-  },
-  mounted() {
+  async mounted() {
+    await this.getSettings();
     this.setBackgroundColor(this.$route.fullPath);
-    // const settingsRoutePattern = /^\/settings\/[a-zA-Z0-9]+$/;
-    // if (
-    //   !settingsRoutePattern.test(this.$route.fullPath)
-    // ) {
-    //   document.body.style.backgroundColor = "#ECF3FA";
-    // }
-  },
-  beforeDestroy() {
-    document.body.style.backgroundColor = "";
+    this.previousPath = this.$route.path;
   },
 };
 </script>
 
 <style scoped>
-.main-layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+.scroll-container {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-
-main {
-  flex-grow: 1;
-}
-
-footer {
-  width: 100%;
+.scroll-container::-webkit-scrollbar {
+  display: none;
 }
 </style>

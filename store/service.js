@@ -99,6 +99,26 @@ export const mutations = {
   setAddressType(state, payload) {
     state.addressType = payload;
   },
+  resetSelectedServiceItems(state) {
+    state.selectedServiceItems = {
+      selectedTypeOfTransportationItem: { title: "" },
+      selectedModeItem: { title: "" },
+      selectedPortItem: { title: "" },
+      selectedServiceItem: "",
+      selectedQuantityChains: "Select option",
+      selectedQuantityTarps: "Select option",
+      selectedQuantityStraps: "Select option",
+      selectedPrograming: "Select option",
+      userReference: null,
+      selectedSpecialRequirementItems: [],
+      schedule: {
+        date: "",
+        time: "",
+      },
+      selectedPickupItems: [],
+      selectedDropItems: [],
+    };
+  },
 };
 export const actions = {
   updateSelectedServiceItems({ commit }, { key, item }) {

@@ -1,4 +1,3 @@
-
 <template>
   <div class="relative">
     <ul class="scroll-container h-[500px] overflow-y-scroll pr-4 relative">
@@ -13,44 +12,52 @@
         </div>
       </li>
     </ul>
-    <div class="absolute bottom-0 left-0 w-full h-20 pointer-events-none bg-gradient-to-t from-white to-transparent"></div>
+    <div
+      class="absolute bottom-0 left-0 w-full h-20 pointer-events-none bg-gradient-to-t from-white to-transparent"
+    ></div>
   </div>
 </template>
 
-
 <script>
-export default{
-  layout:"settings",
-  data(){
-    return{
-settingData:[
-      {
-        title:"App Update request",
-        description:"Lorem ipsum dolor sit amet consectetur. Leo lacus euismod felis nec quis volutpat fermentum volutpat. Mattis consectetur felis consequat in ullamcorper et bibendum vitae quisque. Suspendisse ac aliquam pellentesque dui eget odio. Tincidunt libero metus sed mus."
-      },
-      {
-        title:"App Update request",
-        description:"Lorem ipsum dolor sit amet consectetur. Leo lacus euismod felis nec quis volutpat fermentum volutpat. Mattis consectetur felis consequat in ullamcorper et bibendum vitae quisque. Suspendisse ac aliquam pellentesque dui eget odio. Tincidunt libero metus sed mus."
-      },
-      {
-        title:"App Update request",
-        description:"Lorem ipsum dolor sit amet consectetur. Leo lacus euismod felis nec quis volutpat fermentum volutpat. Mattis consectetur felis consequat in ullamcorper et bibendum vitae quisque. Suspendisse ac aliquam pellentesque dui eget odio. Tincidunt libero metus sed mus."
-      },
-      {
-        title:"App Update request",
-        description:"Lorem ipsum dolor sit amet consectetur. Leo lacus euismod felis nec quis volutpat fermentum volutpat. Mattis consectetur felis consequat in ullamcorper et bibendum vitae quisque. Suspendisse ac aliquam pellentesque dui eget odio. Tincidunt libero metus sed mus."
-      },
-      {
-        title:"App Update request",
-        description:"Lorem ipsum dolor sit amet consectetur. Leo lacus euismod felis nec quis volutpat fermentum volutpat. Mattis consectetur felis consequat in ullamcorper et bibendum vitae quisque. Suspendisse ac aliquam pellentesque dui eget odio. Tincidunt libero metus sed mus."
-      },{
-        title:"App Update request",
-        description:"Lorem ipsum dolor sit amet consectetur. Leo lacus euismod felis nec quis volutpat fermentum volutpat. Mattis consectetur felis consequat in ullamcorper et bibendum vitae quisque. Suspendisse ac aliquam pellentesque dui eget odio. Tincidunt libero metus sed mus."
-      },
-    ],
-    }
-  }
-}
+export default {
+  layout: "settings",
+  data() {
+    return {
+      settingData: [
+        {
+          title: "App Update request",
+          description:
+            "Lorem ipsum dolor sit amet consectetur. Leo lacus euismod felis nec quis volutpat fermentum volutpat. Mattis consectetur felis consequat in ullamcorper et bibendum vitae quisque. Suspendisse ac aliquam pellentesque dui eget odio. Tincidunt libero metus sed mus.",
+        },
+        {
+          title: "App Update request",
+          description:
+            "Lorem ipsum dolor sit amet consectetur. Leo lacus euismod felis nec quis volutpat fermentum volutpat. Mattis consectetur felis consequat in ullamcorper et bibendum vitae quisque. Suspendisse ac aliquam pellentesque dui eget odio. Tincidunt libero metus sed mus.",
+        },
+        {
+          title: "App Update request",
+          description:
+            "Lorem ipsum dolor sit amet consectetur. Leo lacus euismod felis nec quis volutpat fermentum volutpat. Mattis consectetur felis consequat in ullamcorper et bibendum vitae quisque. Suspendisse ac aliquam pellentesque dui eget odio. Tincidunt libero metus sed mus.",
+        },
+        {
+          title: "App Update request",
+          description:
+            "Lorem ipsum dolor sit amet consectetur. Leo lacus euismod felis nec quis volutpat fermentum volutpat. Mattis consectetur felis consequat in ullamcorper et bibendum vitae quisque. Suspendisse ac aliquam pellentesque dui eget odio. Tincidunt libero metus sed mus.",
+        },
+        {
+          title: "App Update request",
+          description:
+            "Lorem ipsum dolor sit amet consectetur. Leo lacus euismod felis nec quis volutpat fermentum volutpat. Mattis consectetur felis consequat in ullamcorper et bibendum vitae quisque. Suspendisse ac aliquam pellentesque dui eget odio. Tincidunt libero metus sed mus.",
+        },
+        {
+          title: "App Update request",
+          description:
+            "Lorem ipsum dolor sit amet consectetur. Leo lacus euismod felis nec quis volutpat fermentum volutpat. Mattis consectetur felis consequat in ullamcorper et bibendum vitae quisque. Suspendisse ac aliquam pellentesque dui eget odio. Tincidunt libero metus sed mus.",
+        },
+      ],
+    };
+  },
+};
 </script>
 
 <style scoped>

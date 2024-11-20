@@ -187,7 +187,6 @@ export default {
         this.getUserAddress();
 
         this.closeModal("step3");
-        // this.openModal("step4");
         this.openModal("step5");
       } catch (error) {
         console.log(error);
@@ -359,6 +358,7 @@ export default {
           payment_source: payload.payment_source,
         };
         const res = await this.createOrder(this.service);
+        this.$store.commit("service/resetSelectedServiceItems");
         this.$toast.open({
           message: res.msg,
         });

@@ -41,17 +41,6 @@
             <img src="@/static/svg/short-side-arrow.svg" alt="" class="" />
           </div>
           <div class="flex items-center gap-2">
-            <!-- <span
-              class="text-[12px] font-semibold text-[#000000]"
-              @click="
-                {
-                  openModal('step4'), closeModal('step5');
-                }
-              "
-            >
-              Add Address
-            </span> -->
-            <!-- <img src="@/static/svg/short-side-arrow.svg" alt="" class="" /> -->
             <span class="text-[12px] font-semibold text-[#000000]">
               Select Address
             </span>
@@ -79,9 +68,12 @@
               >
             </h1>
           </div>
-          <div class="ml-6 mr-7" v-if="listOfPickupAddress && listOfPickupAddress.length > 0">
+          <div
+            class="ml-6 mr-7"
+            v-if="listOfPickupAddress && listOfPickupAddress.length > 0"
+          >
             <VueSlickCarousel
-              v-if="listOfPickupAddress && listOfPickupAddress.length"
+              v-if="listOfPickupAddress && listOfPickupAddress.length > 0"
               v-bind="settings"
               class="flex justify-center"
             >
@@ -96,7 +88,7 @@
             </VueSlickCarousel>
           </div>
           <div v-else class="mb-6 text-center">
-            <span  class="text-[#00000099] font-normal text-base mt-4 mb-4 ml-3">
+            <span class="text-[#00000099] font-normal text-base mt-4 mb-4 ml-3">
               You don't have any address in address-list
             </span>
           </div>
@@ -118,9 +110,12 @@
               >
             </h1>
           </div>
-          <div class="ml-6 mr-7" v-if="listOfDropAddress &&listOfDropAddress.length > 0">
+          <div
+            class="ml-6 mr-7"
+            v-if="listOfDropAddress && listOfDropAddress.length > 0"
+          >
             <VueSlickCarousel
-              v-if="listOfDropAddress && listOfDropAddress.length"
+              v-if="listOfDropAddress && listOfDropAddress.length > 0"
               v-bind="settings"
               class="flex justify-center"
             >
@@ -135,7 +130,7 @@
             </VueSlickCarousel>
           </div>
           <div v-else class="text-center">
-            <span  class="text-[#00000099] font-normal text-base mt-4 mb-4 ml-3">
+            <span class="text-[#00000099] font-normal text-base mt-4 mb-4 ml-3">
               You don't have any address in address-list
             </span>
           </div>
