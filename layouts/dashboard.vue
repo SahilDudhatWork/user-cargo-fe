@@ -9,9 +9,37 @@
 </template>
 
 <script>
+import { getToken } from "firebase/messaging";
+import { messaging } from "@/plugins/firebase";
+import { mapActions } from "vuex";
 export default {
   middleware: "auth",
+  methods: {
+    ...mapActions({
+      updateNotificationToken: "service/updateNotificationToken",
+    }),
+    async activate() {
+      const token = await getToken(messaging, {
+        vapidKey: process.env.NOTIFICATION_KEY,
+      });
+      if (token) {
+        this.webToken = token;
+      }
+    },
+    async notificationToken() {
+      try {
+        await this.updateNotificationToken({
+          webToken: this.webToken,
+        });
+      } catch (error) {
+        console.log(error, "error");
+      }
+    },
+  },
   mounted() {
+    this.activate().then(() => {
+      this.notificationToken();
+    });
     const serviceRoutePattern = /^\/my-orders\/service\/[a-zA-Z0-9]+$/;
     const settingsRoutePattern = /^\/settings\/[a-zA-Z0-9]+$/;
     if (

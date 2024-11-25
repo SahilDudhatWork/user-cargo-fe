@@ -506,6 +506,8 @@
 </template>
 
 <script>
+import { getToken } from "firebase/messaging";
+import { messaging } from "@/plugins/firebase";
 import { mapActions } from "vuex";
 export default {
   middleware: "guest",
@@ -673,6 +675,7 @@ export default {
         formData.append("countryCode", this.formData.countryCode);
         formData.append("email", this.formData.email.toLowerCase());
         formData.append("password", this.formData.password);
+        formData.append("webToken", this.formData.webToken);
         if (
           this.formData.companyFormationType &&
           this.formData.companyFormationType != null
@@ -765,6 +768,17 @@ export default {
         });
       }
     },
+    async activate() {
+      const token = await getToken(messaging, {
+        vapidKey: process.env.NOTIFICATION_KEY,
+      });
+      if (token) {
+        this.formData.webToken = token;
+      }
+    },
+  },
+  mounted() {
+    this.activate();
   },
 };
 </script>

@@ -124,6 +124,8 @@
 
 <script>
 import { mapActions } from "vuex";
+import { getToken } from "firebase/messaging";
+import { messaging } from "@/plugins/firebase";
 export default {
   middleware: "guest",
   data() {
@@ -156,7 +158,6 @@ export default {
           this.$cookies.set("email", this.formData?.email, {
             expires: 1,
           });
-
           this.$toast.open({
             message: this.$i18n.t("loginOTPMessage"),
           });
@@ -170,6 +171,17 @@ export default {
         });
       }
     },
+    async activate() {
+      const token = await getToken(messaging, {
+        vapidKey: process.env.NOTIFICATION_KEY,
+      });
+      if (token) {
+        this.formData.webToken = token;
+      }
+    },
+  },
+  mounted() {
+    this.activate();
   },
 };
 </script>

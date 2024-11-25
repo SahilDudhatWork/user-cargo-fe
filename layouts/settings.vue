@@ -58,6 +58,8 @@
 </template>
 
 <script>
+import { getToken } from "firebase/messaging";
+import { messaging } from "@/plugins/firebase";
 import { mapActions } from "vuex";
 export default {
   middleware: "auth",
@@ -112,7 +114,25 @@ export default {
   methods: {
     ...mapActions({
       fetchSettings: "settings/fetchSettings",
+      updateNotificationToken: "service/updateNotificationToken",
     }),
+    async activate() {
+      const token = await getToken(messaging, {
+        vapidKey: process.env.NOTIFICATION_KEY,
+      });
+      if (token) {
+        this.webToken = token;
+      }
+    },
+    async notificationToken() {
+      try {
+        await this.updateNotificationToken({
+          webToken: this.webToken,
+        });
+      } catch (error) {
+        console.log(error, "error");
+      }
+    },
     formatPath(slug) {
       return `/settings/${slug}`;
     },
@@ -146,6 +166,9 @@ export default {
     },
   },
   async mounted() {
+    this.activate().then(() => {
+      this.notificationToken();
+    });
     await this.getSettings();
     this.setBackgroundColor(this.$route.fullPath);
     this.previousPath = this.$route.path;

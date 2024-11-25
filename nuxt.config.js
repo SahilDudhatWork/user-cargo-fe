@@ -47,11 +47,14 @@ export default {
     "~/plugins/statusPlugin.js",
     { src: "~/plugins/vue2-datepicker.js", mode: "client" },
     { src: "~/plugins/vue2-google-maps.js", ssr: false },
+    "~/plugins/firebase.js",
+    "~/plugins/service-worker.js",
   ],
 
   components: [{ path: "~/components/", pathPrefix: false }],
 
   buildModules: [
+    "@nuxtjs/dotenv",
     [
       "nuxt-i18n",
       {

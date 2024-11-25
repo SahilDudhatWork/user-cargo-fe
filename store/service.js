@@ -241,6 +241,14 @@ export const actions = {
       throw error;
     }
   },
+  async updateNotificationToken(ctx, payload) {
+    try {
+      const response = await $axios.put("/v1/user/notification/token", payload);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
   async fetchServiceReference(ctx, payload) {
     try {
       const response = await $axios.get("/v1/user/order/reference");
