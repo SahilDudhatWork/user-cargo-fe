@@ -42,11 +42,15 @@ export default {
     });
     const serviceRoutePattern = /^\/my-orders\/service\/[a-zA-Z0-9]+$/;
     const settingsRoutePattern = /^\/settings\/[a-zA-Z0-9]+$/;
+    const subUserRoutePattern = /^\/sub-user\/edit-sub-user\/[a-zA-Z0-9]*$/;
     if (
       this.$route.fullPath != "/edit-profile" &&
       this.$route.fullPath != "/my-orders" &&
+      this.$route.fullPath != "/sub-user" &&
+      this.$route.fullPath != "/sub-user/add-sub-user" &&
       !settingsRoutePattern.test(this.$route.fullPath) &&
-      !serviceRoutePattern.test(this.$route.fullPath)
+      !serviceRoutePattern.test(this.$route.fullPath) &&
+      !subUserRoutePattern.test(this.$route.fullPath)
     ) {
       document.body.style.backgroundColor = "#ECF3FA";
     }

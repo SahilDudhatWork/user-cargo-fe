@@ -69,9 +69,9 @@
                     class="!z-[999] right-1 absolute top-3 bg-white divide-y divide-gray-100 rounded-2xl shadow flex flex-col items-center dropdown-content"
                     style="box-shadow: rgba(0, 0, 0, 0.5) 0px 6px 50px 0px"
                   >
-                    <ul class="py-2 cursor-pointer" @click="closeDropdown">
+                    <ul class="py-2 cursor-pointer w-44" @click="closeDropdown">
                       <nuxt-link to="/my-orders">
-                        <li class="flex items-center gap-3 px-3 w-36">
+                        <li class="flex items-center gap-3 px-[18px]">
                           <img src="@/static/svg/clock.svg" alt="" />
                           <span
                             class="block py-2.5 text-[#333333] font-medium text-base"
@@ -80,8 +80,18 @@
                           </span>
                         </li>
                       </nuxt-link>
+                      <nuxt-link to="/sub-user">
+                        <li class="flex items-center gap-3 px-[18px]">
+                          <img src="@/static/svg/account.svg" alt="" />
+                          <span
+                            class="block py-2.5 text-[#333333] font-medium text-base"
+                          >
+                            My accounts
+                          </span>
+                        </li>
+                      </nuxt-link>
                       <nuxt-link to="/edit-profile">
-                        <li class="flex items-center gap-3 px-3">
+                        <li class="flex items-center gap-3 px-[18px]">
                           <img src="@/static/svg/user.svg" alt="" />
                           <span
                             class="block py-2.5 text-[#333333] font-medium text-base"
@@ -91,15 +101,18 @@
                         </li>
                       </nuxt-link>
                       <nuxt-link to="/settings/notifications">
-                      <li class="flex items-center gap-3 px-3">
-                        <img src="@/static/svg/settings-sliders.svg" alt="" />
-                        <a
-                          class="block py-2.5 text-[#333333] font-medium text-base"
-                          >Settings</a
-                        >
-                      </li>
-                    </nuxt-link>
-                      <li class="flex items-center gap-3 px-3" @click="logout">
+                        <li class="flex items-center gap-3 px-[18px]">
+                          <img src="@/static/svg/settings-sliders.svg" alt="" />
+                          <a
+                            class="block py-2.5 text-[#333333] font-medium text-base"
+                            >Settings</a
+                          >
+                        </li>
+                      </nuxt-link>
+                      <li
+                        class="flex items-center gap-3 px-[18px]"
+                        @click="logout"
+                      >
                         <img
                           src="@/static/svg/logout.svg"
                           alt=""

@@ -314,10 +314,43 @@ export default async (ctx, inject) => {
     return errors;
   };
 
+  const validateSubUserForm = async ({ form, isEdit = false }) => {
+    const errors = {};
+    const isEmpty = (value) => {
+      return typeof value === "string" ? value.trim() === "" : !value;
+    };
+    const setError = (fieldName, message) => {
+      errors[fieldName] = message;
+    };
+
+    const validateField = (field, fieldName, errorLabel) => {
+      if (isEmpty(field)) {
+        setError(fieldName, `${errorLabel} is required`);
+      }
+    };
+
+    validateField(form.contactName, "contactName", "contact-name");
+    validateField(form.contactNumber, "contactNumber", "contact-number");
+    validateField(form.email, "email", "email");
+    if (!isEdit) {
+      validateField(form.password, "password", "password");
+    }
+
+    if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      setError("email", "Invalid email format");
+    }
+    if (!(await validatePhoneNumber(form.contactNumber))) {
+      setError("contactNumber", "Invalid contact-number format");
+    }
+
+    return errors;
+  };
+
   inject("validateFormData", validateFormData);
   inject("validateUserAddress", validateUserAddress);
   inject("validateNumber", validateNumber);
   inject("validateAddressDetail", validateAddressDetail);
   inject("validateEditFormData", validateEditFormData);
+  inject("validateSubUserForm", validateSubUserForm);
   inject("validateUserRef", validateUserRef);
 };
