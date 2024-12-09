@@ -46,7 +46,7 @@
                 </span>
               </li>
             </nuxt-link>
-            <nuxt-link to="/sub-user">
+            <nuxt-link to="/sub-user" v-if="!profileData?.parentId">
               <li class="flex items-center gap-3 px-[18px]">
                 <img src="@/static/svg/account.svg" alt="" />
                 <span class="block py-2.5 text-[#333333] font-medium text-base">
