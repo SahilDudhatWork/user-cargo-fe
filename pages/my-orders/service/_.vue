@@ -22,11 +22,6 @@
               Additional charges may apply*
             </p>
           </div>
-          <div>
-            <p class="text-[#000000] font-normal text-sm mt-2 mr-8">
-              Payment Mode: Cash
-            </p>
-          </div>
         </div>
         <div
           class="w-full relative before:absolute before:inset-x-0 before:bottom- before:h-[1px] before:bg-gradient-to-r before:from-[#DDDDDD] before:to-[#FFFFFF]"
@@ -243,74 +238,9 @@
             class="w-full relative h-[3px] border-b border-[#E6E6E6] mb-6 mt-6"
           ></div>
         </div>
-        <!-- <div>
-          <h1 class="text-[#00000099] font-normal text-sm">Operator Info</h1>
-          <div
-            class="bg-[#F7F7F7] grid grid-cols-2 py-[13px] px-3 rounded-lg mt-3"
-          >
-            <div>
-              <p class="text-[#1E1E1E] font-medium text-sm">John Doe</p>
-              <p class="text-[#00000099] font-normal text-sm">
-                (+12 5839 555930)
-              </p>
-            </div>
-            <div>
-              <p class="text-[#1E1E1E] font-medium text-sm">Driver License</p>
-              <p class="text-[#00000099] font-normal text-sm">COA 124MJ</p>
-            </div>
-          </div>
-        </div> -->
       </div>
-      <!-- <div class="mt-6">
-        <h1 class="text-sm font-normal text-[#00000099] mb-4">Vehicle Info</h1>
-        <div class="bg-[#F7F7F7] px-4 py-4 rounded-lg">
-          <div class="grid grid-cols-4 gap-y-4 mb-4">
-            <div>
-              <h1 class="text-[#00000099] font-normal text-sm">
-                Vehicle Number
-              </h1>
-              <p class="text-[#1E1E1E] text-base font-medium">GHT 4899</p>
-            </div>
-            <div>
-              <h1 class="text-[#00000099] font-normal text-sm">
-                Vehicle Number
-              </h1>
-              <p class="text-[#1E1E1E] text-base font-medium">GHT 4899</p>
-            </div>
-            <div>
-              <h1 class="text-[#00000099] font-normal text-sm">
-                Vehicle Number
-              </h1>
-              <p class="text-[#1E1E1E] text-base font-medium">GHT 4899</p>
-            </div>
-            <div>
-              <h1 class="text-[#00000099] font-normal text-sm">
-                Vehicle Number
-              </h1>
-              <p class="text-[#1E1E1E] text-base font-medium">GHT 4899</p>
-            </div>
-          </div>
-          <div
-            class="w-full relative h-[3px] border-b border-[#E6E6E6] mb-5"
-          ></div>
-          <div class="grid grid-cols-4 gap-y-4">
-            <div>
-              <h1 class="text-[#00000099] font-normal text-sm">
-                Vehicle Number
-              </h1>
-              <p class="text-[#1E1E1E] text-base font-medium">GHT 4899</p>
-            </div>
-            <div>
-              <h1 class="text-[#00000099] font-normal text-sm">
-                Vehicle Number
-              </h1>
-              <p class="text-[#1E1E1E] text-base font-medium">GHT 4899</p>
-            </div>
-          </div>
-        </div>
-      </div> -->
 
-      <div v-if="$checkQr(orderData?.status)">
+      <div v-if="orderData?.qrCode && orderData?.qrCode !== null">
         <div class="flex gap-4">
           <div>
             <img :src="orderData?.qrCode" alt="" class="w-16 h-16" />

@@ -1,7 +1,4 @@
 export default (ctx, inject) => {
-  const checkQr = (status) => {
-    return status !== "NewAssignments" && status !== "Pending";
-  };
   const checkUserUpload = (status) => {
     return status !== "NewAssignments";
   };
@@ -9,7 +6,6 @@ export default (ctx, inject) => {
     return status === "Completed";
   };
 
-  inject("checkQr", checkQr);
   inject("checkProofOfPhotography", checkProofOfPhotography);
   inject("checkUserUpload", checkUserUpload);
 };

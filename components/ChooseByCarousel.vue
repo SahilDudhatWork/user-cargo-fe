@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="sm:mx-48 mx-6 mt-10 flex flex-col justify-center">
+    <div class="xl:mx-48 mx-6 mt-10 flex flex-col justify-center">
       <div>
         <h1 class="font-bold text-[20px] text-[#212121]">Best Offers</h1>
         <p class="font-medium text-base text-gray-700">
@@ -110,7 +110,7 @@ export default {
               arrows: false,
               centerMode: true,
               centerPadding: "0px",
-              slidesToShow: 2,
+              slidesToShow: 3,
             },
           },
           {
@@ -128,7 +128,7 @@ export default {
               arrows: false,
               centerMode: true,
               centerPadding: "0px",
-              slidesToShow: 1,
+              slidesToShow: 2,
             },
           },
           {

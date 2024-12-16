@@ -11,17 +11,20 @@
               <li
                 v-for="(item, key) in sidebarItems"
                 :key="key"
-                class="border-b pb-4 pt-4 pl-6 cursor-pointer"
+                class="border-b cursor-pointer"
                 :class="{
                   'bg-[#F5F9FD] text-white':
                     previousPath === formatPath(item.slug),
                 }"
               >
-                <nuxt-link :to="formatPath(item.slug)">
+                <nuxt-link
+                  :to="formatPath(item.slug)"
+                  class="h-[82px] flex flex-col justify-center ml-6"
+                >
                   <h1 class="text-[#000000] font-bold text-lg">
                     {{ item.title }}
                   </h1>
-                  <span class="text-[#00000099] font-normal text-sm">{{
+                  <span class="text-[#00000099] font-normal text-sm mt-1">{{
                     item.subTitle
                   }}</span>
                 </nuxt-link>

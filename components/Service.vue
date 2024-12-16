@@ -13,19 +13,19 @@
           <p class="text-gray-300 font-normal text-base">
             4 different type of service you can opt
           </p>
-          <div class="grid sm:grid-cols-2 mt-8">
+          <div class="grid lg:grid-cols-2 grid-cols-1 mt-8">
             <div class="w-full hidden sm:block">
               <img
                 src="@/static/Images/trueck1-image.webp"
                 alt=""
-                class="rounded-2xl xl:w-[700px] w-[600px] h-[450px] hidden sm:block"
+                class="rounded-2xl lg:w-[700px] lg:h-[450px] hidden sm:block"
               />
             </div>
             <div class="w-full">
               <div
                 v-for="(item, key) in typeOfService"
                 :key="key"
-                class="flex justify-between mb-10 cursor-pointer relative z-50 mx-5"
+                class="flex justify-between mb-10 cursor-pointer relative z-50 lg:mx-5 lg:mt-0 mt-5"
                 @click="handleClick(item)"
               >
                 <div
@@ -42,7 +42,7 @@
                   <img
                     src="@/static/svg/side-arrow.svg"
                     alt=""
-                    class="w-6 h-6 pt-2 absolute"
+                    class="w-6 h-6 pt-2"
                   />
                 </div>
               </div>

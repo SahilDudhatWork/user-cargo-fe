@@ -59,6 +59,7 @@ export default {
     },
   },
   mounted() {
+    this.$store.commit("service/resetSelectedServiceItems");
     const cookieDataRaw = this.$cookies.get("service");
     if (cookieDataRaw) {
       const cookieData = JSON.parse(cookieDataRaw);
