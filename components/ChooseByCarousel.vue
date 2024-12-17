@@ -98,7 +98,7 @@ export default {
           {
             breakpoint: 1400,
             settings: {
-              arrows: false,
+              arrows: true,
               centerMode: true,
               centerPadding: "0px",
               slidesToShow: 3,
@@ -107,7 +107,7 @@ export default {
           {
             breakpoint: 1200,
             settings: {
-              arrows: false,
+              arrows: true,
               centerMode: true,
               centerPadding: "0px",
               slidesToShow: 3,
@@ -116,7 +116,7 @@ export default {
           {
             breakpoint: 991,
             settings: {
-              arrows: false,
+              arrows: true,
               centerMode: true,
               centerPadding: "0px",
               slidesToShow: 2,
@@ -125,7 +125,7 @@ export default {
           {
             breakpoint: 768,
             settings: {
-              arrows: false,
+              arrows: true,
               centerMode: true,
               centerPadding: "0px",
               slidesToShow: 2,
@@ -134,7 +134,7 @@ export default {
           {
             breakpoint: 480,
             settings: {
-              arrows: false,
+              arrows: true,
               centerMode: true,
               centerPadding: "0px",
               slidesToShow: 1,

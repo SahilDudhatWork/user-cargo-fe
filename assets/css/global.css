@@ -1,65 +1,65 @@
 ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: linear-gradient(90deg, #9ED0FF 0%, #0464CB 100%);
-  }
-  
-  .error-msg {
-    font-size: 14px;
-    font-weight: 400;
-    color: red;
-  }
+  width: 5px;
+  height: 5px;
+}
 
-  .child-drop {
-    opacity: 0;
-    visibility: hidden;
-    transition: all .5s;
-    -webkit-transition: all .5s;
-    -moz-transition: all .5s;
-    -ms-transition: all .5s;
-    -o-transition: all .5s;
-  }
-  
-  .drop-li:hover .child-drop {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(-10px);
-    -webkit-transform: translateY(-10px);
-    -moz-transform: translateY(-10px);
-    -ms-transform: translateY(-10px);
-    -o-transform: translateY(-10px);
-  }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #9ed0ff 0%, #0464cb 100%);
+}
 
-  .nav-menu-content::after {
-    content: "";
-    background: #ffffff;
-    width: 0;
-    height: 2px;
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    transition: all .5s;
-    -webkit-transition: all .5s;
-    -moz-transition: all .5s;
-    -ms-transition: all .5s;
-    -o-transition: all .5s;
-  }
-  
-  .nav-menu-content:hover::after {
-    width: 100%;
-  }
-  .hero-bg-image{
-    background-image: url('@/static/Images/hero-bg-img.webp');
-  }
-  .\[\&\.active\]\:after\:bg-gradient-to-r.active::after {
-    content: "";
-    background: #ffffff;
-  }
-  .slick-slide {
-    padding: 0 10px;
+.error-msg {
+  font-size: 14px;
+  font-weight: 400;
+  color: red;
+}
+
+.child-drop {
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+}
+
+.drop-li:hover .child-drop {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-10px);
+  -webkit-transform: translateY(-10px);
+  -moz-transform: translateY(-10px);
+  -ms-transform: translateY(-10px);
+  -o-transform: translateY(-10px);
+}
+
+.nav-menu-content::after {
+  content: "";
+  background: #ffffff;
+  width: 0;
+  height: 2px;
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+}
+
+.nav-menu-content:hover::after {
+  width: 100%;
+}
+.hero-bg-image {
+  background-image: url("@/static/Images/hero-bg-img.webp");
+}
+.\[\&\.active\]\:after\:bg-gradient-to-r.active::after {
+  content: "";
+  background: #ffffff;
+}
+.slick-slide {
+  padding: 0 10px;
 }
 
 .slick-dots {
@@ -83,7 +83,7 @@
   padding: 0;
   border: none;
   border-radius: 40px;
-  background-color: #8CB8E7 !important;
+  background-color: #8cb8e7 !important;
   text-indent: -9999px;
   -webkit-border-radius: 40px;
   -moz-border-radius: 40px;
@@ -92,7 +92,7 @@
 }
 
 .slick-dots li.slick-active button {
-  background-color: #0464CB !important;
+  background-color: #0464cb !important;
   width: 3rem !important;
   margin: 0px -15px !important;
 }
@@ -107,41 +107,42 @@
 
 .slick-prev,
 .slick-next {
-  border: 1px solid #DDDDDD !important;
+  border: 1px solid #dddddd !important;
   border-radius: 100% !important;
-  padding: 15px !important; 
-  display: flex !important; 
-  justify-content: center !important; 
-  align-items: center !important; 
+  padding: 15px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
 }
 .slick-next::before {
-  background-image: url('@/static/svg/blue-side-arrow.svg') !important;
+  background-image: url("@/static/svg/blue-side-arrow.svg") !important;
   background-repeat: no-repeat !important;
-  background-position: center center; 
+  background-position: center center;
   position: absolute !important;
-  content: '' !important;
+  content: "" !important;
   display: block !important;
   width: 100% !important;
   height: 100% !important;
-  padding: 15px !important; 
-  box-sizing: border-box !important; 
+  padding: 15px !important;
+  box-sizing: border-box !important;
 }
 .slick-prev::before {
-  background-image: url('@/static/svg/blue-left-arrow.svg') !important;
+  background-image: url("@/static/svg/blue-left-arrow.svg") !important;
   background-repeat: no-repeat !important;
-  background-position: center center; 
+  background-position: center center;
   position: absolute !important;
-  content: '' !important;
+  content: "" !important;
   display: block !important;
   width: 100% !important;
   height: 100% !important;
-  padding: 15px !important; 
-  box-sizing: border-box !important; 
+  padding: 15px !important;
+  box-sizing: border-box !important;
 }
 /* --landing-page */
+
 .landing_carousel .slick-prev {
-  right: 83px !important;
-  left: 1455px; 
+  right: 50px !important;
+  left: auto;
   position: absolute !important;
   top: -24px;
 }
@@ -149,6 +150,13 @@
 .landing_carousel .slick-next {
   right: 0px !important;
   top: -24px !important;
+}
+
+@media (max-width: 510px) and (min-width: 425px) {
+  .landing_carousel .slick-prev,
+  .landing_carousel .slick-next {
+    margin-top: 15px !important;
+  }
 }
 /* ----- */
 
@@ -163,11 +171,11 @@
 .mx-datepicker .mx-input {
   background-color: white !important;
   cursor: pointer !important;
-  border: 1px solid 	#E8E8E8;
+  border: 1px solid #e8e8e8;
   border-radius: 8px;
   height: 54px !important;
   padding-left: 38px !important;
-  color: #1E1E1E;
+  color: #1e1e1e;
   font-weight: 400 !important;
   font-size: 16px;
 }
@@ -181,21 +189,21 @@
   color: #000000 !important;
   display: block !important;
 }
-.mx-input:hover, .mx-input:focus {
-  border: 1px solid 	#E8E8E8 !important;
-  border-color: #E8E8E8 !important;
+.mx-input:hover,
+.mx-input:focus {
+  border: 1px solid #e8e8e8 !important;
+  border-color: #e8e8e8 !important;
 }
 
-
 @media (min-width: 1441px) {
-  .mx-datepicker-main{ 
+  .mx-datepicker-main {
     left: 957.5px !important;
     position: absolute !important;
   }
-  .mx-datepicker-main .mx-time{ 
+  .mx-datepicker-main .mx-time {
     width: 382px !important;
   }
-  
+
   .mx-datepicker-main .mx-calendar {
     width: 382px !important;
   }

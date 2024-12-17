@@ -3,7 +3,9 @@
     <div
       class="pt-[17px] pb-[19px] rounded-bl-[16px] rounded-br-[16px] bg-white"
     >
-      <div class="xl:mx-48 mx-6 flex justify-between items-center">
+      <div
+        class="xl:mx-48 mx-4 flex justify-between items-center sm:gap-0 gap-2"
+      >
         <button
           @click="toggleSidebar"
           type="button"
@@ -33,11 +35,11 @@
           v-click-outside="closeSidebar"
         >
           <div class="flex items-center gap-12">
-            <ul class="sm:flex hidden display-block items-center gap-7">
+            <ul class="flex display-block items-center gap-7">
               <li
                 v-for="(item, index) in navItems"
                 :key="index"
-                class="drop-li relative"
+                class="drop-li relative sm:flex hidden"
               >
                 <a
                   @click.prevent="setActive(index)"
@@ -52,7 +54,7 @@
               <div v-if="isToken">
                 <div class="flex items-center gap-7 relative">
                   <div
-                    class="flex bg-[#ECF3FA] cursor-pointer py-[4px] items-center rounded-lg pl-1 pr-3 gap-1"
+                    class="flex bg-[#ECF3FA] cursor-pointer py-[4px] items-center rounded-lg pl-1 pr-3 gap-1 test"
                     @click="isDropdown = !isDropdown"
                   >
                     <img
@@ -153,20 +155,20 @@
                 class="flex flex-col text-white text-xl font-medium cursor-pointer w-full justify-center"
               >
                 <li v-for="(tab, key) in navItems" :key="key">
-                  <Nuxt-link
-                    :to="tab.href"
-                    class="flex items-center gap-2 ml-5 py-[20px]"
-                  >
+                  <div class="flex items-center gap-2 ml-5 py-[20px]">
                     <span
                       class="flex gap-4 font-medium text-xl text-justify text-black"
                       >{{ tab.text }}</span
                     >
-                  </Nuxt-link>
+                  </div>
                 </li>
-                <span
-                  class="flex gap-4 font-medium text-xl text-justify text-black ml-5 mt-4"
-                  >Get started</span
-                >
+                <nuxt-link to="/login">
+                  <span
+                    v-if="!isToken"
+                    class="flex gap-4 font-medium text-xl text-justify text-black ml-5 mt-4"
+                    >Get started</span
+                  >
+                </nuxt-link>
               </ul>
             </div>
           </div>
