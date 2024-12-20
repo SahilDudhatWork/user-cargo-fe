@@ -16,6 +16,7 @@
         v-if="modal.step4"
         @step3Next="step3Next"
         :isSkipButton="false"
+        :isLoading="isLoading"
         :errors="errors"
         @skipUserAddress="skipUserAddress"
         :service="service"
@@ -67,6 +68,7 @@ export default {
   data() {
     return {
       service: {},
+      isLoading: false,
       formData: {
         addressDetails: {
           buildinName: "",
@@ -214,6 +216,7 @@ export default {
         });
         return;
       }
+      this.isLoading = true;
       try {
         const res = await this.createUserAddress(this.formData);
         this.$toast.open({
@@ -228,6 +231,8 @@ export default {
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoading = false;
       }
     },
     async skipUserAddress() {

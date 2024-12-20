@@ -48,9 +48,6 @@
         </div>
       </template>
       <template #content>
-        <div class="mt-4 mb-4">
-          <GoogleMap />
-        </div>
         <div>
           <div class="flex">
             <h1 class="text-[#00000099] font-normal text-base mt-4 mb-4">

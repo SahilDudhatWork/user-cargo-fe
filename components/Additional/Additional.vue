@@ -15,6 +15,7 @@
           <button
             v-if="isShowButton"
             @click="$emit('click')"
+            :disabled="isLoading"
             class="font-semibold text-base text-white bg-[#0060C9] rounded-xl py-[15px] px-[87px] mt-4 focus:outline-none"
           >
             Continue
@@ -30,6 +31,10 @@ export default {
     isShowButton: {
       type: Boolean,
       default: true,
+    },
+    isLoading: {
+      type: Boolean,
+      default: false,
     },
     isSkipButton: {
       type: Boolean,

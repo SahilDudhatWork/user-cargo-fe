@@ -20,16 +20,18 @@
       </div>
       <div>
         <span
-          class="rounded-full flex"
+          class="rounded-full flex items-center justify-center relative"
           :class="
-            isSelected ? 'bg-[#3683D5] p-1' : ' p-[9px] border border-gray-400'
+            isSelected
+              ? 'bg-[#3683D5] p-[10px]'
+              : 'p-[9px] border border-gray-400'
           "
         >
           <img
             src="@/static/svg/true.svg"
             alt=""
-            class="sm:w-[12px] xs:w-[12px] w-[22px] h-[12px]"
             v-if="isSelected"
+            class="absolute"
           />
         </span>
       </div>

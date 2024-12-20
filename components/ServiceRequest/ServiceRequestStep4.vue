@@ -3,6 +3,7 @@
     <Additional
       @click="step3Next"
       :isSkipButton="isSkipButton"
+      :isLoading="isLoading"
       @skip="$emit('skipUserAddress')"
     >
       <template #header>
@@ -242,6 +243,10 @@ export default {
     isSkipButton: {
       type: Boolean,
       required: true,
+    },
+    isLoading: {
+      type: Boolean,
+      default: false,
     },
     errors: {
       type: Object,

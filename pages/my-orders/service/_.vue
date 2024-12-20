@@ -153,11 +153,24 @@
               v-for="(item, key) in orderData?.pickUpAddressData"
               :key="key"
             >
-              <div class="flex justify-between pb-3">
+              <div class="flex justify-between pb-3 gap-1">
                 <div>
                   <p class="text-[#1E1E1E] font-semibold text-sm">
-                    {{ item?.addressDetails?.laneNumber }}
-                    {{ item?.addressDetails?.buildinName }}
+                    {{
+                      (
+                        item?.addressDetails?.laneNumber +
+                        " " +
+                        item?.addressDetails?.buildinName
+                      ).length > 40
+                        ? (
+                            item?.addressDetails?.laneNumber +
+                            " " +
+                            item?.addressDetails?.buildinName
+                          ).substring(0, 40) + "..."
+                        : item?.addressDetails?.laneNumber +
+                          " " +
+                          item?.addressDetails?.buildinName
+                    }}
                   </p>
                   <p class="text-[#1B1B1B] font-medium text-xs">
                     {{ item?.addressDetails?.postalCode }}
@@ -165,7 +178,12 @@
                 </div>
                 <div>
                   <p class="text-[#1E1E1E] font-normal text-xs">
-                    {{ item?.contactDetails?.contactName }},
+                    {{
+                      item?.contactDetails?.contactName.length > 15
+                        ? item?.contactDetails?.contactName.substring(0, 15) +
+                          "..."
+                        : item?.contactDetails?.contactName
+                    }},
                     {{ item?.contactDetails?.contactNumber }}
                   </p>
                 </div>
@@ -182,11 +200,24 @@
               v-for="(item, key) in orderData?.dropAddressData"
               :key="key"
             >
-              <div class="flex justify-between pb-3">
+              <div class="flex justify-between pb-3 gap-1">
                 <div>
                   <p class="text-[#1E1E1E] font-semibold text-sm">
-                    {{ item?.addressDetails?.laneNumber }}
-                    {{ item?.addressDetails?.buildinName }}
+                    {{
+                      (
+                        item?.addressDetails?.laneNumber +
+                        " " +
+                        item?.addressDetails?.buildinName
+                      ).length > 40
+                        ? (
+                            item?.addressDetails?.laneNumber +
+                            " " +
+                            item?.addressDetails?.buildinName
+                          ).substring(0, 40) + "..."
+                        : item?.addressDetails?.laneNumber +
+                          " " +
+                          item?.addressDetails?.buildinName
+                    }}
                   </p>
                   <p class="text-[#1B1B1B] font-medium text-xs">
                     {{ item?.addressDetails?.postalCode }}
@@ -194,7 +225,12 @@
                 </div>
                 <div>
                   <p class="text-[#1E1E1E] font-normal text-xs">
-                    {{ item?.contactDetails?.contactName }},
+                    {{
+                      item?.contactDetails?.contactName.length > 15
+                        ? item?.contactDetails?.contactName.substring(0, 15) +
+                          "..."
+                        : item?.contactDetails?.contactName
+                    }},
                     {{ item?.contactDetails?.contactNumber }}
                   </p>
                 </div>
