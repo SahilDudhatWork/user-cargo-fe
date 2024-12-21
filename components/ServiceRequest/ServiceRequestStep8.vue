@@ -43,7 +43,10 @@
       </template>
       <template #content>
         <div class="mt-4 mb-4">
-          <GoogleMap @updateAddress="setAddress" />
+          <GoogleMap
+            @updateAddress="setAddress"
+            :addressDetails="formData?.addressDetails"
+          />
         </div>
         <div class="grid sm:grid-cols-2 grid-cols-1 gap-4 mt-7">
           <div class="flex flex-col gap-y-2">

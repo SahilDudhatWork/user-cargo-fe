@@ -6,7 +6,7 @@
       map-style-id="roadmap"
       map-type-id="terrain"
       ref="mapRef"
-      style="width: 100%; height: 242px"
+      :style="{ width: '100%', height: height }"
       :options="mapOptions"
       @dragend="getAddress"
       @click="handleMapClick"
@@ -14,8 +14,8 @@
     >
       <GmapMarker
         :position="marker.position"
-        :clickable="true"
-        :draggable="true"
+        :clickable="isMarkerEnabled"
+        :draggable="isMarkerEnabled"
         @dragend="getUpdatedLocation"
       />
     </GmapMap>
@@ -24,6 +24,20 @@
 <script>
 export default {
   layout: "dashboard",
+  props: {
+    addressDetails: {
+      type: Object,
+      default: () => ({}),
+    },
+    height: {
+      type: String,
+      default: "242px",
+    },
+    isMarkerEnabled: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
       marker: { position: { lat: 40.73061, lng: -73.935242 } },
@@ -44,15 +58,22 @@ export default {
     };
   },
   watch: {
-    getMapLocation(e) {
-      const location = {
-        lat: e.lat,
-        lng: e.lng,
-      };
-      this.marker.position = location;
-      this.$refs.mapRef.panTo(location);
+    addressDetails: {
+      immediate: true,
+      handler(newValue) {
+        if (newValue.lat && newValue.long) {
+          const location = {
+            lat: parseFloat(newValue.lat),
+            lng: parseFloat(newValue.long),
+          };
+          this.getMapLocation = location;
+          this.marker.position = location;
 
-      this.getAddress();
+          if (this.$refs.mapRef?.panTo) {
+            this.$refs.mapRef.panTo(location);
+          }
+        }
+      },
     },
   },
   mounted() {
@@ -62,6 +83,7 @@ export default {
   },
   methods: {
     checkCenter(latLng) {
+      if (!this.isMarkerEnabled) return;
       this.latLng = latLng;
       this.marker.position = { lat: latLng.lat(), lng: latLng.lng() };
     },

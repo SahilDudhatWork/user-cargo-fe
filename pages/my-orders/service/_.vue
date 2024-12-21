@@ -240,6 +240,20 @@
               ></div>
             </div>
           </div>
+          <div
+            class="mt-7 mb-4"
+            v-if="
+              orderData?.operatorData?.accountId &&
+              location?.lat &&
+              location?.long
+            "
+          >
+            <GoogleMap
+              :addressDetails="location"
+              height="300px"
+              :isMarkerEnabled="false"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -355,6 +369,7 @@ export default {
       isShareReviewModal: false,
       isProofOfPhotography: false,
       isUploadComplete: false,
+      location: {},
     };
   },
   computed: {
@@ -391,6 +406,7 @@ export default {
       fetchSingleOrder: "service/fetchSingleOrder",
       uploadFile: "service/uploadFile",
       createRating: "service/createRating",
+      fetchLocation: "service/fetchLocation",
     }),
     shareRiview() {
       this.isShareReviewModal = !this.isShareReviewModal;
@@ -468,6 +484,20 @@ export default {
     triggerFileUpload() {
       this.$refs.fileInput.click();
     },
+    async getLocation() {
+      try {
+        const accountId = this.orderData?.operatorData?.accountId;
+        if (!accountId) {
+          return;
+        }
+        const res = await this.fetchLocation({
+          id: accountId,
+        });
+        this.location = res?.data;
+      } catch (error) {
+        console.log(error, "error");
+      }
+    },
   },
   async asyncData({ params }) {
     return {
@@ -477,6 +507,7 @@ export default {
 
   async mounted() {
     await this.getSingleOrder();
+    await this.getLocation();
   },
 };
 </script>
