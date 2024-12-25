@@ -28,12 +28,11 @@
           </svg>
         </button>
         <div>
-          <img src="@/static/Images/header-logo.webp" alt="" />
+          <nuxt-link to="/">
+            <img src="@/static/Images/header-logo.webp" alt="" />
+          </nuxt-link>
         </div>
-        <header
-          class="flex justify-between relative"
-          v-click-outside="closeSidebar"
-        >
+        <header class="flex justify-between relative">
           <div class="flex items-center gap-12">
             <ul class="flex display-block items-center gap-7">
               <li
@@ -41,14 +40,15 @@
                 :key="index"
                 class="drop-li relative sm:flex hidden"
               >
-                <a
+                <nuxt-link
+                  :to="item.href"
                   @click.prevent="setActive(index)"
                   :class="{ active: activeIndex === index }"
                   :href="item.href"
                   class="xl:text-sm cursor-pointer inline-flex gap-2 justify-center items-center font-normal [&.active]:after:content('') [&.active]:after:w-full [&.active]:after:h-[2px] [&.active]:after:bg-gradient-to-r from-[#9ED0FF] to-[#4F42E4] [&.active]:after:absolute [&.active]:after:bottom-[-10px] [&.active]:after:left-0 relative nav-menu-content"
                 >
                   {{ item.text }}
-                </a>
+                </nuxt-link>
               </li>
 
               <div v-if="isToken">
@@ -132,7 +132,7 @@
               <nuxt-link to="/login" v-else>
                 <button
                   type="button"
-                  class="bg-[#0060C9] text-white font-semibold text-base py-[9px] px-[21px] rounded-xl"
+                  class="bg-[#0060C9] text-white font-semibold text-base py-[9px] px-[21px] rounded-xl sm:block hidden"
                 >
                   Get Started
                 </button>
@@ -143,9 +143,7 @@
       </div>
       <aside
         :class="isSidebarOpen ? 'translate-x-0 ' : '-translate-x-full'"
-        v-click-outside="closeSidebar"
         class="fixed block sm:hidden top-0 left-0 !z-[999] sm:w-[19rem] w-[17rem] h-full transition-transform sm:translate-x-0 bg-[#F5F9FD] xl:translate-x-0"
-        aria-label="Sidebar"
       >
         <div class="bg-dashboard-img h-full py-7 dark:bg-gray-800">
           <div>
@@ -155,12 +153,14 @@
                 class="flex flex-col text-white text-xl font-medium cursor-pointer w-full justify-center"
               >
                 <li v-for="(tab, key) in navItems" :key="key">
-                  <div class="flex items-center gap-2 ml-5 py-[20px]">
-                    <span
-                      class="flex gap-4 font-medium text-xl text-justify text-black"
-                      >{{ tab.text }}</span
-                    >
-                  </div>
+                  <nuxt-link :to="tab.href">
+                    <div class="flex items-center gap-2 ml-5 py-[20px]">
+                      <span
+                        class="flex gap-4 font-medium text-xl text-justify text-black"
+                        >{{ tab.text }}</span
+                      >
+                    </div>
+                  </nuxt-link>
                 </li>
                 <nuxt-link to="/login">
                   <span
@@ -195,15 +195,11 @@ export default {
       navItems: [
         {
           text: "Service",
-          href: "/service",
+          href: "/additional-details",
         },
         {
           text: "About us",
           href: "/about-us",
-        },
-        {
-          text: "Blog",
-          href: "/blog",
         },
         {
           text: "Contact us",
@@ -221,9 +217,6 @@ export default {
   methods: {
     setActive(index) {
       this.activeIndex = index;
-    },
-    closeSidebar() {
-      this.isSidebarOpen = false;
     },
     toggleSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen;
