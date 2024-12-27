@@ -332,6 +332,7 @@
             type="file"
             ref="fileInput"
             class="hidden"
+            multiple="true"
             @change="handleFileUpload"
           />
         </div>
@@ -412,7 +413,7 @@ export default {
       this.isShareReviewModal = !this.isShareReviewModal;
     },
     handleFileUpload(event) {
-      this.documents = event.target.files[0];
+      this.documents = event.target.files;
       if (this.documents) {
         this.uploadDocumentFile();
       }
@@ -447,7 +448,9 @@ export default {
     async uploadDocumentFile() {
       try {
         const formData = new FormData();
-        formData.append("documents", this.documents);
+        for (let i = 0; i < this.documents.length; i++) {
+          formData.append(`documents`, this.documents[i]);
+        }
         formData.append("movementId", this.movementId);
         const res = await this.uploadFile({
           id: this.movementId,
