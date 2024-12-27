@@ -59,10 +59,7 @@ export default {
                 });
                 this.$emit("approvePayment", response.data);
               } catch (error) {
-                if (
-                  error?.response?.data?.msg ===
-                  "Your session has expired. Please log in again."
-                ) {
+                if (error?.response?.data?.statusCode === 401) {
                   this.$cookies.remove("refreshToken");
                   this.$cookies.remove("token");
                   this.$router.push("/login");
