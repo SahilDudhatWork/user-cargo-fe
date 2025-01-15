@@ -20,7 +20,7 @@ export default {
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
     script: [
       {
-        src: "https://www.paypal.com/sdk/js?client-id=AbJ54p6AbSafsP6ICQX1Mlfvgde8CisO6bP724VOpZKAGTZ3Ac9Rm06W4stlhiTB1pgIMVGZ3n3Wg-Sn", // PayPal SDK
+        src: "https://www.paypal.com/sdk/js?client-id=AbJ54p6AbSafsP6ICQX1Mlfvgde8CisO6bP724VOpZKAGTZ3Ac9Rm06W4stlhiTB1pgIMVGZ3n3Wg-Sn&disable-funding=credit,card", // PayPal SDK
         async: true,
       },
     ],
