@@ -335,8 +335,9 @@ export default {
     },
     async step5Next() {
       try {
-        this.openModal("stepCheckout");
-        this.closeModal("step6");
+        // this.openModal("stepCheckout");
+        // this.closeModal("step6");
+        await this.sendServiceRequest({});
       } catch (error) {
         console.log(error);
         this.$toast.open({
@@ -357,17 +358,19 @@ export default {
           this.service.port_BridgeOfCrossing?._id;
         this.service.typeOfTransportation =
           this.service.typeOfTransportation?._id;
-        this.service.paymentDetail = {
-          id: payload.id,
-          status: payload.status,
-          payment_source: payload.payment_source,
-        };
+        // this.service.paymentDetail = {
+        //   id: payload.id,
+        //   status: payload.status,
+        //   payment_source: payload.payment_source,
+        // };
         const res = await this.createOrder(this.service);
         this.$store.commit("service/resetSelectedServiceItems");
         this.$toast.open({
           message: res.msg,
         });
-        this.closeModal("stepCheckout");
+        // this.closeModal("stepCheckout");
+
+        this.closeModal("step6");
         this.openModal("step7");
         this.isRequestSuccess = true;
         document.body.style.overflow = "hidden";
