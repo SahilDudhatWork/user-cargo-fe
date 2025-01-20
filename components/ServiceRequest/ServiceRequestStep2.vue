@@ -23,7 +23,14 @@
         <p class="text-base font-medium text-gray-400">
           Lorem ipsum dolor sit amet consectetur. Digni quam ullamcorper
         </p>
-        <div class="flex items-center">
+        <div
+          v-if="
+            selectedServiceItems.selectedServiceItem.title !=
+              'Local Drayage US' &&
+            selectedServiceItems.selectedServiceItem.title != 'Local Drayage MX'
+          "
+          class="flex items-center"
+        >
           <p class="text-sm text-[#151515] font-normal mt-3 mb-3">
             Port & Bridge of Crossing
           </p>
@@ -31,7 +38,14 @@
             class="h-full mx-2 w-[84%] relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[#DDDDDD] before:to-[#FFFFFF]"
           ></div>
         </div>
-        <div class="grid sm:grid-cols-2 grid-cols-1 gap-7">
+        <div
+          v-if="
+            selectedServiceItems.selectedServiceItem.title !=
+              'Local Drayage US' &&
+            selectedServiceItems.selectedServiceItem.title != 'Local Drayage MX'
+          "
+          class="grid sm:grid-cols-2 grid-cols-1 gap-7"
+        >
           <TypeOfTransportation
             v-for="(item, index) of formatPortItem"
             :key="index"
@@ -149,8 +163,6 @@ export default {
     },
     step1Next() {
       if (
-        (this.selectedServiceItems.selectedPortItem &&
-          this.selectedServiceItems.selectedPortItem?.title == "") ||
         (this.selectedServiceItems.selectedTypeOfTransportationItem &&
           this.selectedServiceItems.selectedTypeOfTransportationItem?.title ==
             "") ||
@@ -162,6 +174,23 @@ export default {
           type: "error",
         });
       } else {
+        if (
+          this.selectedServiceItems.selectedServiceItem.title !=
+            "Local Drayage US" &&
+          this.selectedServiceItems.selectedServiceItem.title !=
+            "Local Drayage MX"
+        ) {
+          if (
+            this.selectedServiceItems.selectedPortItem &&
+            this.selectedServiceItems.selectedPortItem?.title == ""
+          ) {
+            this.$toast.open({
+              message: "Please select the field before submitting.",
+              type: "error",
+            });
+          }
+        }
+
         let items = {
           selectedPortItem: this.selectedServiceItems.selectedPortItem,
           selectedTypeOfTransportationItem:

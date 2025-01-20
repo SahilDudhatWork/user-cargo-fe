@@ -121,7 +121,12 @@
                   service?.userReference
                 }}</span>
               </div>
-              <div>
+              <div
+                v-if="
+                  service?.port_BridgeOfCrossing?.title &&
+                  service?.port_BridgeOfCrossing?.title != ''
+                "
+              >
                 <p class="text-[#00000099] font-normal text-sm">
                   Bridge of Crossing
                 </p>

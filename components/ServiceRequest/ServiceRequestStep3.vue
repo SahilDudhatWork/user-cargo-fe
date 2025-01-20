@@ -176,7 +176,14 @@
               errors?.quantityTarpsSelectedLabel
             }}</span>
           </div>
-          <div>
+          <div
+            v-if="
+              selectedServiceItems.selectedServiceItem.title !=
+                'Local Drayage US' &&
+              selectedServiceItems.selectedServiceItem.title !=
+                'Local Drayage MX'
+            "
+          >
             <div class="mt-4">
               <div>
                 <p class="text-sm font-medium text-[#1B1B1B]">
@@ -438,7 +445,13 @@ export default {
     },
   },
   async beforeMount() {
-    await this.getPostBridge();
+    if (
+      this.selectedServiceItems.selectedServiceItem.title !=
+        "Local Drayage US" &&
+      this.selectedServiceItems.selectedServiceItem.title != "Local Drayage MX"
+    ) {
+      await this.getPostBridge();
+    }
     this.userReference = this.selectedServiceItems.userReference || null;
     if (this.selectedServiceItems?.schedule) {
       this.schedule.date = this.selectedServiceItems?.schedule?.date;

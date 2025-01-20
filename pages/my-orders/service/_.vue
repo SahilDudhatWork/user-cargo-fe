@@ -82,7 +82,7 @@
               orderData?.userReference
             }}</span>
           </div>
-          <div>
+          <div v-if="orderData?.port_BridgeOfCrossing">
             <p class="text-[#00000099] font-normal text-sm">
               Bridge of Crossing
             </p>
@@ -94,10 +94,13 @@
         <div
           class="mt-4 pb-4 w-full relative before:absolute before:inset-x-0 before:bottom- before:h-[1px] before:bg-gradient-to-r before:from-[#DDDDDD] before:to-[#FFFFFF]"
         ></div>
-        <h1 class="text-[#00000099] font-normal text-sm">
+        <h1
+          v-if="orderData?.specialRequirements.length > 0"
+          class="text-[#00000099] font-normal text-sm"
+        >
           Special Requirements
         </h1>
-        <div class="mt-1">
+        <div v-if="orderData?.specialRequirements.length > 0" class="mt-1">
           <div class="flex flex-wrap gap-2">
             <p
               class="bg-[#0060C91A] px-2.5 rounded-[100px] flex items-center py-[2px]"

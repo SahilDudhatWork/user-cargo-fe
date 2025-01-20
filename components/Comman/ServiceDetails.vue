@@ -55,13 +55,13 @@
             {{ item?.modeOfTransportation?.title }}
           </p>
         </div>
-        <div>
+        <div v-if="item?.port_BridgeOfCrossing">
           <p class="text-[#00000099] font-normal text-sm">Bridge of Crossing</p>
           <p class="text-[#1E1E1E] font-medium text-base">
             {{ item?.port_BridgeOfCrossing }}
           </p>
         </div>
-        <div>
+        <div v-if="item?.port_BridgeOfCrossing">
           <p class="text-[#00000099] font-normal text-sm">Bridge of Crossing</p>
           <p class="text-[#1E1E1E] font-medium text-base">
             {{ item?.port_BridgeOfCrossing }}
