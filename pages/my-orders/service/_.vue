@@ -41,7 +41,7 @@
           </div>
         </div>
         <div class="grid lg:grid-cols-2 grid-cols-1 gap-y-5">
-          <div>
+          <div v-if="orderData.movementId">
             <p class="text-[#00000099] font-normal text-sm">Movement ID</p>
             <span class="text-[#1E1E1E] font-medium text-base">{{
               orderData.movementId
@@ -51,14 +51,14 @@
             <p class="text-[#00000099] font-normal text-sm">Location ID</p>
             <span class="text-[#1E1E1E] font-medium text-base">MX</span>
           </div>
-          <div>
+          <div v-if="orderData?.typeOfService?.title">
             <p class="text-[#00000099] font-normal text-sm mb-1">Location</p>
             <span
               class="text-white font-medium text-base bg-[#0060C9] rounded-lg py-1 px-2"
               >{{ orderData?.typeOfService?.title }}</span
             >
           </div>
-          <div>
+          <div v-if="orderData?.typeOfTransportation?.title">
             <p class="text-[#00000099] font-normal text-sm">
               Transportation Type
             </p>
@@ -66,7 +66,7 @@
               orderData?.typeOfTransportation?.title
             }}</span>
           </div>
-          <div>
+          <div v-if="orderData?.modeOfTransportation?.title">
             <p class="text-[#00000099] font-normal text-sm">
               Mode of Transportation
             </p>
@@ -76,7 +76,7 @@
               >{{ orderData?.modeOfTransportation?.title }}</span
             >
           </div>
-          <div>
+          <div v-if="orderData?.userReference">
             <p class="text-[#00000099] font-normal text-sm">User Reference</p>
             <span class="text-[#1E1E1E] font-medium text-base">{{
               orderData?.userReference
@@ -95,12 +95,21 @@
           class="mt-4 pb-4 w-full relative before:absolute before:inset-x-0 before:bottom- before:h-[1px] before:bg-gradient-to-r before:from-[#DDDDDD] before:to-[#FFFFFF]"
         ></div>
         <h1
-          v-if="orderData?.specialRequirements.length > 0"
+          v-if="
+            orderData.specialRequirements &&
+            orderData.specialRequirements.length > 0
+          "
           class="text-[#00000099] font-normal text-sm"
         >
           Special Requirements
         </h1>
-        <div v-if="orderData?.specialRequirements.length > 0" class="mt-1">
+        <div
+          v-if="
+            orderData.specialRequirements &&
+            orderData.specialRequirements.length > 0
+          "
+          class="mt-1"
+        >
           <div class="flex flex-wrap gap-2">
             <p
               class="bg-[#0060C91A] px-2.5 rounded-[100px] flex items-center py-[2px]"
@@ -113,7 +122,14 @@
             </p>
           </div>
         </div>
-        <div class="mt-6 mb-6">
+        <div
+          class="mt-6 mb-6"
+          v-if="
+            orderData?.quantityForChains ||
+            orderData?.quantityForStraps ||
+            orderData?.quantityForTarps
+          "
+        >
           <p class="text-[#00000099] font-normal text-sm">Quantity</p>
           <p class="font-semibold text-base text-[#1E1E1E]">
             {{ orderData?.quantityForChains }}xChains,
@@ -243,18 +259,18 @@
               ></div>
             </div>
           </div>
-          <div
-            class="mt-7 mb-4"
-            v-if="
-              orderData?.operatorData?.accountId &&
-              location?.lat &&
-              location?.long
-            "
-          >
+          <div class="mt-5 mb-4">
+            <p
+              class="text-[#000000] font-bold text-lg mb-2"
+              v-if="!location?.lat && !location?.long"
+            >
+              Operator location not found
+            </p>
             <GoogleMap
               :addressDetails="location"
               height="300px"
               :isMarkerEnabled="false"
+              :isShowMarker="location?.lat && location?.long ? true : false"
             />
           </div>
         </div>
@@ -266,7 +282,7 @@
 
     <div>
       <div class="grid grid-cols-2">
-        <div v-if="$checkUserUpload(orderData?.status)">
+        <div v-if="orderData?.carrierData">
           <h1 class="text-[#00000099] font-normal text-sm">Carrier Info</h1>
           <div class="flex gap-3 items-center">
             <img
@@ -292,29 +308,135 @@
           ></div>
         </div>
       </div>
-
-      <div v-if="orderData?.qrCode && orderData?.qrCode !== null">
-        <div class="flex gap-4">
-          <div>
-            <img :src="orderData?.qrCode" alt="" class="w-16 h-16" />
+      <div class="grid sm:grid-cols-2 grid-cols-1">
+        <div v-if="orderData?.operatorData">
+          <h1 class="text-[#00000099] font-normal text-sm mb-3">
+            Operator Info
+          </h1>
+          <div class="grid grid-cols-3 bg-[#F7F7F7] px-5 py-4 rounded-lg">
+            <div>
+              <p class="text-[#1E1E1E] font-medium text-xs">
+                {{ orderData?.operatorData?.operatorName }}
+              </p>
+              <p class="text-[#686868] font-normal text-xs">
+                (+{{ orderData?.operatorData?.countryCode }}
+                {{ orderData?.operatorData?.operatorNumber }})
+              </p>
+            </div>
+            <div>
+              <p class="text-[#1E1E1E] font-medium text-xs">Driver License</p>
+              <p class="text-[#686868] font-normal text-xs">
+                {{ orderData?.operatorData?.usDriversLicense }}
+              </p>
+            </div>
           </div>
           <div
-            class="font-normal text-sm text-[#1E1E1E] sm:max-w-[260px] max-w-[200px]"
-          >
-            You received an
-            <span class="font-semibold">QR code </span>
-            from carrier for further verification with driver.
+            class="w-full relative h-[3px] border-b border-[#E6E6E6] mb-6 mt-6"
+          ></div>
+        </div>
+      </div>
+      <div v-if="orderData?.qrCode?.length">
+        <div class="flex flex-wrap gap-4 mt-3">
+          <div v-for="(doc, key) in orderData?.qrCode" :key="key">
+            <img
+              v-if="
+                fileTypes[doc] === 'application/pdf' || fileTypes[doc] === 'pdf'
+              "
+              src="@/static/svg/pdf.svg"
+              alt="PDF Preview"
+              class="mt-2 w-[100px] h-[100px] cursor-pointer"
+              @click="downloadFileItem(doc)"
+            />
+            <img
+              v-else-if="
+                fileTypes[doc] === 'application/msword' ||
+                fileTypes[doc] === 'doc' ||
+                fileTypes[doc] === 'document'
+              "
+              src="@/static/svg/doc.svg"
+              alt="DOC Preview"
+              class="mt-2 w-[100px] h-[100px] cursor-pointer"
+              @click="downloadFileItem(doc)"
+            />
+
+            <img
+              v-else-if="
+                fileTypes[doc] === 'image' ||
+                fileTypes[doc] === 'jpg' ||
+                fileTypes[doc] === 'jpeg' ||
+                fileTypes[doc] === 'png' ||
+                fileTypes[doc] === 'gif' ||
+                fileTypes[doc] === 'webp'
+              "
+              :src="doc"
+              alt="Image Preview"
+              class="mt-2 w-[100px] h-[100px] cursor-pointer"
+              @click="downloadFileItem(doc)"
+            />
           </div>
+        </div>
+        <div
+          class="font-normal text-sm text-[#1E1E1E] sm:max-w-[260px] max-w-[200px] mt-3"
+        >
+          You received an
+          <span class="font-semibold">QR code </span>
+          from carrier for further verification with driver.
         </div>
         <div
           class="w-full relative h-[3px] border-b border-[#E6E6E6] mb-6 mt-6"
         ></div>
       </div>
+      <div
+        class="flex flex-wrap gap-4 mt-3"
+        v-if="orderData?.documents && orderData?.documents.length"
+      >
+        <div v-for="(doc, key) in orderData?.documents" :key="key">
+          <img
+            v-if="
+              fileTypes[doc] === 'application/pdf' || fileTypes[doc] === 'pdf'
+            "
+            src="@/static/svg/pdf.svg"
+            alt="PDF Preview"
+            class="mt-2 w-[100px] h-[100px] cursor-pointer"
+            @click="downloadFileItem(doc)"
+          />
+          <img
+            v-else-if="
+              fileTypes[doc] === 'application/msword' ||
+              fileTypes[doc] === 'doc' ||
+              fileTypes[doc] === 'document'
+            "
+            src="@/static/svg/doc.svg"
+            alt="DOC Preview"
+            class="mt-2 w-[100px] h-[100px] cursor-pointer"
+            @click="downloadFileItem(doc)"
+          />
+
+          <img
+            v-else-if="
+              fileTypes[doc] === 'image' ||
+              fileTypes[doc] === 'jpg' ||
+              fileTypes[doc] === 'jpeg' ||
+              fileTypes[doc] === 'png' ||
+              fileTypes[doc] === 'gif' ||
+              fileTypes[doc] === 'webp'
+            "
+            :src="doc"
+            alt="Image Preview"
+            class="mt-2 w-[100px] h-[100px] cursor-pointer"
+            @click="downloadFileItem(doc)"
+          />
+        </div>
+      </div>
+
       <div class="mt-5" v-if="$checkProofOfPhotography(orderData?.status)">
         <ProofOfPhotography :orderData="orderData" />
       </div>
     </div>
-    <div class="flex justify-center mt-32 mb-5" v-if="!orderData?.documents">
+    <div
+      class="flex justify-center mt-32 mb-5"
+      v-if="orderData?.status != 'Completed'"
+    >
       <div
         class="rounded-2xl text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] flex justify-between py-3 px-5 sm:gap-14 gap-2 items-center"
       >
@@ -374,6 +496,7 @@ export default {
       isProofOfPhotography: false,
       isUploadComplete: false,
       location: {},
+      fileTypes: {},
     };
   },
   computed: {
@@ -405,6 +528,14 @@ export default {
       return "#000000";
     },
   },
+  watch: {
+    orderData: {
+      deep: true,
+      handler(item) {
+        this.checkFileTypes([...item.qrCode, ...item.documents]);
+      },
+    },
+  },
   methods: {
     ...mapActions({
       fetchSingleOrder: "service/fetchSingleOrder",
@@ -412,6 +543,36 @@ export default {
       createRating: "service/createRating",
       fetchLocation: "service/fetchLocation",
     }),
+    downloadFileItem(doc) {
+      const baseUrl = "https://cargo-storage-bucket.s3.us-east-1.amazonaws.com";
+      if (doc.startsWith(baseUrl)) {
+        const fileName = doc.split("/").pop();
+        this.$downloadFile({ src: doc, name: fileName });
+      }
+    },
+    getFileTypeFromUrl(url) {
+      const extension = url.split(".").pop().toLowerCase();
+      const fileTypes = {
+        pdf: "pdf",
+        doc: "document",
+        docx: "document",
+        jpg: "image",
+        jpeg: "image",
+        png: "image",
+        gif: "image",
+        webp: "image",
+        mp4: "video",
+        mp3: "audio",
+        txt: "text",
+      };
+      return fileTypes[extension] || "unknown";
+    },
+    async checkFileTypes(urls) {
+      for (let url of urls) {
+        const fileType = this.getFileTypeFromUrl(url);
+        this.$set(this.fileTypes, url, fileType);
+      }
+    },
     shareRiview() {
       this.isShareReviewModal = !this.isShareReviewModal;
     },

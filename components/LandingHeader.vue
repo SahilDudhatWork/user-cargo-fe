@@ -82,7 +82,7 @@
                           </span>
                         </li>
                       </nuxt-link>
-                      <nuxt-link to="/sub-user" v-if="!profileData?.parentId">
+                      <!-- <nuxt-link to="/sub-user" v-if="!profileData?.parentId">
                         <li class="flex items-center gap-3 px-[18px]">
                           <img src="@/static/svg/account.svg" alt="" />
                           <span
@@ -91,7 +91,7 @@
                             My accounts
                           </span>
                         </li>
-                      </nuxt-link>
+                      </nuxt-link> -->
                       <nuxt-link to="/edit-profile">
                         <li class="flex items-center gap-3 px-[18px]">
                           <img src="@/static/svg/user.svg" alt="" />
