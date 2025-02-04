@@ -121,6 +121,12 @@
                   service?.userReference
                 }}</span>
               </div>
+              <div>
+                <p class="text-[#00000099] font-normal text-sm">Trailer</p>
+                <span class="text-[#1E1E1E] font-medium text-base">{{
+                  service?.trailer
+                }}</span>
+              </div>
               <div
                 v-if="
                   service?.port_BridgeOfCrossing?.title &&

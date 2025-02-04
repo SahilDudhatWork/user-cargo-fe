@@ -100,22 +100,21 @@
             </div>
             <div>
               <label
-                for="Lane Number"
+                for="Special Instructions"
                 class="block mb-2 text-sm font-medium text-[#1B1B1B]"
-                >Lane Number</label
+                >Special Instructions (i.e. Docks 20-25)</label
               >
               <input
                 type="text"
-                name="CompanyName"
+                name="SpecialInstructions"
                 :class="
                   errors?.laneNumber
                     ? 'border border-red-600'
                     : 'border border-gray-300'
                 "
                 class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
-                placeholder="Your Lane Number"
+                placeholder="i.e. Docks 20-25"
                 v-model="formData.addressDetails.laneNumber"
-                @input="validateLaneNumberInput"
               />
               <span v-if="errors.laneNumber" class="error-msg">{{
                 errors.laneNumber

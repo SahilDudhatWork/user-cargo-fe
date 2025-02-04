@@ -245,7 +245,11 @@ export default async (ctx, inject) => {
     const addressDetails = form.addressDetails;
     validateField(addressDetails.buildinName, "buildinName", "Building-name");
     validateField(addressDetails.postalCode, "postalCode", "Postal-code");
-    validateField(addressDetails.laneNumber, "laneNumber", "Lane number");
+    validateField(
+      addressDetails.laneNumber,
+      "laneNumber",
+      "Special-instructions"
+    );
 
     const contactDetails = form.contactDetails;
     validateField(contactDetails.contactName, "contactName", "Contact-name");
@@ -254,14 +258,14 @@ export default async (ctx, inject) => {
       "contactNumber",
       "Contact number"
     );
-    validateField(contactDetails.contactEmail, "contactEmail", "Email");
+    // validateField(contactDetails.contactEmail, "contactEmail", "Email");
 
-    if (
-      contactDetails.contactEmail &&
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactDetails.contactEmail)
-    ) {
-      setError("contactEmail", "Invalid email format");
-    }
+    // if (
+    //   contactDetails.contactEmail &&
+    //   !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactDetails.contactEmail)
+    // ) {
+    //   setError("contactEmail", "Invalid email format");
+    // }
 
     if (!(await validatePhoneNumber(contactDetails.contactNumber))) {
       setError("contactNumber", "Invalid contact number format");
@@ -279,12 +283,16 @@ export default async (ctx, inject) => {
     if (!form.userReference) {
       setError("userReference", "user reference is required");
     }
+    if (!form.trailer) {
+      setError("trailer", "trailer is required");
+    }
     if (
       form.quantitySelectedLabel == "" ||
       form.quantitySelectedLabel === "Select option"
     ) {
       setError("quantitySelectedLabel", "Please select quantity for chains.");
     }
+
     if (
       form.quantityStrapsSelectedLabel == "" ||
       form.quantityStrapsSelectedLabel === "Select option"

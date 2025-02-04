@@ -73,6 +73,12 @@
             {{ item?.userReference }}
           </p>
         </div>
+        <div>
+          <p class="text-[#00000099] font-normal text-sm">Trailer</p>
+          <p class="text-[#1E1E1E] font-medium text-base">
+            {{ item?.trailer }}
+          </p>
+        </div>
       </div>
       <div class="w-full relative h-[1px] border-b py-2 border-[#EEEEEE]"></div>
 

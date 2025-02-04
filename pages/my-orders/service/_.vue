@@ -82,6 +82,12 @@
               orderData?.userReference
             }}</span>
           </div>
+          <div v-if="orderData?.trailer">
+            <p class="text-[#00000099] font-normal text-sm">Trailer</p>
+            <span class="text-[#1E1E1E] font-medium text-base">{{
+              orderData?.trailer
+            }}</span>
+          </div>
           <div v-if="orderData?.port_BridgeOfCrossing">
             <p class="text-[#00000099] font-normal text-sm">
               Bridge of Crossing

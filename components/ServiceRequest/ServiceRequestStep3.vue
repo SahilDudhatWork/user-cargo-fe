@@ -51,6 +51,8 @@
               type="text"
               placeholder="User Reference"
               class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[15px] focus:outline-none"
+              @input="validateUserReference"
+              maxlength="10"
               v-model="userReference"
               :class="
                 errors?.userReference
@@ -62,6 +64,30 @@
               errors?.userReference
             }}</span>
           </div>
+          <div>
+            <label
+              for="Trailer"
+              class="block mb-2 text-sm font-normal text-[#4B4B4B]"
+              >Trailer</label
+            >
+            <input
+              type="text"
+              placeholder="Trailer"
+              class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[15px] focus:outline-none"
+              @input="validateTrailer"
+              maxlength="10"
+              v-model="trailer"
+              :class="
+                errors?.trailer
+                  ? 'border border-red-600'
+                  : 'border border-gray-300'
+              "
+            />
+            <span class="error-msg" v-if="errors?.trailer">{{
+              errors?.trailer
+            }}</span>
+          </div>
+
           <div>
             <label
               for="email"
@@ -229,6 +255,7 @@ export default {
   data() {
     return {
       userReference: null,
+      trailer: null,
       specialRequirements: [],
       programingList: [
         {
@@ -302,6 +329,9 @@ export default {
     userReference(value) {
       this.updateSelectedServiceItems({ key: "userReference", item: value });
     },
+    trailer(value) {
+      this.updateSelectedServiceItems({ key: "trailer", item: value });
+    },
   },
   computed: {
     ...mapGetters({
@@ -328,6 +358,16 @@ export default {
       fetchServiceReference: "service/fetchServiceReference",
       updateSelectedServiceItems: "service/updateSelectedServiceItems",
     }),
+    validateUserReference(event) {
+      // Remove any non-alphanumeric characters
+      const sanitizedValue = event.target.value.replace(/[^a-zA-Z0-9]/g, "");
+      // Update the model with the sanitized value
+      this.userReference = sanitizedValue;
+    },
+    validateTrailer(event) {
+      const sanitizedValue = event.target.value.replace(/[^a-zA-Z0-9]/g, "");
+      this.trailer = sanitizedValue;
+    },
     toggleLabel(item) {
       const selectedItems =
         this.selectedServiceItems.selectedSpecialRequirementItems || [];
@@ -395,6 +435,7 @@ export default {
     step2Next() {
       let data = {
         userReference: this.userReference,
+        trailer: this.trailer,
         ...(this.selectedSpecialRequirementType.includes("Chains") && {
           selectedQuantityChains:
             this.selectedServiceItems?.selectedQuantityChains != "Select option"
@@ -453,6 +494,7 @@ export default {
       await this.getPostBridge();
     }
     this.userReference = this.selectedServiceItems.userReference || null;
+    this.trailer = this.selectedServiceItems.trailer || null;
     if (this.selectedServiceItems?.schedule) {
       this.schedule.date = this.selectedServiceItems?.schedule?.date;
       this.schedule.time = this.selectedServiceItems?.schedule?.time;

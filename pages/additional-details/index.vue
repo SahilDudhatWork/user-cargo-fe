@@ -153,6 +153,7 @@ export default {
     async step2Next(payload) {
       const label = {
         userReference: payload?.userReference,
+        trailer: payload?.trailer,
         quantitySelectedLabel: payload?.selectedQuantityChains,
         quantityStrapsSelectedLabel: payload?.selectedQuantityStraps,
         quantityTarpsSelectedLabel: payload?.selectedQuantityTarps,
@@ -173,6 +174,7 @@ export default {
           userReference: payload?.userReference,
         });
         this.service.userReference = payload?.userReference;
+        this.service.trailer = payload?.trailer;
         const specialRequirementIds = payload?.selectedSpecialRequirements.map(
           (req) => req._id
         );
@@ -349,6 +351,7 @@ export default {
     async sendServiceRequest(payload) {
       try {
         this.service.userReference = this.service.userReference;
+        this.service.trailer = this.service.trailer;
         this.service.typeOfService = this.service.typeOfService?._id;
 
         this.service.modeOfTransportation =

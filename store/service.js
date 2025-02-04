@@ -16,6 +16,7 @@ export const state = () => ({
     selectedQuantityStraps: "Select option",
     selectedPrograming: "Select option",
     userReference: null,
+    trailer: null,
     selectedSpecialRequirementItems: [],
     schedule: {
       date: "",
@@ -110,11 +111,13 @@ export const mutations = {
       selectedQuantityStraps: "Select option",
       selectedPrograming: "Select option",
       userReference: null,
+      trailer: null,
       selectedSpecialRequirementItems: [],
       schedule: {
         date: "",
         time: "",
       },
+
       selectedPickupItems: [],
       selectedDropItems: [],
     };
