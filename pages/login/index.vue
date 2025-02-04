@@ -153,6 +153,8 @@ export default {
             type: "error",
           });
         } else {
+          this.$cookies.remove("token");
+          this.$cookies.remove("refreshToken");
           this.formData.email = this.formData?.email.toLowerCase();
           await this.signin(this.formData);
           this.$cookies.set("email", this.formData?.email, {
