@@ -4,7 +4,7 @@ export default {
   ssr: false,
   server: {
     port: 3002,
-    // host: "0.0.0.0",
+    host: "0.0.0.0",
   },
   head: {
     title: "User-Cargo-Connect-FE",
