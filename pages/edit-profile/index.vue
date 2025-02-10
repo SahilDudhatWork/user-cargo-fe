@@ -138,10 +138,7 @@
             </div>
           </div>
           <div class="xl:mx-40 mx-5" v-if="step2">
-            <form
-              class="space-y-4 md:space-y-6 mt-6"
-              @submit.prevent="upateUserProfile"
-            >
+            <form class="space-y-4 md:space-y-6 mt-6">
               <div>
                 <div
                   class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 xl:gap-12 gap-4 gap-y-2 border-b border-[#EEEEEE] py-2"
@@ -536,18 +533,35 @@
                 </div>
               </div>
               <div class="flex mt-4">
-                <button
-                  type="submit"
-                  class="mb-5 text-white bg-[#0060C9] font-medium rounded-lg text-[16px] px-[6.5rem] py-[15px] text-center"
+                <VueLoadingButton
+                  ref="loader"
+                  aria-label="Post message"
+                  :loading="isButtonLoader"
+                  :disabled="isButtonLoader"
+                  :styled="true"
+                  style="
+                    padding-left: 87px !important;
+                    padding-right: 87px !important;
+                  "
+                  class="!mb-5 !text-white !bg-[#0060C9] !font-medium !rounded-lg !text-[16px] !px-[6.5rem] !py-[15px] !text-center"
+                  @click.native="upateUserProfile"
                 >
                   Save
-                </button>
+                </VueLoadingButton>
               </div>
             </form>
           </div>
         </div>
       </div>
     </div>
+    <loading
+      :active="isLoader"
+      :is-full-page="true"
+      color="#007BFF"
+      loader="bars"
+      :height="70"
+      :width="70"
+    />
   </div>
 </template>
 
@@ -557,8 +571,12 @@ import { messaging } from "@/plugins/firebase";
 import { mapActions, mapGetters } from "vuex";
 export default {
   layout: "dashboard",
+
   data() {
     return {
+      isButtonLoader: false,
+      isLoader: false,
+
       isProfile: true,
       step1: true,
       step2: false,
@@ -715,6 +733,7 @@ export default {
       }
     },
     async upateUserProfile() {
+      this.isButtonLoader = true;
       try {
         this.errors = await this.$validateEditFormData({ form: this.formData });
         if (Object.keys(this.errors).length > 0) {
@@ -872,6 +891,8 @@ export default {
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isButtonLoader = false;
       }
     },
     checkFileSize(file) {
@@ -884,6 +905,7 @@ export default {
       const file = event.target.files[0];
       this.formData.profilePicture = file;
       if (file) {
+        this.isLoader = true;
         try {
           if (!this.checkFileSize(file)) {
             this.$toast.open({
@@ -901,6 +923,8 @@ export default {
             message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
             type: "error",
           });
+        } finally {
+          this.isLoader = false;
         }
       }
     },
@@ -991,7 +1015,9 @@ export default {
       this.activate();
       await this.profile();
       await this.getUserRererence();
-      this.formData = await this.$lodash.cloneDeep(this.getUserProfile);
+      this.formData = {
+        ...(await this.$lodash.cloneDeep(this.getUserProfile)),
+      };
       this.profileURL = this.formData?.profilePicture || "";
       this.selectedLabel =
         this.formData.companyFormationType &&

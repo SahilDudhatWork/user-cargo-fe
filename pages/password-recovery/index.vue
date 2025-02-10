@@ -13,10 +13,7 @@
               Enter email address to get password recovery mail on your
               registered email address
             </p>
-            <form
-              class="space-y-4 md:space-y-6 mt-6"
-              @submit.prevent="sendCode"
-            >
+            <form class="space-y-4 md:space-y-6 mt-6">
               <div>
                 <label
                   for="Email Address"
@@ -32,11 +29,21 @@
                   placeholder="Type your email address"
                 />
               </div>
-              <button
-                class="xl:w-[382px] w-full text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-5 py-[15px] text-center"
+              <VueLoadingButton
+                ref="loader"
+                aria-label="Post message"
+                :loading="isButtonLoader"
+                :disabled="isButtonLoader"
+                :styled="true"
+                style="
+                  padding-left: 87px !important;
+                  padding-right: 87px !important;
+                "
+                class="!xl:w-[382px] !w-full !text-white !bg-gradient-to-r !from-[#0464CB] !to-[#2AA1EB] !font-medium !rounded-lg !text-[16px] !px-5 !py-[15px] !text-center"
+                @click.native="sendCode"
               >
                 Send Code
-              </button>
+              </VueLoadingButton>
               <p class="text-sm font-normal text-[#1E1E1E] max-w-[362px] mt-12">
                 By creating an account or signing you have read and agree to our
                 <span class="font-medium text-sm text-[#1E1E1E] cursor-pointer"
@@ -61,6 +68,7 @@ export default {
   middleware: "guest",
   data() {
     return {
+      isButtonLoader: false,
       forgetEmail: "",
     };
   },
@@ -69,6 +77,7 @@ export default {
       sendOtp: "auth/sendOtp",
     }),
     async sendCode() {
+      this.isButtonLoader = true;
       try {
         if (!this.forgetEmail) {
           this.$toast.open({
@@ -92,6 +101,8 @@ export default {
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isButtonLoader = false;
       }
     },
   },

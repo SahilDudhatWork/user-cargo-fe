@@ -13,7 +13,7 @@
                 >Register</NuxtLink
               >
             </p>
-            <form class="space-y-4 md:space-y-6 mt-6" @submit.prevent="login">
+            <form class="space-y-4 md:space-y-6 mt-6">
               <div>
                 <label
                   for="Email Address"
@@ -24,7 +24,7 @@
                   type="email"
                   name="email"
                   id="email"
-                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-3 py-[13px] dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-3 py-[13px]"
                   placeholder="Your email"
                   v-model="formData.email"
                 />
@@ -100,11 +100,27 @@
                   </div>
                 </div>
               </div>
-              <button
+              <!-- <button
                 class="w-full text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-5 py-[15px] text-center"
               >
                 Login
-              </button>
+              </button> -->
+
+              <VueLoadingButton
+                ref="loader"
+                aria-label="Post message"
+                :loading="isButtonLoader"
+                :disabled="isButtonLoader"
+                :styled="true"
+                style="
+                  padding-left: 87px !important;
+                  padding-right: 87px !important;
+                "
+                class="!w-full !text-white !bg-gradient-to-r !from-[#0464CB] !to-[#2AA1EB] !font-medium !rounded-lg !text-[16px] !px-5 !py-[15px] !text-center"
+                @click.native="login"
+              >
+                Login
+              </VueLoadingButton>
               <p class="text-sm font-normal text-[#1E1E1E] max-w-[362px]">
                 By creating an account or signing you have read and agree to our
                 <span class="font-medium text-sm text-[#1E1E1E] cursor-pointer"
@@ -131,6 +147,7 @@ export default {
   data() {
     return {
       isPassword: false,
+      isButtonLoader: false,
       formData: {
         email: "",
         password: "",
@@ -146,6 +163,8 @@ export default {
     },
 
     async login() {
+      this.isButtonLoader = true;
+
       try {
         if ((!this.formData.email, !this.formData.password)) {
           this.$toast.open({
@@ -171,6 +190,8 @@ export default {
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isButtonLoader = false;
       }
     },
     async activate() {

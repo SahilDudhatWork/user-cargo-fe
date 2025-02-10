@@ -32,7 +32,7 @@
       <div
         v-if="isDropdown"
         v-click-outside="closeDropdown"
-        class="!z-[999] bg-white rounded-lg shadow xl:w-[382px] w-full dark:bg-gray-700 absolute"
+        class="!z-[999] bg-white rounded-lg shadow xl:w-[382px] w-full absolute border"
       >
         <ul class="text-base text-gray-700 cursor-pointer">
           <li v-for="(item, index) in items" :key="index">

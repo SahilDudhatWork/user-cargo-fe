@@ -145,7 +145,7 @@
         :class="isSidebarOpen ? 'translate-x-0 ' : '-translate-x-full'"
         class="fixed block sm:hidden top-0 left-0 !z-[999] sm:w-[19rem] w-[17rem] h-full transition-transform sm:translate-x-0 bg-[#F5F9FD] xl:translate-x-0"
       >
-        <div class="bg-dashboard-img h-full py-7 dark:bg-gray-800">
+        <div class="bg-dashboard-img h-full py-7">
           <div>
             <div class="flex items-center justify-center gap-3"></div>
             <div class="flex justify-center mt-12">
@@ -177,7 +177,7 @@
       <div
         v-if="isSidebarOpen"
         @click="isSidebarOpen = false"
-        class="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-30"
+        class="bg-gray-900/50 fixed inset-0 z-30"
       ></div>
     </div>
   </div>

@@ -440,7 +440,6 @@ export default {
         //   payment_source: payload.payment_source,
         // };
         const res = await this.createOrder(this.service);
-        this.$store.commit("service/resetSelectedServiceItems");
         this.$toast.open({
           message: res.msg,
         });
@@ -449,6 +448,8 @@ export default {
         this.closeModal("step6");
         this.openModal("step7");
         this.isRequestSuccess = true;
+        await this.$store.commit("service/resetSelectedServiceItems");
+
         document.body.style.overflow = "hidden";
       } catch (error) {
         console.log(error);

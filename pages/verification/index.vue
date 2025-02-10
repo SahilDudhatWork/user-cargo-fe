@@ -40,11 +40,26 @@
                   >
                 </p>
               </div>
-              <button
+              <!-- <button
                 class="xl:w-[382px] w-full text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-5 py-[15px] text-center"
               >
                 Submit
-              </button>
+              </button> -->
+              <VueLoadingButton
+                ref="loader"
+                aria-label="Post message"
+                :loading="isButtonLoader"
+                :disabled="isButtonLoader"
+                :styled="true"
+                style="
+                  padding-left: 87px !important;
+                  padding-right: 87px !important;
+                "
+                class="!xl:w-[382px] !w-full !text-white !bg-gradient-to-r !from-[#0464CB] !to-[#2AA1EB] !font-medium !rounded-lg !text-[16px] !px-5 !py-[15px] !text-center"
+                @click.native="veryfyCode"
+              >
+                Submit
+              </VueLoadingButton>
               <div
                 class="text-sm font-normal text-[#1E1E1E] max-w-[362px] mt-10 !m-0"
               >
@@ -77,6 +92,7 @@ export default {
   data() {
     return {
       otp: Array(6).fill(""),
+      isButtonLoader: false,
     };
   },
   computed: {},
@@ -86,6 +102,7 @@ export default {
       sendOtp: "auth/sendOtp",
     }),
     async veryfyCode() {
+      this.isButtonLoader = true;
       try {
         if (this.otp.some((digit) => digit === "")) {
           this.$toast.open({
@@ -112,6 +129,8 @@ export default {
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isButtonLoader = false;
       }
     },
     async resendCode() {
