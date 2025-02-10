@@ -5,6 +5,7 @@
       :isSkipButton="isSkipButton"
       :isLoading="isLoading"
       @skip="$emit('skipUserAddress')"
+      :isButtonLoader="isButtonLoader"
     >
       <template #header>
         <div
@@ -256,6 +257,10 @@ export default {
       type: Object,
       required: true,
       default: null,
+    },
+    isButtonLoader: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

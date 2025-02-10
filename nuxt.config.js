@@ -4,7 +4,7 @@ export default {
   ssr: false,
   server: {
     port: 3002,
-    host: "0.0.0.0",
+    // host: "0.0.0.0",
   },
   head: {
     title: "User-Cargo-Connect-FE",
@@ -48,6 +48,8 @@ export default {
     { src: "~/plugins/vue2-datepicker.js", mode: "client" },
     { src: "~/plugins/vue2-google-maps.js", ssr: false },
     "~/plugins/firebase.js",
+    "~/plugins/loading-overlay.js",
+    "~/plugins/vue-loading-button.js",
   ],
 
   components: [{ path: "~/components/", pathPrefix: false }],

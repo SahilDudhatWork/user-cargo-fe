@@ -3,6 +3,7 @@
     <Additional
       @click="step5Next"
       :class="isRequestSuccess ? 'blur-background' : ''"
+      :isButtonLoader="isButtonLoader"
     >
       <template #header>
         <div
@@ -336,6 +337,10 @@ export default {
     },
     totalPrice: {
       type: String,
+    },
+    isButtonLoader: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {

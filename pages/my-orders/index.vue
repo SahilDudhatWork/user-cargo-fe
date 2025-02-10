@@ -158,6 +158,14 @@
         <span class="text-[#1E1E1E] font-medium text-2xl">No data found</span>
       </div>
     </div>
+    <loading
+      :active="isLoading"
+      :is-full-page="true"
+      color="#007BFF"
+      loader="bars"
+      :height="70"
+      :width="70"
+    />
   </div>
 </template>
 <script>
@@ -168,6 +176,7 @@ export default {
   data() {
     return {
       orderStatus: "Pending",
+      isLoading: false,
     };
   },
   computed: {
@@ -263,12 +272,15 @@ export default {
         let { page, limit } = payload;
         page = page || 1;
         limit = limit || 10;
+        this.isLoading = true;
         await this.fetchOrder({
           status: this.orderStatus,
           page: page,
           limit: limit,
         });
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),

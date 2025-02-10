@@ -57,6 +57,14 @@
       </div>
     </main>
     <Footer />
+    <loading
+      :active="isLoader"
+      :is-full-page="true"
+      color="#007BFF"
+      loader="bars"
+      :height="70"
+      :width="70"
+    />
   </div>
 </template>
 
@@ -70,6 +78,7 @@ export default {
     return {
       previousPath: "/settings/notifications",
       sidebarItems: [],
+      isLoader: false,
       cargoWorkSettings: {
         speed: 500,
         slidesToShow: 1,
@@ -149,6 +158,7 @@ export default {
     },
     async getSettings() {
       try {
+        this.isLoader = true;
         const res = await this.fetchSettings();
         this.sidebarItems = res.data;
         const notifications = {
@@ -163,9 +173,13 @@ export default {
         };
 
         this.sidebarItems = [notifications, ...res.data, logout];
+        this.isLoader = false;
       } catch (error) {
         console.log(error);
+        this.isLoader = false;
+      } finally {
       }
+      this.isLoader = false;
     },
   },
   async mounted() {

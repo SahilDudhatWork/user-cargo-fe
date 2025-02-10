@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Additional @click="step2Next">
+    <Additional @click="step2Next" :isButtonLoader="isButtonLoader">
       <template #header>
         <div class="flex items-center gap-2 cursor-pointer">
           <span
@@ -250,6 +250,10 @@ export default {
       type: Object,
       required: true,
       default: null,
+    },
+    isButtonLoader: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

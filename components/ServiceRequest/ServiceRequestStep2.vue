@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Additional @click="step1Next">
+    <Additional @click="step1Next" :isButtonLoader="isButtonLoader">
       <template #header>
         <div class="flex items-center gap-2 cursor-pointer mb-3">
           <span
@@ -109,6 +109,12 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 export default {
+  props: {
+    isButtonLoader: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {};
   },

@@ -12,14 +12,30 @@
           >
             Skip
           </button>
-          <button
+          <VueLoadingButton
+            v-if="isShowButton"
+            ref="loader"
+            aria-label="Post message"
+            :loading="isButtonLoader"
+            :disabled="isLoading"
+            :styled="true"
+            style="
+              padding-left: 87px !important;
+              padding-right: 87px !important;
+            "
+            class="!font-semibold !text-white !bg-[#0060C9] !rounded-xl !leading-none !py-[18px] !mt-4 !text-[16px] focus:outline-none text-center"
+            @click.native="$emit('click')"
+          >
+            Continue
+          </VueLoadingButton>
+          <!-- <button
             v-if="isShowButton"
             @click="$emit('click')"
             :disabled="isLoading"
             class="font-semibold text-base text-white bg-[#0060C9] rounded-xl py-[15px] px-[87px] mt-4 focus:outline-none"
           >
             Continue
-          </button>
+          </button> -->
         </div>
       </div>
     </div>
@@ -32,6 +48,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    isButtonLoader: {
+      type: Boolean,
+      default: false,
+    },
     isLoading: {
       type: Boolean,
       default: false,
@@ -43,3 +63,4 @@ export default {
   },
 };
 </script>
+<style scoped></style>

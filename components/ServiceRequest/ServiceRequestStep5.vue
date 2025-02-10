@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Additional @click="step4Next">
+    <Additional @click="step4Next" :isButtonLoader="isButtonLoader">
       <template #header>
         <div
           class="flex items-center gap-2 cursor-pointer sm:flex-row flex-col"
@@ -144,6 +144,10 @@ export default {
       type: Object,
       required: true,
       default: null,
+    },
+    isButtonLoader: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

@@ -487,6 +487,14 @@
         @closeModal="closeShareReviewModal"
       />
     </div>
+    <loading
+      :active="isLoading"
+      :is-full-page="true"
+      color="#007BFF"
+      loader="bars"
+      :height="70"
+      :width="70"
+    />
   </div>
 </template>
 
@@ -503,6 +511,7 @@ export default {
       isUploadComplete: false,
       location: {},
       fileTypes: {},
+      isLoading: false,
     };
   },
   computed: {
@@ -643,10 +652,13 @@ export default {
     },
     async getSingleOrder() {
       try {
+        this.isLoading = true;
         await this.fetchSingleOrder({
           movementId: this.movementId,
         });
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
@@ -663,11 +675,14 @@ export default {
         if (!accountId) {
           return;
         }
+        this.isLoading = true;
         const res = await this.fetchLocation({
           id: accountId,
         });
         this.location = res?.data;
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         console.log(error, "error");
       }
     },

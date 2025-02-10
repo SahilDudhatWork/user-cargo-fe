@@ -2,6 +2,7 @@
   <div>
     <div>
       <Additional
+        :isButtonLoader="isButtonLoader"
         @click="
           $emit('handleService', selectedServiceItems?.selectedServiceItem)
         "
@@ -38,6 +39,12 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
+  props: {
+    isButtonLoader: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {};
   },

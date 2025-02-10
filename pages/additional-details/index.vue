@@ -4,13 +4,22 @@
       <AdditionalHero @prevPage="prevPage" />
     </div>
     <div class="sm:px-10 px-4 py-10">
-      <ServiceRequestStep1 @handleService="handleService" v-if="modal.step1" />
-      <ServiceRequestStep2 @step1Next="step1Next" v-if="modal.step2" />
+      <ServiceRequestStep1
+        @handleService="handleService"
+        v-if="modal.step1"
+        :isButtonLoader="isButtonLoader"
+      />
+      <ServiceRequestStep2
+        @step1Next="step1Next"
+        v-if="modal.step2"
+        :isButtonLoader="isButtonLoader"
+      />
       <ServiceRequestStep3
         v-if="modal.step3"
         @step2Next="step2Next"
         :errors="errors"
         :service="service"
+        :isButtonLoader="isButtonLoader"
       />
       <ServiceRequestStep4
         v-if="modal.step4"
@@ -20,12 +29,14 @@
         :errors="errors"
         @skipUserAddress="skipUserAddress"
         :service="service"
+        :isButtonLoader="isButtonLoader"
       />
       <ServiceRequestStep5
         v-if="modal.step5"
         @step4Next="step4Next"
         :service="service"
         @getEditUserAddress="getEditUserAddress"
+        :isButtonLoader="isButtonLoader"
       />
       <ServiceRequestStep6
         v-if="modal.step6"
@@ -33,6 +44,7 @@
         :service="service"
         :isRequestSuccess="isRequestSuccess"
         :totalPrice="totalPrice"
+        :isButtonLoader="isButtonLoader"
       />
       <checkout
         v-if="modal.stepCheckout"
@@ -49,6 +61,7 @@
         @editUserAddress="editUserAddress"
         :formData="formData"
         :errors="errors"
+        :isButtonLoader="isButtonLoader"
       />
       <div>
         <RequestSuccessModal
@@ -58,8 +71,17 @@
         />
       </div>
     </div>
+    <loading
+      :active="isLoader"
+      :is-full-page="true"
+      color="#007BFF"
+      loader="bars"
+      :height="70"
+      :width="70"
+    />
   </div>
 </template>
+
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
 
@@ -69,6 +91,8 @@ export default {
     return {
       service: {},
       isLoading: false,
+      isLoader: false,
+      isButtonLoader: false,
       formData: {
         addressDetails: {
           buildinName: "",
@@ -122,33 +146,49 @@ export default {
       validateUserReference: "service/validateUserReference",
     }),
     async handleService(selectedService) {
-      this.service.typeOfService = selectedService;
-      let verifyByAdmin = (await this.getUserProfile?.verifyByAdmin) || false;
-      if (verifyByAdmin) {
-        if (!this.service?.typeOfService?._id) {
+      this.isButtonLoader = true;
+      try {
+        this.service.typeOfService = selectedService;
+        let verifyByAdmin = (await this.getUserProfile?.verifyByAdmin) || false;
+        if (verifyByAdmin) {
+          if (!this.service?.typeOfService?._id) {
+            this.$toast.open({
+              message: "Please select the field before submitting.",
+              type: "error",
+            });
+            return;
+          }
+          await this.getServices();
+          this.closeModal("step1");
+          this.openModal("step2");
+        } else {
           this.$toast.open({
-            message: "Please select the field before submitting.",
+            message: this.$i18n.t("adminVerificationErrorMessage"),
             type: "error",
           });
-          return;
         }
-        await this.getServices();
-        this.closeModal("step1");
-        this.openModal("step2");
-      } else {
-        this.$toast.open({
-          message: this.$i18n.t("adminVerificationErrorMessage"),
-          type: "error",
-        });
+      } catch (error) {
+        this.isButtonLoader = false;
+      } finally {
+        this.isButtonLoader = false;
       }
     },
     async step1Next(payload) {
-      this.service.port_BridgeOfCrossing = payload.selectedPortItem;
-      this.service.typeOfTransportation =
-        payload.selectedTypeOfTransportationItem;
-      this.service.modeOfTransportation = payload.selectedModeItem;
-      this.closeModal("step2");
-      this.openModal("step3");
+      try {
+        this.isButtonLoader = true;
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        this.service.port_BridgeOfCrossing = payload.selectedPortItem;
+        this.service.typeOfTransportation =
+          payload.selectedTypeOfTransportationItem;
+        this.service.modeOfTransportation = payload.selectedModeItem;
+        this.closeModal("step2");
+        this.openModal("step3");
+      } catch (error) {
+        this.isButtonLoader = false;
+        console.error("Error in step1Next:", error);
+      } finally {
+        this.isButtonLoader = false;
+      }
     },
     async step2Next(payload) {
       const label = {
@@ -170,6 +210,7 @@ export default {
         return;
       }
       try {
+        this.isButtonLoader = true;
         await this.validateUserReference({
           userReference: payload?.userReference,
         });
@@ -193,11 +234,14 @@ export default {
         this.closeModal("step3");
         this.openModal("step5");
       } catch (error) {
+        this.isButtonLoader = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isButtonLoader = false;
       }
     },
     async step3Next(payload) {
@@ -219,6 +263,7 @@ export default {
         return;
       }
       this.isLoading = true;
+      this.isButtonLoader = true;
       try {
         const res = await this.createUserAddress(this.formData);
         this.$toast.open({
@@ -227,7 +272,9 @@ export default {
         this.closeModal("step4");
         this.openModal("step5");
         this.getUserAddress();
+        this.isButtonLoader = false;
       } catch (error) {
+        this.isButtonLoader = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
@@ -235,6 +282,7 @@ export default {
         });
       } finally {
         this.isLoading = false;
+        this.isButtonLoader = false;
       }
     },
     async skipUserAddress() {
@@ -244,6 +292,7 @@ export default {
     },
     async editUserAddress() {
       try {
+        this.isButtonLoader = true;
         this.errors = await this.$validateUserAddress({
           form: this.formData,
         });
@@ -261,16 +310,21 @@ export default {
         this.closeModal("step8");
         this.openModal("step5");
         this.getUserAddress();
+        this.isButtonLoader = false;
       } catch (error) {
+        this.isButtonLoader = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isButtonLoader = false;
       }
     },
     async getEditUserAddress(id) {
       try {
+        this.isLoader = true;
         this.errors = {};
         const res = await this.fetchEditUserAddress({
           id: id,
@@ -278,16 +332,22 @@ export default {
         this.formData = res.data;
         this.closeModal("step5");
         this.openModal("step8");
+        this.isLoader = false;
       } catch (error) {
+        this.isLoader = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoader = false;
       }
     },
     async step4Next(payload) {
       try {
+        this.isButtonLoader = true;
+        this.isLoader = true;
         let { selectedPickupItem, selectedDropItem } = payload;
         this.service.pickUpAddressIds = selectedPickupItem;
         this.service.dropAddressIds = selectedDropItem;
@@ -327,25 +387,38 @@ export default {
         this.totalPrice = finalTotalPrice.toFixed(1).toString();
         this.closeModal("step5");
         this.openModal("step6");
+        this.isButtonLoader = false;
+        this.isLoader = false;
       } catch (error) {
+        this.isButtonLoader = false;
+        this.isLoader = false;
+
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isButtonLoader = false;
+        this.isLoader = false;
       }
     },
     async step5Next() {
       try {
+        this.isButtonLoader = true;
         // this.openModal("stepCheckout");
         // this.closeModal("step6");
         await this.sendServiceRequest({});
+        this.isButtonLoader = false;
       } catch (error) {
+        this.isButtonLoader = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isButtonLoader = false;
       }
     },
     async sendServiceRequest(payload) {
@@ -408,14 +481,19 @@ export default {
     },
     async getUserAddress() {
       try {
+        this.isLoader = true;
         const res = await this.fetchUserAddress();
         this.locations = res.data;
+        this.isLoader = false;
       } catch (error) {
+        this.isLoader = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoader = false;
       }
     },
     async getServices() {
@@ -431,13 +509,17 @@ export default {
     },
     async getTypeOfServices() {
       try {
-        this.fetchTypeOfService();
+        this.isLoader = true;
+        await this.fetchTypeOfService();
       } catch (error) {
+        this.isLoader = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoader = false;
       }
     },
     async resetModal() {
