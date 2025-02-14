@@ -308,6 +308,18 @@ export const actions = {
     }
   },
 
+  async uploadDocuments(ctx, { id, data }) {
+    try {
+      const response = await $axios.post(
+        `/v1/common/qr&proof/doc/user/${id}`,
+        data
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   openModal({ commit }, modalName) {
     commit("openModal", modalName);
   },
