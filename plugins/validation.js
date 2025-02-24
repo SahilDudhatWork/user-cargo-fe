@@ -245,11 +245,11 @@ export default async (ctx, inject) => {
     const addressDetails = form.addressDetails;
     validateField(addressDetails.buildinName, "buildinName", "Building-name");
     validateField(addressDetails.postalCode, "postalCode", "Postal-code");
-    validateField(
-      addressDetails.laneNumber,
-      "laneNumber",
-      "Special-instructions"
-    );
+    // validateField(
+    //   addressDetails.laneNumber,
+    //   "laneNumber",
+    //   "Special-instructions"
+    // );
 
     const contactDetails = form.contactDetails;
     validateField(contactDetails.contactName, "contactName", "Contact-name");

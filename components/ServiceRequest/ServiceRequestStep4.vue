@@ -113,20 +113,15 @@
               >
               <input
                 type="text"
-                :class="
-                  errors?.laneNumber
-                    ? 'border border-red-600'
-                    : 'border border-gray-300'
-                "
                 name="SpecialInstructions"
-                class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px] border border-gray-300"
                 placeholder="i.e. Docks 20-25"
                 v-model="addressDetails.laneNumber"
               />
 
-              <span v-if="errors.laneNumber" class="error-msg">{{
+              <!-- <span v-if="errors.laneNumber" class="error-msg">{{
                 errors.laneNumber
-              }}</span>
+              }}</span> -->
             </div>
             <div>
               <label
