@@ -441,20 +441,21 @@
 
       <div
         class="mt-5"
-        v-if="orderData?.documents && Object.keys(orderData.documents).length"
+        v-if="
+          orderData?.typeOfService?.title === 'Northbound Service' ||
+          orderData?.typeOfService?.title === 'Southbound'
+        "
       >
         <h1 class="text-[#000000] font-bold text-lg mb-4">User documents</h1>
         <div
           class="mt-5 grid xxl:grid-cols-6 xl:grid-cols-4 sm:grid-cols-2 grid-cols-2 lg:grid-cols-3 gap-y-5 mb-10"
-          v-if="
-            orderData?.typeOfService?.title === 'Northbound Service' ||
-            orderData?.typeOfService?.title === 'Southbound'
-          "
         >
           <UploadBox
             v-model="formData.cartaPorte"
             :filePreview="
-              cartaPortepreview || orderData?.documents?.cartaPorte[0]
+              cartaPortepreview ||
+              (orderData?.documents && orderData?.documents?.cartaPorte?.[0]) ||
+              null
             "
             @file-selected="handleCartaPorteFile"
             title="CARTA PORTE"
@@ -465,7 +466,11 @@
           />
           <UploadBox
             v-model="formData.doda"
-            :filePreview="dodaPreview || orderData?.documents?.doda[0]"
+            :filePreview="
+              dodaPreview ||
+              (orderData?.documents && orderData?.documents?.doda?.[0]) ||
+              null
+            "
             @file-selected="handleDodaFile"
             title="DODA"
             :fileTypes="fileTypes[orderData?.documents?.doda?.[0]]"
@@ -478,7 +483,10 @@
             v-if="orderData?.typeOfService?.title === 'Northbound Service'"
             v-model="formData.entry"
             :filePreview="
-              entryPreview || orderData?.documents?.entryPrefileInbond[0]
+              entryPreview ||
+              (orderData?.documents &&
+                orderData?.documents?.entryPrefileInbond?.[0]) ||
+              null
             "
             @file-selected="handleEntryFile"
             title="ENTRY / PREFILE / INBOND"
@@ -494,7 +502,10 @@
             v-if="orderData?.typeOfService?.title === 'Southbound'"
             v-model="formData.inbond"
             :filePreview="
-              inbondPreview || orderData?.documents?.itnInbondNoItnNeeded[0]
+              inbondPreview ||
+              (orderData?.documents &&
+                orderData?.documents?.itnInbondNoItnNeeded?.[0]) ||
+              null
             "
             @file-selected="handleInbondFile"
             title="ITN # / INBOND / NO ITN NEEDED"
@@ -510,7 +521,9 @@
             v-model="formData.instructions"
             :filePreview="
               instructionsPreview ||
-              orderData?.documents?.letterWithInstructionsMemo[0]
+              (orderData?.documents &&
+                orderData?.documents?.letterWithInstructionsMemo?.[0]) ||
+              null
             "
             @file-selected="handleInstructionsFile"
             title="LETTER WITH INSTRUCTIONS/ MEMO"
@@ -533,7 +546,9 @@
             v-model="formData.oversizeNotification"
             :filePreview="
               oversizeNotificationPreview ||
-              orderData?.documents?.oversizeNotificationUser[0]
+              (orderData?.documents &&
+                orderData?.documents?.oversizeNotificationUser?.[0]) ||
+              null
             "
             @file-selected="handleOversizeNotificationFile"
             title="OVERSIZE NOTIFICATION USER"
@@ -556,7 +571,9 @@
             v-model="formData.overweightPermit"
             :filePreview="
               overweightPermitPreview ||
-              orderData?.documents?.overweightPermit[0]
+              (orderData?.documents &&
+                orderData?.documents?.overweightPermit?.[0]) ||
+              null
             "
             @file-selected="handleOverweightPermitFile"
             title="OVERWEIGHT PERMIT"
@@ -574,7 +591,9 @@
             "
             v-model="formData.hazmatBol"
             :filePreview="
-              hazmatBolPreview || orderData?.documents?.hazmatBol[0]
+              hazmatBolPreview ||
+              (orderData?.documents && orderData?.documents?.hazmatBol?.[0]) ||
+              null
             "
             @file-selected="handleHazmatBolFile"
             title="HAZMAT BOL"
@@ -592,7 +611,9 @@
             v-model="formData.hazmatSDS"
             :filePreview="
               hazmatSDSPreview ||
-              orderData?.documents?.hazmatSdsSafetyDataSheet[0]
+              (orderData?.documents &&
+                orderData?.documents?.hazmatSdsSafetyDataSheet?.[0]) ||
+              null
             "
             @file-selected="handleHazmatSDSFile"
             title="HAZMAT SDS (SAFETY DATA SHEET)"
@@ -614,7 +635,9 @@
             v-model="formData.agriculTure"
             :filePreview="
               agriculTurePreview ||
-              orderData?.documents?.sagarpaPackageAgriculture[0]
+              (orderData?.documents &&
+                orderData?.documents?.sagarpaPackageAgriculture?.[0]) ||
+              null
             "
             @file-selected="handleAgriculTureFile"
             title="SAGARPA PACKAGE (AGRICULTURE)"
@@ -636,7 +659,9 @@
             v-model="formData.proferaPackage"
             :filePreview="
               proferaPackagePreview ||
-              orderData?.documents?.profepaPackageEnvironmental[0]
+              (orderData?.documents &&
+                orderData?.documents?.profepaPackageEnvironmental?.[0]) ||
+              null
             "
             @file-selected="handleProferaPackageFile"
             title="PROFEPA PACKAGE (ENVIRONMENTAL)"
@@ -654,7 +679,9 @@
             v-model="formData.intercambio"
             :filePreview="
               intercambioPreview ||
-              orderData?.documents?.intercambioTrailerRelease[0]
+              (orderData?.documents &&
+                orderData?.documents?.intercambioTrailerRelease?.[0]) ||
+              null
             "
             @file-selected="handleIntercambioFile"
             title="INTERCAMBIO (TRAILER RELEASE)"
@@ -676,7 +703,10 @@
             "
             v-model="formData.sedenaPackage"
             :filePreview="
-              sedenaPackagePreview || orderData?.documents?.sedenaPackage[0]
+              sedenaPackagePreview ||
+              (orderData?.documents &&
+                orderData?.documents?.sedenaPackage?.[0]) ||
+              null
             "
             @file-selected="handleSedenaPackageFile"
             title="SEDENA PACKAGE"
@@ -688,7 +718,10 @@
           <UploadBox
             v-model="formData.damages"
             :filePreview="
-              damagesPreview || orderData?.documents?.damagesDiscrepancies[0]
+              damagesPreview ||
+              (orderData?.documents &&
+                orderData?.documents?.damagesDiscrepancies?.[0]) ||
+              null
             "
             @file-selected="handleDamagesFile"
             title="DAMAGES / DISCREPANCIES"
@@ -701,7 +734,6 @@
           />
         </div>
       </div>
-
       <div
         class="mt-5"
         v-if="
@@ -714,7 +746,10 @@
           class="mt-5 grid xxl:grid-cols-6 xl:grid-cols-4 sm:grid-cols-2 grid-cols-2 lg:grid-cols-3 gap-y-5 mb-10"
         >
           <UploadBox
-            v-if="orderData?.documents?.cartaPorteFolio[0]"
+            v-if="
+              orderData?.documents &&
+              orderData?.documents?.cartaPorteFolio?.length
+            "
             :isUploadMode="false"
             :filePreview="orderData?.documents?.cartaPorteFolio[0]"
             title="CARTA PORTE FOLIO"
@@ -724,7 +759,9 @@
             "
           />
           <UploadBox
-            v-if="orderData?.documents?.aceEManifest[0]"
+            v-if="
+              orderData?.documents && orderData?.documents?.aceEManifest?.length
+            "
             :isUploadMode="false"
             :filePreview="orderData?.documents?.aceEManifest[0]"
             title="ACE E MANIFEST"
@@ -734,7 +771,10 @@
             "
           />
           <UploadBox
-            v-if="orderData?.documents?.oversizePermitCarrier[0]"
+            v-if="
+              orderData?.documents &&
+              orderData?.documents?.oversizePermitCarrier?.length
+            "
             :isUploadMode="false"
             :filePreview="orderData?.documents?.oversizePermitCarrier[0]"
             title="OVERSIZE PERMIT CARRIER"
@@ -746,7 +786,10 @@
             "
           />
           <UploadBox
-            v-if="orderData?.documents?.overweightPermit[0]"
+            v-if="
+              orderData?.documents &&
+              orderData?.documents?.overweightPermit?.length
+            "
             :isUploadMode="false"
             :filePreview="orderData?.documents?.overweightPermit[0]"
             title="OVERWEIGHT PERMIT"
@@ -756,7 +799,10 @@
             "
           />
           <UploadBox
-            v-if="orderData?.documents?.temperatureControlIn[0]"
+            v-if="
+              orderData?.documents &&
+              orderData?.documents?.temperatureControlIn?.length
+            "
             :isUploadMode="false"
             :filePreview="orderData?.documents?.temperatureControlIn[0]"
             title="TEMPERATURE CONTROL IN"
@@ -769,7 +815,10 @@
           />
 
           <UploadBox
-            v-if="orderData?.documents?.temperatureControlOut[0]"
+            v-if="
+              orderData?.documents &&
+              orderData?.documents?.temperatureControlOut?.length
+            "
             :isUploadMode="false"
             :filePreview="orderData?.documents?.temperatureControlOut[0]"
             title="TEMPERATURE CONTROL OUT"
@@ -782,7 +831,10 @@
           />
 
           <UploadBox
-            v-if="orderData?.documents?.proofOfDelivery[0]"
+            v-if="
+              orderData?.documents &&
+              orderData?.documents?.proofOfDelivery?.length
+            "
             :isUploadMode="false"
             :filePreview="orderData?.documents?.proofOfDelivery[0]"
             title="PROOF OF DELIVERY"
@@ -793,7 +845,10 @@
           />
 
           <UploadBox
-            v-if="orderData?.documents?.damagesDiscrepancies[0]"
+            v-if="
+              orderData?.documents &&
+              orderData?.documents?.damagesDiscrepancies?.length
+            "
             :isUploadMode="false"
             :filePreview="orderData?.documents?.damagesDiscrepancies[0]"
             title="DAMAGES / DISCREPANCIES"
@@ -945,10 +1000,11 @@ export default {
     orderData: {
       deep: true,
       handler(item) {
-        const qrCode = Array.isArray(item?.qrCode) ? item?.qrCode : [];
-        const documents = item?.documents
-          ? Object.values(item?.documents).flat()
-          : [];
+        const qrCode = Array.isArray(item?.qrCode) ? item.qrCode : [];
+        const documents =
+          item?.documents && Object.keys(item.documents).length > 0
+            ? Object.values(item.documents).flat()
+            : [];
 
         this.checkFileTypes([...qrCode, ...documents]);
       },

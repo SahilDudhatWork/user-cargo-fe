@@ -905,7 +905,6 @@ export default {
       const file = event.target.files[0];
       this.formData.profilePicture = file;
       if (file) {
-        this.isLoader = true;
         try {
           if (!this.checkFileSize(file)) {
             this.$toast.open({
@@ -916,6 +915,8 @@ export default {
           }
           this.profileURL = file ? URL.createObjectURL(file) : "";
           this.formData.profilePicture = file;
+          this.isLoader = true;
+
           await this.upateUserProfile();
         } catch (error) {
           console.log(error);

@@ -347,7 +347,6 @@ export default {
     async step4Next(payload) {
       try {
         this.isButtonLoader = true;
-        this.isLoader = true;
         let { selectedPickupItem, selectedDropItem } = payload;
         this.service.pickUpAddressIds = selectedPickupItem;
         this.service.dropAddressIds = selectedDropItem;
@@ -382,6 +381,8 @@ export default {
           pickUpAddressIds: this.service.pickUpAddressIds,
           dropAddressIds: this.service.dropAddressIds,
         };
+        this.isLoader = true;
+
         const res = await this.createCoordinatesPrice(formData);
         const finalTotalPrice = totalPrice + (res.data.price || 0);
         this.totalPrice = finalTotalPrice.toFixed(1).toString();
