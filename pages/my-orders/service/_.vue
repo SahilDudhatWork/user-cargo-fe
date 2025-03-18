@@ -9,6 +9,425 @@
         Service Details: {{ orderData?.movementId }}
       </h1>
     </div>
+    <div
+      class="mt-5"
+      v-if="
+        orderData?.typeOfService?.title === 'Northbound Service' ||
+        orderData?.typeOfService?.title === 'Southbound'
+      "
+    >
+      <h1 class="text-[#000000] font-bold text-lg mb-4">User documents</h1>
+      <div
+        class="mt-5 grid xxl:grid-cols-6 xl:grid-cols-4 sm:grid-cols-2 grid-cols-2 lg:grid-cols-3 gap-y-5 mb-10"
+      >
+        <UploadBox
+          v-model="formData.cartaPorte"
+          :filePreview="
+            cartaPortepreview ||
+            (orderData?.documents && orderData?.documents?.cartaPorte?.[0]) ||
+            null
+          "
+          @file-selected="handleCartaPorteFile"
+          title="CARTA PORTE"
+          :fileTypes="fileTypes[orderData?.documents?.cartaPorte?.[0]]"
+          @downloadFileItem="
+            downloadFileItem(orderData?.documents?.cartaPorte?.[0])
+          "
+        />
+        <UploadBox
+          v-model="formData.doda"
+          :filePreview="
+            dodaPreview ||
+            (orderData?.documents && orderData?.documents?.doda?.[0]) ||
+            null
+          "
+          @file-selected="handleDodaFile"
+          title="DODA"
+          :fileTypes="fileTypes[orderData?.documents?.doda?.[0]]"
+          @downloadFileItem="downloadFileItem(orderData?.documents?.doda?.[0])"
+        />
+
+        <UploadBox
+          v-if="orderData?.typeOfService?.title === 'Northbound Service'"
+          v-model="formData.entry"
+          :filePreview="
+            entryPreview ||
+            (orderData?.documents &&
+              orderData?.documents?.entryPrefileInbond?.[0]) ||
+            null
+          "
+          @file-selected="handleEntryFile"
+          title="ENTRY / PREFILE / INBOND"
+          :fileTypes="fileTypes[orderData?.documents?.entryPrefileInbond?.[0]]"
+          @downloadFileItem="
+            downloadFileItem(orderData?.documents?.entryPrefileInbond?.[0])
+          "
+        />
+
+        <UploadBox
+          v-if="orderData?.typeOfService?.title === 'Southbound'"
+          v-model="formData.inbond"
+          :filePreview="
+            inbondPreview ||
+            (orderData?.documents &&
+              orderData?.documents?.itnInbondNoItnNeeded?.[0]) ||
+            null
+          "
+          @file-selected="handleInbondFile"
+          title="ITN # / INBOND / NO ITN NEEDED"
+          :fileTypes="
+            fileTypes[orderData?.documents?.itnInbondNoItnNeeded?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(orderData?.documents?.itnInbondNoItnNeeded?.[0])
+          "
+        />
+
+        <UploadBox
+          v-model="formData.instructions"
+          :filePreview="
+            instructionsPreview ||
+            (orderData?.documents &&
+              orderData?.documents?.letterWithInstructionsMemo?.[0]) ||
+            null
+          "
+          @file-selected="handleInstructionsFile"
+          title="LETTER WITH INSTRUCTIONS/ MEMO"
+          :fileTypes="
+            fileTypes[orderData?.documents?.letterWithInstructionsMemo?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              orderData?.documents?.letterWithInstructionsMemo?.[0]
+            )
+          "
+        />
+
+        <UploadBox
+          v-if="
+            orderData?.specialRequirements?.some((req) =>
+              req.type.includes('Over Size')
+            )
+          "
+          v-model="formData.oversizeNotification"
+          :filePreview="
+            oversizeNotificationPreview ||
+            (orderData?.documents &&
+              orderData?.documents?.oversizeNotificationUser?.[0]) ||
+            null
+          "
+          @file-selected="handleOversizeNotificationFile"
+          title="OVERSIZE NOTIFICATION USER"
+          :fileTypes="
+            fileTypes[orderData?.documents?.oversizeNotificationUser?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              orderData?.documents?.oversizeNotificationUser?.[0]
+            )
+          "
+        />
+
+        <UploadBox
+          v-if="
+            orderData?.specialRequirements?.some((req) =>
+              req.type.includes('Over Weight')
+            )
+          "
+          v-model="formData.overweightPermit"
+          :filePreview="
+            overweightPermitPreview ||
+            (orderData?.documents &&
+              orderData?.documents?.overweightPermit?.[0]) ||
+            null
+          "
+          @file-selected="handleOverweightPermitFile"
+          title="OVERWEIGHT PERMIT"
+          :fileTypes="fileTypes[orderData?.documents?.overweightPermit?.[0]]"
+          @downloadFileItem="
+            downloadFileItem(orderData?.documents?.overweightPermit?.[0])
+          "
+        />
+
+        <UploadBox
+          v-if="
+            orderData?.specialRequirements?.some((req) =>
+              req.type.includes('Hazmat (USD405)')
+            )
+          "
+          v-model="formData.hazmatBol"
+          :filePreview="
+            hazmatBolPreview ||
+            (orderData?.documents && orderData?.documents?.hazmatBol?.[0]) ||
+            null
+          "
+          @file-selected="handleHazmatBolFile"
+          title="HAZMAT BOL"
+          :fileTypes="fileTypes[orderData?.documents?.hazmatBol?.[0]]"
+          @downloadFileItem="
+            downloadFileItem(orderData?.documents?.hazmatBol?.[0])
+          "
+        />
+        <UploadBox
+          v-if="
+            orderData?.specialRequirements?.some((req) =>
+              req.type.includes('Hazmat (USD405)')
+            )
+          "
+          v-model="formData.hazmatSDS"
+          :filePreview="
+            hazmatSDSPreview ||
+            (orderData?.documents &&
+              orderData?.documents?.hazmatSdsSafetyDataSheet?.[0]) ||
+            null
+          "
+          @file-selected="handleHazmatSDSFile"
+          title="HAZMAT SDS (SAFETY DATA SHEET)"
+          :fileTypes="
+            fileTypes[orderData?.documents?.hazmatSdsSafetyDataSheet?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              orderData?.documents?.hazmatSdsSafetyDataSheet?.[0]
+            )
+          "
+        />
+        <UploadBox
+          v-if="
+            orderData?.specialRequirements?.some((req) =>
+              req.type.includes('Sagarpa Inspection MX (USD 45)')
+            )
+          "
+          v-model="formData.agriculTure"
+          :filePreview="
+            agriculTurePreview ||
+            (orderData?.documents &&
+              orderData?.documents?.sagarpaPackageAgriculture?.[0]) ||
+            null
+          "
+          @file-selected="handleAgriculTureFile"
+          title="SAGARPA PACKAGE (AGRICULTURE)"
+          :fileTypes="
+            fileTypes[orderData?.documents?.sagarpaPackageAgriculture?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              orderData?.documents?.sagarpaPackageAgriculture?.[0]
+            )
+          "
+        />
+        <UploadBox
+          v-if="
+            orderData?.specialRequirements?.some((req) =>
+              req.type.includes('Profepa Inspection MX (USD 45)')
+            )
+          "
+          v-model="formData.proferaPackage"
+          :filePreview="
+            proferaPackagePreview ||
+            (orderData?.documents &&
+              orderData?.documents?.profepaPackageEnvironmental?.[0]) ||
+            null
+          "
+          @file-selected="handleProferaPackageFile"
+          title="PROFEPA PACKAGE (ENVIRONMENTAL)"
+          :fileTypes="
+            fileTypes[orderData?.documents?.profepaPackageEnvironmental?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              orderData?.documents?.profepaPackageEnvironmental?.[0]
+            )
+          "
+        />
+        <UploadBox
+          v-if="orderData?.typeOfTransportation?.title === 'FTL'"
+          v-model="formData.intercambio"
+          :filePreview="
+            intercambioPreview ||
+            (orderData?.documents &&
+              orderData?.documents?.intercambioTrailerRelease?.[0]) ||
+            null
+          "
+          @file-selected="handleIntercambioFile"
+          title="INTERCAMBIO (TRAILER RELEASE)"
+          :fileTypes="
+            fileTypes[orderData?.documents?.intercambioTrailerRelease?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              orderData?.documents?.intercambioTrailerRelease?.[0]
+            )
+          "
+        />
+        <UploadBox
+          v-if="
+            orderData?.typeOfService?.title === 'Southbound' &&
+            orderData?.specialRequirements?.some((req) =>
+              req.type.includes('Sedena Inspection MX (USD 0)')
+            )
+          "
+          v-model="formData.sedenaPackage"
+          :filePreview="
+            sedenaPackagePreview ||
+            (orderData?.documents &&
+              orderData?.documents?.sedenaPackage?.[0]) ||
+            null
+          "
+          @file-selected="handleSedenaPackageFile"
+          title="SEDENA PACKAGE"
+          :fileTypes="fileTypes[orderData?.documents?.sedenaPackage?.[0]]"
+          @downloadFileItem="
+            downloadFileItem(orderData?.documents?.sedenaPackage?.[0])
+          "
+        />
+        <!-- <UploadBox
+            v-model="formData.damages"
+            :filePreview="
+              damagesPreview ||
+              (orderData?.documents &&
+                orderData?.documents?.damagesDiscrepancies?.[0]) ||
+              null
+            "
+            @file-selected="handleDamagesFile"
+            title="DAMAGES / DISCREPANCIES"
+            :fileTypes="
+              fileTypes[orderData?.documents?.damagesDiscrepancies?.[0]]
+            "
+            @downloadFileItem="
+              downloadFileItem(orderData?.documents?.damagesDiscrepancies?.[0])
+            "
+          /> -->
+      </div>
+    </div>
+    <div
+      class="mt-5"
+      v-if="
+        orderData?.documents &&
+        Object.values(orderData.documents).some((arr) => arr.length > 0) &&
+        hasDocuments
+      "
+    >
+      <h1 class="text-[#000000] font-bold text-lg mb-4">Carrier documents</h1>
+      <div
+        class="mt-5 grid xxl:grid-cols-6 xl:grid-cols-4 sm:grid-cols-2 grid-cols-2 lg:grid-cols-3 gap-y-5 mb-10"
+      >
+        <UploadBox
+          v-if="
+            orderData?.documents &&
+            orderData?.documents?.cartaPorteFolio?.length
+          "
+          :isUploadMode="false"
+          :filePreview="orderData?.documents?.cartaPorteFolio[0]"
+          title="CARTA PORTE FOLIO"
+          :fileTypes="fileTypes[orderData?.documents?.cartaPorteFolio?.[0]]"
+          @downloadFileItem="
+            downloadFileItem(orderData?.documents?.cartaPorteFolio?.[0])
+          "
+        />
+        <UploadBox
+          v-if="
+            orderData?.documents && orderData?.documents?.aceEManifest?.length
+          "
+          :isUploadMode="false"
+          :filePreview="orderData?.documents?.aceEManifest[0]"
+          title="ACE E MANIFEST"
+          :fileTypes="fileTypes[orderData?.documents?.aceEManifest?.[0]]"
+          @downloadFileItem="
+            downloadFileItem(orderData?.documents?.aceEManifest?.[0])
+          "
+        />
+        <UploadBox
+          v-if="
+            orderData?.documents &&
+            orderData?.documents?.oversizePermitCarrier?.length
+          "
+          :isUploadMode="false"
+          :filePreview="orderData?.documents?.oversizePermitCarrier[0]"
+          title="OVERSIZE PERMIT CARRIER"
+          :fileTypes="
+            fileTypes[orderData?.documents?.oversizePermitCarrier?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(orderData?.documents?.oversizePermitCarrier?.[0])
+          "
+        />
+        <UploadBox
+          v-if="
+            orderData?.documents &&
+            orderData?.documents?.overweightPermit?.length
+          "
+          :isUploadMode="false"
+          :filePreview="orderData?.documents?.overweightPermit[0]"
+          title="OVERWEIGHT PERMIT"
+          :fileTypes="fileTypes[orderData?.documents?.overweightPermit?.[0]]"
+          @downloadFileItem="
+            downloadFileItem(orderData?.documents?.overweightPermit?.[0])
+          "
+        />
+        <UploadBox
+          v-if="
+            orderData?.documents &&
+            orderData?.documents?.temperatureControlIn?.length
+          "
+          :isUploadMode="false"
+          :filePreview="orderData?.documents?.temperatureControlIn[0]"
+          title="TEMPERATURE CONTROL IN"
+          :fileTypes="
+            fileTypes[orderData?.documents?.temperatureControlIn?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(orderData?.documents?.temperatureControlIn?.[0])
+          "
+        />
+
+        <UploadBox
+          v-if="
+            orderData?.documents &&
+            orderData?.documents?.temperatureControlOut?.length
+          "
+          :isUploadMode="false"
+          :filePreview="orderData?.documents?.temperatureControlOut[0]"
+          title="TEMPERATURE CONTROL OUT"
+          :fileTypes="
+            fileTypes[orderData?.documents?.temperatureControlOut?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(orderData?.documents?.temperatureControlOut?.[0])
+          "
+        />
+
+        <UploadBox
+          v-if="
+            orderData?.documents &&
+            orderData?.documents?.proofOfDelivery?.length
+          "
+          :isUploadMode="false"
+          :filePreview="orderData?.documents?.proofOfDelivery[0]"
+          title="PROOF OF DELIVERY"
+          :fileTypes="fileTypes[orderData?.documents?.proofOfDelivery?.[0]]"
+          @downloadFileItem="
+            downloadFileItem(orderData?.documents?.proofOfDelivery?.[0])
+          "
+        />
+
+        <UploadBox
+          v-if="
+            orderData?.documents &&
+            orderData?.documents?.damagesDiscrepancies?.length
+          "
+          :isUploadMode="false"
+          :filePreview="orderData?.documents?.damagesDiscrepancies[0]"
+          title="DAMAGES / DISCREPANCIES"
+          :fileTypes="
+            fileTypes[orderData?.documents?.damagesDiscrepancies?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(orderData?.documents?.damagesDiscrepancies?.[0])
+          "
+        />
+      </div>
+    </div>
     <div class="grid sm:grid-cols-2 grid-cols-1 mt-9">
       <div class="border-r border-[#EEEEEE]">
         <h1 class="text-[#000000] font-bold text-lg mb-4">Amount Details</h1>
@@ -438,429 +857,6 @@
       <div class="mt-5" v-if="$checkProofOfPhotography(orderData?.status)">
         <ProofOfPhotography :orderData="orderData" />
       </div>
-
-      <div
-        class="mt-5"
-        v-if="
-          orderData?.typeOfService?.title === 'Northbound Service' ||
-          orderData?.typeOfService?.title === 'Southbound'
-        "
-      >
-        <h1 class="text-[#000000] font-bold text-lg mb-4">User documents</h1>
-        <div
-          class="mt-5 grid xxl:grid-cols-6 xl:grid-cols-4 sm:grid-cols-2 grid-cols-2 lg:grid-cols-3 gap-y-5 mb-10"
-        >
-          <UploadBox
-            v-model="formData.cartaPorte"
-            :filePreview="
-              cartaPortepreview ||
-              (orderData?.documents && orderData?.documents?.cartaPorte?.[0]) ||
-              null
-            "
-            @file-selected="handleCartaPorteFile"
-            title="CARTA PORTE"
-            :fileTypes="fileTypes[orderData?.documents?.cartaPorte?.[0]]"
-            @downloadFileItem="
-              downloadFileItem(orderData?.documents?.cartaPorte?.[0])
-            "
-          />
-          <UploadBox
-            v-model="formData.doda"
-            :filePreview="
-              dodaPreview ||
-              (orderData?.documents && orderData?.documents?.doda?.[0]) ||
-              null
-            "
-            @file-selected="handleDodaFile"
-            title="DODA"
-            :fileTypes="fileTypes[orderData?.documents?.doda?.[0]]"
-            @downloadFileItem="
-              downloadFileItem(orderData?.documents?.doda?.[0])
-            "
-          />
-
-          <UploadBox
-            v-if="orderData?.typeOfService?.title === 'Northbound Service'"
-            v-model="formData.entry"
-            :filePreview="
-              entryPreview ||
-              (orderData?.documents &&
-                orderData?.documents?.entryPrefileInbond?.[0]) ||
-              null
-            "
-            @file-selected="handleEntryFile"
-            title="ENTRY / PREFILE / INBOND"
-            :fileTypes="
-              fileTypes[orderData?.documents?.entryPrefileInbond?.[0]]
-            "
-            @downloadFileItem="
-              downloadFileItem(orderData?.documents?.entryPrefileInbond?.[0])
-            "
-          />
-
-          <UploadBox
-            v-if="orderData?.typeOfService?.title === 'Southbound'"
-            v-model="formData.inbond"
-            :filePreview="
-              inbondPreview ||
-              (orderData?.documents &&
-                orderData?.documents?.itnInbondNoItnNeeded?.[0]) ||
-              null
-            "
-            @file-selected="handleInbondFile"
-            title="ITN # / INBOND / NO ITN NEEDED"
-            :fileTypes="
-              fileTypes[orderData?.documents?.itnInbondNoItnNeeded?.[0]]
-            "
-            @downloadFileItem="
-              downloadFileItem(orderData?.documents?.itnInbondNoItnNeeded?.[0])
-            "
-          />
-
-          <UploadBox
-            v-model="formData.instructions"
-            :filePreview="
-              instructionsPreview ||
-              (orderData?.documents &&
-                orderData?.documents?.letterWithInstructionsMemo?.[0]) ||
-              null
-            "
-            @file-selected="handleInstructionsFile"
-            title="LETTER WITH INSTRUCTIONS/ MEMO"
-            :fileTypes="
-              fileTypes[orderData?.documents?.letterWithInstructionsMemo?.[0]]
-            "
-            @downloadFileItem="
-              downloadFileItem(
-                orderData?.documents?.letterWithInstructionsMemo?.[0]
-              )
-            "
-          />
-
-          <UploadBox
-            v-if="
-              orderData?.specialRequirements?.some((req) =>
-                req.type.toLowerCase().includes('Over Size')
-              )
-            "
-            v-model="formData.oversizeNotification"
-            :filePreview="
-              oversizeNotificationPreview ||
-              (orderData?.documents &&
-                orderData?.documents?.oversizeNotificationUser?.[0]) ||
-              null
-            "
-            @file-selected="handleOversizeNotificationFile"
-            title="OVERSIZE NOTIFICATION USER"
-            :fileTypes="
-              fileTypes[orderData?.documents?.oversizeNotificationUser?.[0]]
-            "
-            @downloadFileItem="
-              downloadFileItem(
-                orderData?.documents?.oversizeNotificationUser?.[0]
-              )
-            "
-          />
-
-          <UploadBox
-            v-if="
-              orderData?.specialRequirements?.some((req) =>
-                req.type.toLowerCase().includes('Over Weight')
-              )
-            "
-            v-model="formData.overweightPermit"
-            :filePreview="
-              overweightPermitPreview ||
-              (orderData?.documents &&
-                orderData?.documents?.overweightPermit?.[0]) ||
-              null
-            "
-            @file-selected="handleOverweightPermitFile"
-            title="OVERWEIGHT PERMIT"
-            :fileTypes="fileTypes[orderData?.documents?.overweightPermit?.[0]]"
-            @downloadFileItem="
-              downloadFileItem(orderData?.documents?.overweightPermit?.[0])
-            "
-          />
-
-          <UploadBox
-            v-if="
-              orderData?.specialRequirements?.some((req) =>
-                req.type.toLowerCase().includes('Hazmat')
-              )
-            "
-            v-model="formData.hazmatBol"
-            :filePreview="
-              hazmatBolPreview ||
-              (orderData?.documents && orderData?.documents?.hazmatBol?.[0]) ||
-              null
-            "
-            @file-selected="handleHazmatBolFile"
-            title="HAZMAT BOL"
-            :fileTypes="fileTypes[orderData?.documents?.hazmatBol?.[0]]"
-            @downloadFileItem="
-              downloadFileItem(orderData?.documents?.hazmatBol?.[0])
-            "
-          />
-          <UploadBox
-            v-if="
-              orderData?.specialRequirements?.some((req) =>
-                req.type.toLowerCase().includes('Hazmat')
-              )
-            "
-            v-model="formData.hazmatSDS"
-            :filePreview="
-              hazmatSDSPreview ||
-              (orderData?.documents &&
-                orderData?.documents?.hazmatSdsSafetyDataSheet?.[0]) ||
-              null
-            "
-            @file-selected="handleHazmatSDSFile"
-            title="HAZMAT SDS (SAFETY DATA SHEET)"
-            :fileTypes="
-              fileTypes[orderData?.documents?.hazmatSdsSafetyDataSheet?.[0]]
-            "
-            @downloadFileItem="
-              downloadFileItem(
-                orderData?.documents?.hazmatSdsSafetyDataSheet?.[0]
-              )
-            "
-          />
-          <UploadBox
-            v-if="
-              orderData?.specialRequirements?.some((req) =>
-                req.type.toLowerCase().includes('Sagarpa Inspection MX')
-              )
-            "
-            v-model="formData.agriculTure"
-            :filePreview="
-              agriculTurePreview ||
-              (orderData?.documents &&
-                orderData?.documents?.sagarpaPackageAgriculture?.[0]) ||
-              null
-            "
-            @file-selected="handleAgriculTureFile"
-            title="SAGARPA PACKAGE (AGRICULTURE)"
-            :fileTypes="
-              fileTypes[orderData?.documents?.sagarpaPackageAgriculture?.[0]]
-            "
-            @downloadFileItem="
-              downloadFileItem(
-                orderData?.documents?.sagarpaPackageAgriculture?.[0]
-              )
-            "
-          />
-          <UploadBox
-            v-if="
-              orderData?.specialRequirements?.some((req) =>
-                req.type.toLowerCase().includes('Profepa Inspection MX')
-              )
-            "
-            v-model="formData.proferaPackage"
-            :filePreview="
-              proferaPackagePreview ||
-              (orderData?.documents &&
-                orderData?.documents?.profepaPackageEnvironmental?.[0]) ||
-              null
-            "
-            @file-selected="handleProferaPackageFile"
-            title="PROFEPA PACKAGE (ENVIRONMENTAL)"
-            :fileTypes="
-              fileTypes[orderData?.documents?.profepaPackageEnvironmental?.[0]]
-            "
-            @downloadFileItem="
-              downloadFileItem(
-                orderData?.documents?.profepaPackageEnvironmental?.[0]
-              )
-            "
-          />
-          <UploadBox
-            v-if="orderData?.typeOfTransportation?.title === 'FTL'"
-            v-model="formData.intercambio"
-            :filePreview="
-              intercambioPreview ||
-              (orderData?.documents &&
-                orderData?.documents?.intercambioTrailerRelease?.[0]) ||
-              null
-            "
-            @file-selected="handleIntercambioFile"
-            title="INTERCAMBIO (TRAILER RELEASE)"
-            :fileTypes="
-              fileTypes[orderData?.documents?.intercambioTrailerRelease?.[0]]
-            "
-            @downloadFileItem="
-              downloadFileItem(
-                orderData?.documents?.intercambioTrailerRelease?.[0]
-              )
-            "
-          />
-          <UploadBox
-            v-if="
-              orderData?.typeOfService?.title === 'Southbound' &&
-              orderData?.specialRequirements?.some((req) =>
-                req.type.toLowerCase().includes('Sedena Inspection MX')
-              )
-            "
-            v-model="formData.sedenaPackage"
-            :filePreview="
-              sedenaPackagePreview ||
-              (orderData?.documents &&
-                orderData?.documents?.sedenaPackage?.[0]) ||
-              null
-            "
-            @file-selected="handleSedenaPackageFile"
-            title="SEDENA PACKAGE"
-            :fileTypes="fileTypes[orderData?.documents?.sedenaPackage?.[0]]"
-            @downloadFileItem="
-              downloadFileItem(orderData?.documents?.sedenaPackage?.[0])
-            "
-          />
-          <UploadBox
-            v-model="formData.damages"
-            :filePreview="
-              damagesPreview ||
-              (orderData?.documents &&
-                orderData?.documents?.damagesDiscrepancies?.[0]) ||
-              null
-            "
-            @file-selected="handleDamagesFile"
-            title="DAMAGES / DISCREPANCIES"
-            :fileTypes="
-              fileTypes[orderData?.documents?.damagesDiscrepancies?.[0]]
-            "
-            @downloadFileItem="
-              downloadFileItem(orderData?.documents?.damagesDiscrepancies?.[0])
-            "
-          />
-        </div>
-      </div>
-      <div
-        class="mt-5"
-        v-if="
-          orderData?.documents &&
-          Object.values(orderData.documents).some((arr) => arr.length > 0)
-        "
-      >
-        <h1 class="text-[#000000] font-bold text-lg mb-4">Carrier documents</h1>
-        <div
-          class="mt-5 grid xxl:grid-cols-6 xl:grid-cols-4 sm:grid-cols-2 grid-cols-2 lg:grid-cols-3 gap-y-5 mb-10"
-        >
-          <UploadBox
-            v-if="
-              orderData?.documents &&
-              orderData?.documents?.cartaPorteFolio?.length
-            "
-            :isUploadMode="false"
-            :filePreview="orderData?.documents?.cartaPorteFolio[0]"
-            title="CARTA PORTE FOLIO"
-            :fileTypes="fileTypes[orderData?.documents?.cartaPorteFolio?.[0]]"
-            @downloadFileItem="
-              downloadFileItem(orderData?.documents?.cartaPorteFolio?.[0])
-            "
-          />
-          <UploadBox
-            v-if="
-              orderData?.documents && orderData?.documents?.aceEManifest?.length
-            "
-            :isUploadMode="false"
-            :filePreview="orderData?.documents?.aceEManifest[0]"
-            title="ACE E MANIFEST"
-            :fileTypes="fileTypes[orderData?.documents?.aceEManifest?.[0]]"
-            @downloadFileItem="
-              downloadFileItem(orderData?.documents?.aceEManifest?.[0])
-            "
-          />
-          <UploadBox
-            v-if="
-              orderData?.documents &&
-              orderData?.documents?.oversizePermitCarrier?.length
-            "
-            :isUploadMode="false"
-            :filePreview="orderData?.documents?.oversizePermitCarrier[0]"
-            title="OVERSIZE PERMIT CARRIER"
-            :fileTypes="
-              fileTypes[orderData?.documents?.oversizePermitCarrier?.[0]]
-            "
-            @downloadFileItem="
-              downloadFileItem(orderData?.documents?.oversizePermitCarrier?.[0])
-            "
-          />
-          <UploadBox
-            v-if="
-              orderData?.documents &&
-              orderData?.documents?.overweightPermit?.length
-            "
-            :isUploadMode="false"
-            :filePreview="orderData?.documents?.overweightPermit[0]"
-            title="OVERWEIGHT PERMIT"
-            :fileTypes="fileTypes[orderData?.documents?.overweightPermit?.[0]]"
-            @downloadFileItem="
-              downloadFileItem(orderData?.documents?.overweightPermit?.[0])
-            "
-          />
-          <UploadBox
-            v-if="
-              orderData?.documents &&
-              orderData?.documents?.temperatureControlIn?.length
-            "
-            :isUploadMode="false"
-            :filePreview="orderData?.documents?.temperatureControlIn[0]"
-            title="TEMPERATURE CONTROL IN"
-            :fileTypes="
-              fileTypes[orderData?.documents?.temperatureControlIn?.[0]]
-            "
-            @downloadFileItem="
-              downloadFileItem(orderData?.documents?.temperatureControlIn?.[0])
-            "
-          />
-
-          <UploadBox
-            v-if="
-              orderData?.documents &&
-              orderData?.documents?.temperatureControlOut?.length
-            "
-            :isUploadMode="false"
-            :filePreview="orderData?.documents?.temperatureControlOut[0]"
-            title="TEMPERATURE CONTROL OUT"
-            :fileTypes="
-              fileTypes[orderData?.documents?.temperatureControlOut?.[0]]
-            "
-            @downloadFileItem="
-              downloadFileItem(orderData?.documents?.temperatureControlOut?.[0])
-            "
-          />
-
-          <UploadBox
-            v-if="
-              orderData?.documents &&
-              orderData?.documents?.proofOfDelivery?.length
-            "
-            :isUploadMode="false"
-            :filePreview="orderData?.documents?.proofOfDelivery[0]"
-            title="PROOF OF DELIVERY"
-            :fileTypes="fileTypes[orderData?.documents?.proofOfDelivery?.[0]]"
-            @downloadFileItem="
-              downloadFileItem(orderData?.documents?.proofOfDelivery?.[0])
-            "
-          />
-
-          <UploadBox
-            v-if="
-              orderData?.documents &&
-              orderData?.documents?.damagesDiscrepancies?.length
-            "
-            :isUploadMode="false"
-            :filePreview="orderData?.documents?.damagesDiscrepancies[0]"
-            title="DAMAGES / DISCREPANCIES"
-            :fileTypes="
-              fileTypes[orderData?.documents?.damagesDiscrepancies?.[0]]
-            "
-            @downloadFileItem="
-              downloadFileItem(orderData?.documents?.damagesDiscrepancies?.[0])
-            "
-          />
-        </div>
-      </div>
     </div>
     <!-- <div
       class="flex justify-center mt-32 mb-5"
@@ -971,6 +967,21 @@ export default {
     ...mapGetters({
       orderData: "service/getSingleOrderData",
     }),
+    hasDocuments() {
+      const docKeys = [
+        "cartaPorteFolio",
+        "aceEManifest",
+        "oversizePermitCarrier",
+        "overweightPermit",
+        "temperatureControlIn",
+        "temperatureControlOut",
+        "proofOfDelivery",
+        "damagesDiscrepancies",
+      ];
+      return docKeys.some(
+        (key) => this.orderData?.documents?.[key]?.length > 0
+      );
+    },
     formattedStatus() {
       if (this.orderData?.status === "NewAssignments") {
         return "NEW-ASSIGNMENTS";

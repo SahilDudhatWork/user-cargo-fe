@@ -16,6 +16,14 @@
           >
             {{ formattedStatus }}
           </button>
+          <button
+            v-if="item?.status === 'Pending'"
+            :style="{ backgroundColor: '#989898' }"
+            class="rounded font-medium text-[10px] text-[#FEFEFE] px-4 py-1"
+            @click="$emit('viewDetails', item?.movementId)"
+          >
+            Upload Doc
+          </button>
         </div>
       </div>
       <div class="mt-4">
