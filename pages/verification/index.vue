@@ -121,7 +121,14 @@ export default {
             otp: parseInt(otpString),
           });
           this.$cookies.remove("email");
-          this.$router.push("/additional-details");
+          const redirectUrl = this.$route.query.redirect
+            ? decodeURIComponent(this.$route.query.redirect)
+            : null;
+          if (redirectUrl) {
+            this.$router.push(redirectUrl);
+          } else {
+            this.$router.push("/additional-details");
+          }
         }
       } catch (error) {
         console.log(error);

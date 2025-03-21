@@ -182,7 +182,11 @@ export default {
           this.$toast.open({
             message: this.$i18n.t("loginOTPMessage"),
           });
-          this.$router.push("/verification");
+          const redirectUrl = this.$route.query.redirect;
+          const verificationPath = redirectUrl
+            ? `/verification?redirect=${redirectUrl}`
+            : "/verification";
+          this.$router.push(verificationPath);
         }
       } catch (error) {
         console.log(error);
