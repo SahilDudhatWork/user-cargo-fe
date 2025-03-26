@@ -435,7 +435,7 @@
           <div>
             <h1 class="font-semibold text-[29px] text-[#1E1E1E]">
               {{ orderData?.amountDetails?.currency
-              }}{{ orderData?.amountDetails?.price }}
+              }}{{ orderData?.amountDetails?.price.toFixed(2) }}
             </h1>
             <p class="text-[#00000099] font-normal text-xs pb-6">
               Additional charges may apply*
@@ -599,36 +599,61 @@
             >
               <div class="flex justify-between pb-3 gap-1">
                 <div>
-                  <p class="text-[#1E1E1E] font-semibold text-sm">
+                  <p
+                    v-if="
+                      item?.addressDetails?.laneNumber ||
+                      item?.addressDetails?.buildinName
+                    "
+                    class="text-[#1E1E1E] font-semibold text-sm"
+                  >
                     {{
                       (
-                        item?.addressDetails?.laneNumber +
+                        (item?.addressDetails?.laneNumber ?? "") +
                         " " +
-                        item?.addressDetails?.buildinName
-                      ).length > 40
+                        (item?.addressDetails?.buildinName ?? "")
+                      ).trim().length > 40
                         ? (
-                            item?.addressDetails?.laneNumber +
+                            (item?.addressDetails?.laneNumber ?? "") +
                             " " +
-                            item?.addressDetails?.buildinName
+                            (item?.addressDetails?.buildinName ?? "")
                           ).substring(0, 40) + "..."
-                        : item?.addressDetails?.laneNumber +
+                        : (item?.addressDetails?.laneNumber ?? "") +
                           " " +
-                          item?.addressDetails?.buildinName
+                          (item?.addressDetails?.buildinName ?? "")
                     }}
                   </p>
-                  <p class="text-[#1B1B1B] font-medium text-xs">
+
+                  <p
+                    class="text-[#1B1B1B] font-medium text-xs"
+                    v-if="item?.addressDetails?.postalCode"
+                  >
                     {{ item?.addressDetails?.postalCode }}
                   </p>
                 </div>
                 <div>
-                  <p class="text-[#1E1E1E] font-normal text-xs">
+                  <p
+                    v-if="
+                      item?.contactDetails?.contactName ||
+                      item?.contactDetails?.contactNumber
+                    "
+                    class="text-[#1E1E1E] font-normal text-xs"
+                  >
                     {{
-                      item?.contactDetails?.contactName.length > 15
-                        ? item?.contactDetails?.contactName.substring(0, 15) +
-                          "..."
-                        : item?.contactDetails?.contactName
-                    }},
-                    {{ item?.contactDetails?.contactNumber }}
+                      item?.contactDetails?.contactName
+                        ? item?.contactDetails?.contactName.length > 15
+                          ? item?.contactDetails?.contactName.substring(0, 15) +
+                            "..."
+                          : item?.contactDetails?.contactName
+                        : ""
+                    }}
+                    <span
+                      v-if="
+                        item?.contactDetails?.contactName &&
+                        item?.contactDetails?.contactNumber
+                      "
+                      >,
+                    </span>
+                    {{ item?.contactDetails?.contactNumber ?? "" }}
                   </p>
                 </div>
               </div>
@@ -646,36 +671,60 @@
             >
               <div class="flex justify-between pb-3 gap-1">
                 <div>
-                  <p class="text-[#1E1E1E] font-semibold text-sm">
+                  <p
+                    v-if="
+                      item?.addressDetails?.laneNumber ||
+                      item?.addressDetails?.buildinName
+                    "
+                    class="text-[#1E1E1E] font-semibold text-sm"
+                  >
                     {{
                       (
-                        item?.addressDetails?.laneNumber +
+                        (item?.addressDetails?.laneNumber ?? "") +
                         " " +
-                        item?.addressDetails?.buildinName
-                      ).length > 40
+                        (item?.addressDetails?.buildinName ?? "")
+                      ).trim().length > 40
                         ? (
-                            item?.addressDetails?.laneNumber +
+                            (item?.addressDetails?.laneNumber ?? "") +
                             " " +
-                            item?.addressDetails?.buildinName
+                            (item?.addressDetails?.buildinName ?? "")
                           ).substring(0, 40) + "..."
-                        : item?.addressDetails?.laneNumber +
+                        : (item?.addressDetails?.laneNumber ?? "") +
                           " " +
-                          item?.addressDetails?.buildinName
+                          (item?.addressDetails?.buildinName ?? "")
                     }}
                   </p>
-                  <p class="text-[#1B1B1B] font-medium text-xs">
+                  <p
+                    class="text-[#1B1B1B] font-medium text-xs"
+                    v-if="item?.addressDetails?.postalCode"
+                  >
                     {{ item?.addressDetails?.postalCode }}
                   </p>
                 </div>
                 <div>
-                  <p class="text-[#1E1E1E] font-normal text-xs">
+                  <p
+                    v-if="
+                      item?.contactDetails?.contactName ||
+                      item?.contactDetails?.contactNumber
+                    "
+                    class="text-[#1E1E1E] font-normal text-xs"
+                  >
                     {{
-                      item?.contactDetails?.contactName.length > 15
-                        ? item?.contactDetails?.contactName.substring(0, 15) +
-                          "..."
-                        : item?.contactDetails?.contactName
-                    }},
-                    {{ item?.contactDetails?.contactNumber }}
+                      item?.contactDetails?.contactName
+                        ? item?.contactDetails?.contactName.length > 15
+                          ? item?.contactDetails?.contactName.substring(0, 15) +
+                            "..."
+                          : item?.contactDetails?.contactName
+                        : ""
+                    }}
+                    <span
+                      v-if="
+                        item?.contactDetails?.contactName &&
+                        item?.contactDetails?.contactNumber
+                      "
+                      >,
+                    </span>
+                    {{ item?.contactDetails?.contactNumber ?? "" }}
                   </p>
                 </div>
               </div>

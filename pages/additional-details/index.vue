@@ -422,25 +422,23 @@ export default {
         this.isButtonLoader = false;
       }
     },
-    async sendServiceRequest(payload) {
+    async sendServiceRequest() {
       try {
-        this.service.userReference = this.service.userReference;
-        this.service.trailer = this.service.trailer;
-        this.service.typeOfService = this.service.typeOfService?._id;
+        let serviceData = { ...this.service };
+        serviceData.typeOfService = serviceData.typeOfService._id;
 
-        this.service.modeOfTransportation =
-          this.service.modeOfTransportation?._id;
+        serviceData.modeOfTransportation = serviceData.modeOfTransportation._id;
 
-        this.service.port_BridgeOfCrossing =
-          this.service.port_BridgeOfCrossing?._id;
-        this.service.typeOfTransportation =
-          this.service.typeOfTransportation?._id;
+        serviceData.port_BridgeOfCrossing =
+          serviceData.port_BridgeOfCrossing._id;
+        serviceData.typeOfTransportation = serviceData.typeOfTransportation._id;
         // this.service.paymentDetail = {
         //   id: payload.id,
         //   status: payload.status,
         //   payment_source: payload.payment_source,
         // };
-        const res = await this.createOrder(this.service);
+        const res = await this.createOrder(serviceData);
+        this.orderId = res.data.movementId;
         this.$toast.open({
           message: res.msg,
         });
@@ -469,7 +467,7 @@ export default {
       document.body.style.overflow = "";
     },
     requestProcess() {
-      this.$router.push("/my-orders");
+      this.$router.push(`/my-orders/service/${this.orderId}`);
     },
     prevPage() {
       if (this.modal.step8) {

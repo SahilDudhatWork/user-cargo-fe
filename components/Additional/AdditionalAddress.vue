@@ -85,7 +85,7 @@ export default {
   },
   computed: {
     addressDetails() {
-      return `${this.item?.addressDetails?.laneNumber} ${this.item?.addressDetails?.buildinName}`;
+      return `${this.item?.addressDetails?.buildinName}`;
     },
   },
   methods: {
