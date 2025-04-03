@@ -31,11 +31,11 @@
           "
           class="flex items-center"
         >
-          <p class="text-sm text-[#151515] font-normal mt-3 mb-3">
+          <p class="text-[16px] font-medium text-[#0060c9] mt-3 mb-3">
             Port & Bridge of Crossing
           </p>
           <div
-            class="h-full mx-2 w-[84%] relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[#DDDDDD] before:to-[#FFFFFF]"
+            class="h-full mx-2 w-[86%] relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[#0060c9] before:to-[#FFFFFF]"
           ></div>
         </div>
         <div
@@ -57,11 +57,11 @@
           />
         </div>
         <div class="flex items-center">
-          <p class="text-sm text-[#151515] font-normal mt-3 mb-3">
+          <p class="text-[16px] font-medium text-[#0060c9] mt-3 mb-3">
             Type of Transportation
           </p>
           <div
-            class="h-full mx-2 w-[86%] relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[#DDDDDD] before:to-[#FFFFFF]"
+            class="h-full mx-2 w-[86%] relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[#0060c9] before:to-[#FFFFFF]"
           ></div>
         </div>
         <div class="grid sm:grid-cols-2 grid-cols-1 gap-7">
@@ -83,11 +83,11 @@
           class="flex items-center"
           v-if="selectedServiceItems?.selectedTypeOfTransportationItem?.title"
         >
-          <p class="text-sm text-[#151515] font-normal mt-3 mb-3">
+          <p class="text-[16px] font-medium text-[#0060c9] mt-3 mb-3">
             Mode of Transportation
           </p>
           <div
-            class="h-full mx-2 w-[85%] relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[#DDDDDD] before:to-[#FFFFFF]"
+            class="h-full mx-2 w-[86%] relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[#0060c9] before:to-[#FFFFFF]"
           ></div>
         </div>
         <div class="grid xl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-3">

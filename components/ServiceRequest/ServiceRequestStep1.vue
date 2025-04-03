@@ -13,11 +13,11 @@
             4 different type of service you can opt
           </p>
           <div class="flex items-center">
-            <p class="text-sm text-[#151515] font-normal mt-3 mb-3">
+            <p class="text-[16px] font-medium text-[#0060c9] mt-3 mb-3">
               Type of Services
             </p>
             <div
-              class="h-full mx-2 w-[86%] relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[#DDDDDD] before:to-[#FFFFFF]"
+              class="h-full mx-2 w-[86%] relative before:absolute before:inset-x-0 before:bottom-0 before:h-[1px] before:bg-gradient-to-r before:from-[#0060c9] before:to-[#FFFFFF]"
             ></div>
           </div>
           <div class="grid sm:grid-cols-2 grid-cols-1 gap-7">

@@ -28,8 +28,8 @@
         <div>
           <p class="font-semibold text-sm text-[#1E1E1E]">
             {{
-              addressDetails.length > 40
-                ? addressDetails.substring(0, 40) + "..."
+              addressDetails.length > 25
+                ? addressDetails.substring(0, 25) + "..."
                 : addressDetails
             }}
           </p>

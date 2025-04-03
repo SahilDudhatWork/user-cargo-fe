@@ -733,7 +733,7 @@
               ></div>
             </div>
           </div>
-          <div class="mt-5 mb-4">
+          <div v-if="isLoad" class="mt-5 mb-4">
             <p
               class="text-[#000000] font-bold text-lg mb-2"
               v-if="!location?.lat && !location?.long"
@@ -745,6 +745,8 @@
               height="300px"
               :isMarkerEnabled="false"
               :isShowMarker="location?.lat && location?.long ? true : false"
+              :pickUpAddressData="orderData?.pickUpAddressData"
+              :dropAddressData="orderData?.dropAddressData"
             />
           </div>
         </div>
@@ -977,6 +979,7 @@ export default {
       isShareReviewModal: false,
       isProofOfPhotography: false,
       isUploadComplete: false,
+      isLoad: false,
       location: {},
       fileTypes: {},
       isLoading: false,
@@ -1276,6 +1279,7 @@ export default {
         await this.fetchSingleOrder({
           movementId: this.movementId,
         });
+        this.isLoad = true;
         this.isLoading = false;
       } catch (error) {
         this.isLoading = false;
