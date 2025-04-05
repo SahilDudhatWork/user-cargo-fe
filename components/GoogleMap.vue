@@ -106,8 +106,9 @@ export default {
   watch: {
     addressDetails: {
       immediate: true,
+      deep: true,
       handler(newValue) {
-        if (newValue.lat && newValue.long) {
+        if (newValue?.lat && newValue?.long) {
           const location = {
             lat: parseFloat(newValue.lat),
             lng: parseFloat(newValue.long),
@@ -118,6 +119,7 @@ export default {
           if (this.$refs.mapRef?.panTo) {
             this.$refs.mapRef.panTo(location);
           }
+          this.getAddress();
         }
       },
     },
@@ -129,22 +131,31 @@ export default {
   },
   methods: {
     checkCenter(latLng) {
-      if (!this.isMarkerEnabled) return;
+      if (!this.isMarkerEnabled) {
+        return;
+      }
       this.latLng = latLng;
-      this.marker.position = { lat: latLng.lat(), lng: latLng.lng() };
+      this.marker.position = {
+        lat: parseFloat(latLng.lat()),
+        lng: parseFloat(latLng.lng()),
+      };
     },
     async handleMapClick(e) {
       console.log("handleMapClick", e);
     },
     getUpdatedLocation(e) {
       this.marker.position = {
-        lat: e.latLng.lat(),
-        lng: e.latLng.lng(),
+        lat: parseFloat(e.latLng.lat()),
+        lng: parseFloat(e.latLng.lng()),
       };
       this.latLng = this.marker.position;
       this.getAddress();
     },
     async getAddress(setAddress = true) {
+      if (!this.isMarkerEnabled) {
+        return;
+      }
+
       try {
         const resultTypes = [
           { type: "street_address", location_type: "ROOFTOP" },

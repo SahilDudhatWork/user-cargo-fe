@@ -53,7 +53,11 @@
       </template>
       <template #content>
         <div class="mt-4 mb-4">
-          <GoogleMap @updateAddress="setAddress" />
+          <GoogleMap
+            v-if="placesService != null"
+            @updateAddress="setAddress"
+            :addressDetails="addressSearch == true ? addressDetails : null"
+          />
         </div>
         <div class="grid sm:grid-cols-2 grid-cols-1 mt-7 gap-4">
           <div class="flex flex-col gap-y-2">
@@ -67,6 +71,8 @@
                 >Building Name</label
               >
               <input
+                autocomplete="off"
+                id="searchAddress"
                 type="text"
                 :class="
                   errors?.buildinName
@@ -278,12 +284,16 @@ export default {
         lat: "",
         long: "",
       },
+      addressSearch: false,
       contactDetails: {
         contactName: "",
         contactEmail: "",
         contactNumber: "",
         countryCode: 1,
       },
+      addressInputRef: null,
+      placesService: null,
+      autocomplete: "",
     };
   },
   methods: {
@@ -291,7 +301,50 @@ export default {
       openModal: "service/openModal",
       closeModal: "service/closeModal",
     }),
+    async loadGoogleMaps() {
+      if (this.placesService != null) return; // Prevent loading if already loaded
+
+      try {
+        const google = await this.$loadGoogleMaps(); // Load Google Maps dynamically
+
+        const displayElement = document.createElement("div");
+        this.placesService = new google.maps.places.PlacesService(
+          displayElement
+        );
+      } catch (error) {
+        console.error("Google Maps API failed to load:", error);
+      }
+    },
+    async initAutocomplete() {
+      this.$nextTick(async () => {
+        const inputElement = document.getElementById("searchAddress");
+        if (inputElement instanceof HTMLInputElement) {
+          this.autocomplete = new google.maps.places.Autocomplete(
+            inputElement,
+            { types: ["geocode"] }
+          );
+          this.autocomplete.setFields([
+            "address_component",
+            "formatted_address",
+            "geometry",
+          ]);
+          this.autocomplete.setComponentRestrictions({
+            country: ["ca", "mx", "us"],
+          });
+          this.autocomplete.addListener("place_changed", this.selectAddress);
+        }
+      });
+    },
+    async selectAddress() {
+      const place = this.autocomplete.getPlace();
+      if (!place.address_components) return;
+
+      this.addressDetails.lat = place.geometry.location.lat(); // Get latitude
+      this.addressDetails.long = place.geometry.location.lng(); // Get longitude
+      this.addressSearch = true;
+    },
     setAddress({ address, postalCode, lat, long }) {
+      this.addressSearch = false;
       this.addressDetails.buildinName = address;
       this.addressDetails.postalCode = postalCode;
       this.addressDetails.lat = lat;
@@ -322,6 +375,10 @@ export default {
       };
       this.$emit("step3Next", data);
     },
+  },
+  async mounted() {
+    await this.loadGoogleMaps();
+    await this.initAutocomplete();
   },
 };
 </script>

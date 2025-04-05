@@ -44,8 +44,11 @@
       <template #content>
         <div class="mt-4 mb-4">
           <GoogleMap
+            v-if="placesService != null"
             @updateAddress="setAddress"
-            :addressDetails="formData?.addressDetails"
+            :addressDetails="
+              addressSearch == true ? formData?.addressDetails : null
+            "
           />
         </div>
         <div class="grid sm:grid-cols-2 grid-cols-1 gap-4 mt-7">
@@ -60,6 +63,8 @@
                 >Building Name</label
               >
               <input
+                autocomplete="off"
+                id="searchAddress"
                 type="text"
                 name="CompanyName"
                 :class="
@@ -273,6 +278,10 @@ export default {
           value: 52,
         },
       ],
+      addressSearch: false,
+      addressInputRef: null,
+      placesService: null,
+      autocomplete: "",
     };
   },
   methods: {
@@ -280,12 +289,55 @@ export default {
       openModal: "service/openModal",
       closeModal: "service/closeModal",
     }),
+    async loadGoogleMaps() {
+      if (this.placesService != null) return; // Prevent loading if already loaded
+
+      try {
+        const google = await this.$loadGoogleMaps(); // Load Google Maps dynamically
+
+        const displayElement = document.createElement("div");
+        this.placesService = new google.maps.places.PlacesService(
+          displayElement
+        );
+      } catch (error) {
+        console.error("Google Maps API failed to load:", error);
+      }
+    },
+    async initAutocomplete() {
+      this.$nextTick(async () => {
+        const inputElement = document.getElementById("searchAddress");
+        if (inputElement instanceof HTMLInputElement) {
+          this.autocomplete = new google.maps.places.Autocomplete(
+            inputElement,
+            { types: ["geocode"] }
+          );
+          this.autocomplete.setFields([
+            "address_component",
+            "formatted_address",
+            "geometry",
+          ]);
+          this.autocomplete.setComponentRestrictions({
+            country: ["ca", "mx", "us"],
+          });
+          this.autocomplete.addListener("place_changed", this.selectAddress);
+        }
+      });
+    },
+    async selectAddress() {
+      const place = this.autocomplete.getPlace();
+      if (!place.address_components) return;
+
+      this.formData.addressDetails.lat = place.geometry.location.lat(); // Get latitude
+      this.formData.addressDetails.long = place.geometry.location.lng(); // Get longitude
+      this.addressSearch = true;
+    },
     async validateContactInput(event) {
       this.formData.contactDetails.contactNumber = await this.$validateNumber(
         event.target.value
       );
     },
     setAddress({ address, postalCode, lat, long }) {
+      this.addressSearch = false;
       this.formData.addressDetails.buildinName = address;
       this.formData.addressDetails.postalCode = postalCode;
       this.formData.addressDetails.lat = lat;
@@ -305,6 +357,11 @@ export default {
     getCountry(item) {
       this.formData.contactDetails.countryCode = item.value;
     },
+  },
+  async mounted() {
+    this.addressSearch = true;
+    await this.loadGoogleMaps();
+    await this.initAutocomplete();
   },
 };
 </script>
