@@ -66,13 +66,12 @@
             </h1>
           </div>
           <div
-            class="ml-6 mr-7"
+            class="xxl:ml-6 xxl:mr-7"
             v-if="listOfPickupAddress && listOfPickupAddress.length > 0"
           >
             <VueSlickCarousel
               v-if="listOfPickupAddress && listOfPickupAddress.length > 0"
               v-bind="settings"
-              class="flex justify-center"
             >
               <AdditionalAddress
                 v-for="(item, index) of listOfPickupAddress"
@@ -108,13 +107,12 @@
             </h1>
           </div>
           <div
-            class="ml-6 mr-7"
+            class="xxl:ml-6 xxl:mr-7"
             v-if="listOfDropAddress && listOfDropAddress.length > 0"
           >
             <VueSlickCarousel
               v-if="listOfDropAddress && listOfDropAddress.length > 0"
               v-bind="settings"
-              class="flex justify-center"
             >
               <AdditionalAddress
                 v-for="(item, index) of listOfDropAddress"

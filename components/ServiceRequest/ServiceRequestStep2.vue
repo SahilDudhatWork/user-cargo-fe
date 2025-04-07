@@ -194,6 +194,7 @@ export default {
               message: "Please select the field before submitting.",
               type: "error",
             });
+            return;
           }
         }
 
