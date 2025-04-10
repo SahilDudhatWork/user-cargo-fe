@@ -12,8 +12,9 @@
     <div
       class="mt-5"
       v-if="
-        orderData?.typeOfService?.title === 'Northbound Service' ||
-        orderData?.typeOfService?.title === 'Southbound'
+        (orderData?.typeOfService?.title === 'Northbound Service' ||
+          orderData?.typeOfService?.title === 'Southbound') &&
+        orderData?.carrierData
       "
     >
       <h1 class="text-[#000000] font-bold text-lg mb-4">User documents</h1>
@@ -281,32 +282,48 @@
             downloadFileItem(orderData?.documents?.sedenaPackage?.[0])
           "
         />
-        <!-- <UploadBox
-            v-model="formData.damages"
-            :filePreview="
-              damagesPreview ||
-              (orderData?.documents &&
-                orderData?.documents?.damagesDiscrepancies?.[0]) ||
-              null
-            "
-            @file-selected="handleDamagesFile"
-            title="DAMAGES / DISCREPANCIES"
-            :fileTypes="
-              fileTypes[orderData?.documents?.damagesDiscrepancies?.[0]]
-            "
-            @downloadFileItem="
-              downloadFileItem(orderData?.documents?.damagesDiscrepancies?.[0])
-            "
-          /> -->
+
+        <UploadBox
+          v-model="formData.proofOfDeliveryForUser"
+          :filePreview="
+            proofOfDeliveryForUserPreview ||
+            (orderData?.documents &&
+              orderData?.documents?.proofOfDeliveryForUser?.[0]) ||
+            null
+          "
+          @file-selected="handleProofOfDeliveryFile"
+          title="PROOF OF DELIVERY"
+          :fileTypes="
+            fileTypes[orderData?.documents?.proofOfDeliveryForUser?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(orderData?.documents?.proofOfDeliveryForUser?.[0])
+          "
+        />
+        <UploadBox
+          v-model="formData.damagesDiscrepanciesForUser"
+          :filePreview="
+            damagesDiscrepanciesForUserPreview ||
+            (orderData?.documents &&
+              orderData?.documents?.damagesDiscrepanciesForUser?.[0]) ||
+            null
+          "
+          @file-selected="handleDamagesFile"
+          title="DAMAGES / DISCREPANCIES"
+          :fileTypes="
+            fileTypes[orderData?.documents?.damagesDiscrepanciesForUser?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              orderData?.documents?.damagesDiscrepanciesForUser?.[0]
+            )
+          "
+        />
       </div>
     </div>
     <div
       class="mt-5"
-      v-if="
-        orderData?.documents &&
-        Object.values(orderData.documents).some((arr) => arr.length > 0) &&
-        hasDocuments
-      "
+      v-if="orderData?.reqDocFields?.Carrier && orderData?.carrierData"
     >
       <h1 class="text-[#000000] font-bold text-lg mb-4">Carrier documents</h1>
       <div
@@ -314,11 +331,11 @@
       >
         <UploadBox
           v-if="
-            orderData?.documents &&
-            orderData?.documents?.cartaPorteFolio?.length
+            orderData?.reqDocFields?.Carrier &&
+            'cartaPorteFolio' in orderData.reqDocFields.Carrier
           "
           :isUploadMode="false"
-          :filePreview="orderData?.documents?.cartaPorteFolio[0]"
+          :filePreview="orderData?.documents?.cartaPorteFolio?.[0]"
           title="CARTA PORTE FOLIO"
           :fileTypes="fileTypes[orderData?.documents?.cartaPorteFolio?.[0]]"
           @downloadFileItem="
@@ -327,10 +344,11 @@
         />
         <UploadBox
           v-if="
-            orderData?.documents && orderData?.documents?.aceEManifest?.length
+            orderData?.reqDocFields?.Carrier &&
+            'aceEManifest' in orderData.reqDocFields.Carrier
           "
           :isUploadMode="false"
-          :filePreview="orderData?.documents?.aceEManifest[0]"
+          :filePreview="orderData?.documents?.aceEManifest?.[0]"
           title="ACE E MANIFEST"
           :fileTypes="fileTypes[orderData?.documents?.aceEManifest?.[0]]"
           @downloadFileItem="
@@ -339,11 +357,11 @@
         />
         <UploadBox
           v-if="
-            orderData?.documents &&
-            orderData?.documents?.oversizePermitCarrier?.length
+            orderData?.reqDocFields?.Carrier &&
+            'oversizePermitCarrier' in orderData.reqDocFields.Carrier
           "
           :isUploadMode="false"
-          :filePreview="orderData?.documents?.oversizePermitCarrier[0]"
+          :filePreview="orderData?.documents?.oversizePermitCarrier?.[0]"
           title="OVERSIZE PERMIT CARRIER"
           :fileTypes="
             fileTypes[orderData?.documents?.oversizePermitCarrier?.[0]]
@@ -354,11 +372,11 @@
         />
         <UploadBox
           v-if="
-            orderData?.documents &&
-            orderData?.documents?.overweightPermit?.length
+            orderData?.reqDocFields?.Carrier &&
+            'overweightPermit' in orderData.reqDocFields.Carrier
           "
           :isUploadMode="false"
-          :filePreview="orderData?.documents?.overweightPermit[0]"
+          :filePreview="orderData?.documents?.overweightPermit?.[0]"
           title="OVERWEIGHT PERMIT"
           :fileTypes="fileTypes[orderData?.documents?.overweightPermit?.[0]]"
           @downloadFileItem="
@@ -367,11 +385,11 @@
         />
         <UploadBox
           v-if="
-            orderData?.documents &&
-            orderData?.documents?.temperatureControlIn?.length
+            orderData?.reqDocFields?.Carrier &&
+            'temperatureControlIn' in orderData.reqDocFields.Carrier
           "
           :isUploadMode="false"
-          :filePreview="orderData?.documents?.temperatureControlIn[0]"
+          :filePreview="orderData?.documents?.temperatureControlIn?.[0]"
           title="TEMPERATURE CONTROL IN"
           :fileTypes="
             fileTypes[orderData?.documents?.temperatureControlIn?.[0]]
@@ -383,11 +401,11 @@
 
         <UploadBox
           v-if="
-            orderData?.documents &&
-            orderData?.documents?.temperatureControlOut?.length
+            orderData?.reqDocFields?.Carrier &&
+            'temperatureControlOut' in orderData.reqDocFields.Carrier
           "
           :isUploadMode="false"
-          :filePreview="orderData?.documents?.temperatureControlOut[0]"
+          :filePreview="orderData?.documents?.temperatureControlOut?.[0]"
           title="TEMPERATURE CONTROL OUT"
           :fileTypes="
             fileTypes[orderData?.documents?.temperatureControlOut?.[0]]
@@ -398,32 +416,32 @@
         />
 
         <UploadBox
-          v-if="
-            orderData?.documents &&
-            orderData?.documents?.proofOfDelivery?.length
-          "
           :isUploadMode="false"
-          :filePreview="orderData?.documents?.proofOfDelivery[0]"
+          :filePreview="orderData?.documents?.proofOfDeliveryForCarrier?.[0]"
           title="PROOF OF DELIVERY"
-          :fileTypes="fileTypes[orderData?.documents?.proofOfDelivery?.[0]]"
+          :fileTypes="
+            fileTypes[orderData?.documents?.proofOfDeliveryForCarrier?.[0]]
+          "
           @downloadFileItem="
-            downloadFileItem(orderData?.documents?.proofOfDelivery?.[0])
+            downloadFileItem(
+              orderData?.documents?.proofOfDeliveryForCarrier?.[0]
+            )
           "
         />
 
         <UploadBox
-          v-if="
-            orderData?.documents &&
-            orderData?.documents?.damagesDiscrepancies?.length
-          "
           :isUploadMode="false"
-          :filePreview="orderData?.documents?.damagesDiscrepancies[0]"
+          :filePreview="
+            orderData?.documents?.damagesDiscrepanciesForCarrier?.[0]
+          "
           title="DAMAGES / DISCREPANCIES"
           :fileTypes="
-            fileTypes[orderData?.documents?.damagesDiscrepancies?.[0]]
+            fileTypes[orderData?.documents?.damagesDiscrepanciesForCarrier?.[0]]
           "
           @downloadFileItem="
-            downloadFileItem(orderData?.documents?.damagesDiscrepancies?.[0])
+            downloadFileItem(
+              orderData?.documents?.damagesDiscrepanciesForCarrier?.[0]
+            )
           "
         />
       </div>
@@ -997,7 +1015,8 @@ export default {
         proferaPackage: null,
         intercambio: null,
         sedenaPackage: null,
-        damages: null,
+        damagesDiscrepanciesForUser: null,
+        proofOfDeliveryForUser: null,
       },
       cartaPortepreview: null,
       dodaPreview: null,
@@ -1012,28 +1031,29 @@ export default {
       proferaPackagePreview: null,
       intercambioPreview: null,
       sedenaPackagePreview: null,
-      damagesPreview: null,
+      damagesDiscrepanciesForUserPreview: null,
+      proofOfDeliveryForUserPreview: null,
     };
   },
   computed: {
     ...mapGetters({
       orderData: "service/getSingleOrderData",
     }),
-    hasDocuments() {
-      const docKeys = [
-        "cartaPorteFolio",
-        "aceEManifest",
-        "oversizePermitCarrier",
-        "overweightPermit",
-        "temperatureControlIn",
-        "temperatureControlOut",
-        "proofOfDelivery",
-        "damagesDiscrepancies",
-      ];
-      return docKeys.some(
-        (key) => this.orderData?.documents?.[key]?.length > 0
-      );
-    },
+    // hasDocuments() {
+    //   const docKeys = [
+    //     "cartaPorteFolio",
+    //     "aceEManifest",
+    //     "oversizePermitCarrier",
+    //     "overweightPermit",
+    //     "temperatureControlIn",
+    //     "temperatureControlOut",
+    //     "proofOfDelivery",
+    //     "damagesDiscrepancies",
+    //   ];
+    //   return docKeys.some(
+    //     (key) => this.orderData?.documents?.[key]?.length > 0
+    //   );
+    // },
     formattedStatus() {
       if (this.orderData?.status === "NewAssignments") {
         return "NEW-ASSIGNMENTS";
@@ -1149,10 +1169,19 @@ export default {
       this.sedenaPackagePreview = file ? URL.createObjectURL(file) : null;
       await this.uploadDocumentFiles("sedenaPackage", file);
     },
+    async handleProofOfDeliveryFile(file) {
+      this.formData.proofOfDeliveryForUser = file;
+      this.proofOfDeliveryForUserPreview = file
+        ? URL.createObjectURL(file)
+        : null;
+      await this.uploadDocumentFiles("proofOfDeliveryForUser", file);
+    },
     async handleDamagesFile(file) {
-      this.formData.damages = file;
-      this.damagesPreview = file ? URL.createObjectURL(file) : null;
-      await this.uploadDocumentFiles("damagesDiscrepancies", file);
+      this.formData.damagesDiscrepanciesForUser = file;
+      this.damagesDiscrepanciesForUserPreview = file
+        ? URL.createObjectURL(file)
+        : null;
+      await this.uploadDocumentFiles("damagesDiscrepanciesForUser", file);
     },
 
     async uploadDocumentFiles(fileName, file) {
@@ -1160,7 +1189,7 @@ export default {
         const formData = new FormData();
         formData.append(fileName, file);
         formData.append("movementId", this.movementId);
-
+        this.isLoading = true;
         const res = await this.uploadDocuments({
           id: this.movementId,
           data: formData,
@@ -1173,11 +1202,14 @@ export default {
 
         await this.getSingleOrder();
       } catch (error) {
+        this.isLoading = false;
         console.error(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoading = false;
       }
     },
 
@@ -1202,6 +1234,10 @@ export default {
         mp4: "video",
         mp3: "audio",
         txt: "text",
+        doc: "application/msword",
+        docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        xls: "application/vnd.ms-excel",
+        xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       };
       return fileTypes[extension] || "unknown";
     },

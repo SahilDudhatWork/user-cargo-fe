@@ -1,61 +1,60 @@
 <template>
-  <div class="main-layout">
+  <div>
     <DashboardHeader />
-    <main class="flex-grow">
-      <div class="lg:mx-44 mx-6">
-        <div class="flex">
-          <div class="relative">
-            <ul
-              class="lg:w-[400px] sm:w-[300px] w-[150px] h-[500px] overflow-y-auto scroll-container relative"
+    <div class="lg:mx-44 mx-6">
+      <div class="flex">
+        <div class="relative">
+          <ul
+            class="lg:w-[400px] sm:w-[300px] w-[150px] h-[500px] overflow-y-auto scroll-container relative"
+          >
+            <li
+              v-for="(item, key) in sidebarItems"
+              :key="key"
+              class="border-b cursor-pointer"
+              :class="{
+                'bg-[#F5F9FD] text-white':
+                  previousPath === formatPath(item.slug),
+              }"
             >
-              <li
-                v-for="(item, key) in sidebarItems"
-                :key="key"
-                class="border-b cursor-pointer"
-                :class="{
-                  'bg-[#F5F9FD] text-white':
-                    previousPath === formatPath(item.slug),
-                }"
+              <nuxt-link
+                :to="formatPath(item.slug)"
+                class="h-[82px] flex flex-col justify-center ml-6"
               >
-                <nuxt-link
-                  :to="formatPath(item.slug)"
-                  class="h-[82px] flex flex-col justify-center ml-6"
+                <h1 class="text-[#000000] font-bold sm:text-lg text-base">
+                  {{ item.title }}
+                </h1>
+                <span
+                  class="text-[#00000099] font-normal sm:text-sm text-xs mt-1"
+                  >{{ item.subTitle }}</span
                 >
-                  <h1 class="text-[#000000] font-bold text-lg">
-                    {{ item.title }}
-                  </h1>
-                  <span class="text-[#00000099] font-normal text-sm mt-1">{{
-                    item.subTitle
-                  }}</span>
-                </nuxt-link>
-              </li>
-            </ul>
-            <div
-              class="absolute bottom-0 left-0 w-full h-20 pointer-events-none bg-gradient-to-t from-white to-transparent"
-            ></div>
-          </div>
-          <div class="w-full">
-            <Nuxt />
-          </div>
+              </nuxt-link>
+            </li>
+          </ul>
+          <div
+            class="absolute bottom-0 left-0 w-full h-20 pointer-events-none bg-gradient-to-t from-white to-transparent"
+          ></div>
         </div>
-        <div class="mt-4 mb-10">
-          <VueSlickCarousel v-bind="cargoWorkSettings">
-            <div
-              v-for="(item, index) of cargoWorks"
-              :key="index"
-              class="bg-[#F5F9FD] px-4 py-[15px] rounded-2xl"
-            >
-              <p class="font-medium text-base text-[#4B4B4B]">
-                {{ item.title }}
-              </p>
-              <p class="text-[#4B4B4B] font-light text-sm mt-1">
-                {{ item.description }}
-              </p>
-            </div>
-          </VueSlickCarousel>
+        <div class="w-full">
+          <Nuxt />
         </div>
       </div>
-    </main>
+      <div class="mt-4 mb-10">
+        <VueSlickCarousel v-bind="cargoWorkSettings">
+          <div
+            v-for="(item, index) of cargoWorks"
+            :key="index"
+            class="bg-[#F5F9FD] px-4 py-[15px] rounded-2xl"
+          >
+            <p class="font-medium text-base text-[#4B4B4B]">
+              {{ item.title }}
+            </p>
+            <p class="text-[#4B4B4B] font-light text-sm mt-1">
+              {{ item.description }}
+            </p>
+          </div>
+        </VueSlickCarousel>
+      </div>
+    </div>
     <Footer />
     <loading
       :active="isLoader"

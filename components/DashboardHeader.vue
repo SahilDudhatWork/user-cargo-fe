@@ -4,13 +4,75 @@
       class="pt-[17px] pb-[19px] !rounded-bl-[16px] !rounded-br-[16px] bg-white relative !z-50"
       style="box-shadow: 0px 6px 20px 0px #00000012"
     >
-      <header class="lg:mx-40 mx-6 flex justify-between relative">
+      <header class="lg:mx-40 mx-4 flex justify-between relative">
         <div class="flex items-center gap-12 focus-visible:outline-none">
           <nuxt-link to="/">
             <img src="@/static/Images/header-logo.webp" alt="" />
           </nuxt-link>
         </div>
-        <div class="flex items-center gap-7 relative">
+        <div class="flex items-center sm:gap-7 gap-4 relative">
+          <div
+            class="relative z-50 cursor-pointer"
+            @click="isNotification = !isNotification"
+          >
+            <img src="@/static/svg/bell.svg" alt="" class="w-10 h-10" />
+            <div
+              class="absolute top-0 right-0 bg-red-600 border-2 border-white rounded-full w-5 h-5 flex items-center justify-center"
+            >
+              <span class="text-white text-xs">
+                {{ notificationData?.length || 0 }}
+              </span>
+            </div>
+            <div
+              v-if="isNotification"
+              v-click-outside="closeNotificationDropdown"
+              class="z-50 absolute top-10 right-0 bg-white divide-y divide-gray-100 sm:w-96 xs:w-80 w-60 shadow rounded-xl notification-dropdown-content"
+              style="box-shadow: rgba(0, 0, 0, 0.5) 0px 6px 50px 0px"
+            >
+              <div
+                class="py-2 cursor-pointer p-3"
+                @click="closeNotificationDropdown"
+              >
+                <h1 class="text-[#11263C] font-bold text-xl">Notifications</h1>
+                <div v-if="notificationData && notificationData?.length > 0">
+                  <ul class="py-2 cursor-pointer">
+                    <li
+                      v-for="(item, key) in notificationData.slice(0, 5)"
+                      :key="key"
+                    >
+                      <nuxt-link :to="`/my-orders/service/${item?.redirectId}`">
+                        <span
+                          class="block py-2.5 text-[#333333] font-medium text-sm border-b border-gray-300"
+                        >
+                          {{
+                            item?.title?.length > 90
+                              ? item?.title?.substring(0, 90) + "..."
+                              : item?.title
+                          }}
+                        </span>
+                      </nuxt-link>
+                    </li>
+                  </ul>
+
+                  <div class="flex justify-center pt-3">
+                    <nuxt-link to="/settings/notifications">
+                      <button
+                        class="text-sm text-blue-600 font-semibold underline"
+                      >
+                        View all
+                      </button>
+                    </nuxt-link>
+                  </div>
+                </div>
+                <div v-else>
+                  <span class="block py-2.5 text-gray-500 text-sm text-center">
+                    No new notifications
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div
             class="flex bg-[#ECF3FA] cursor-pointer py-[4px] items-center rounded-lg pl-1 pr-3 gap-1"
             @click="isDropdown = !isDropdown"
@@ -30,6 +92,7 @@
           </div>
         </div>
       </header>
+
       <div class="relative">
         <div
           v-if="isDropdown"
@@ -84,11 +147,13 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
       isDropdown: false,
+      isNotification: false,
+      notificationData: [],
     };
   },
   computed: {
@@ -97,6 +162,9 @@ export default {
     }),
   },
   methods: {
+    ...mapActions({
+      fetchNotifications: "settings/fetchNotifications",
+    }),
     closeDropdown() {
       this.isDropdown = false;
     },
@@ -105,6 +173,20 @@ export default {
       this.$cookies.remove("refreshToken");
       this.$router.push("/login");
     },
+    closeNotificationDropdown() {
+      this.isNotification = false;
+    },
+    async getNotifications() {
+      try {
+        const res = await this.fetchNotifications();
+        this.notificationData = res.data.response;
+      } catch (error) {
+        console.log(error, "error");
+      }
+    },
+  },
+  async mounted() {
+    await this.getNotifications();
   },
 };
 </script>
@@ -114,6 +196,17 @@ export default {
   position: absolute;
   top: 4px;
   right: 15%;
+  margin-top: -15px;
+  z-index: 1;
+  border-bottom: solid 15px #fff;
+  border-left: solid 12px transparent;
+  border-right: solid 12px transparent;
+}
+.notification-dropdown-content:after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 8px;
   margin-top: -15px;
   z-index: 1;
   border-bottom: solid 15px #fff;
