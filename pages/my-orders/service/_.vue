@@ -12,9 +12,8 @@
     <div
       class="mt-5"
       v-if="
-        (orderData?.typeOfService?.title === 'Northbound Service' ||
-          orderData?.typeOfService?.title === 'Southbound') &&
-        orderData?.carrierData
+        orderData?.typeOfService?.title === 'Northbound Service' ||
+        orderData?.typeOfService?.title === 'Southbound'
       "
     >
       <h1 class="text-[#000000] font-bold text-lg mb-4">User documents</h1>
@@ -321,10 +320,7 @@
         />
       </div>
     </div>
-    <div
-      class="mt-5"
-      v-if="orderData?.reqDocFields?.Carrier && orderData?.carrierData"
-    >
+    <div class="mt-5" v-if="orderData?.reqDocFields?.Carrier">
       <h1 class="text-[#000000] font-bold text-lg mb-4">Carrier documents</h1>
       <div
         class="mt-5 grid xxl:grid-cols-6 xl:grid-cols-4 sm:grid-cols-2 grid-cols-2 lg:grid-cols-3 gap-y-5 mb-10"
