@@ -225,26 +225,16 @@
                   <div class="flex justify-between pb-3">
                     <div>
                       <p
-                        v-if="
-                          item?.addressDetails?.laneNumber ||
-                          item?.addressDetails?.buildinName
-                        "
+                        v-if="item?.addressDetails?.buildinName"
                         class="text-[#1E1E1E] font-semibold text-sm"
                       >
                         {{
-                          (
-                            (item?.addressDetails?.laneNumber ?? "") +
-                            " " +
-                            (item?.addressDetails?.buildinName ?? "")
-                          ).trim().length > 40
+                          (item?.addressDetails?.buildinName ?? "").trim()
+                            .length > 40
                             ? (
-                                (item?.addressDetails?.laneNumber ?? "") +
-                                " " +
-                                (item?.addressDetails?.buildinName ?? "")
+                                item?.addressDetails?.buildinName ?? ""
                               ).substring(0, 40) + "..."
-                            : (item?.addressDetails?.laneNumber ?? "") +
-                              " " +
-                              (item?.addressDetails?.buildinName ?? "")
+                            : item?.addressDetails?.buildinName ?? ""
                         }}
                       </p>
                       <p
@@ -300,26 +290,16 @@
                   <div class="flex justify-between pb-3">
                     <div>
                       <p
-                        v-if="
-                          item?.addressDetails?.laneNumber ||
-                          item?.addressDetails?.buildinName
-                        "
+                        v-if="item?.addressDetails?.buildinName"
                         class="text-[#1E1E1E] font-semibold text-sm"
                       >
                         {{
-                          (
-                            (item?.addressDetails?.laneNumber ?? "") +
-                            " " +
-                            (item?.addressDetails?.buildinName ?? "")
-                          ).trim().length > 40
+                          (item?.addressDetails?.buildinName ?? "").trim()
+                            .length > 40
                             ? (
-                                (item?.addressDetails?.laneNumber ?? "") +
-                                " " +
-                                (item?.addressDetails?.buildinName ?? "")
+                                item?.addressDetails?.buildinName ?? ""
                               ).substring(0, 40) + "..."
-                            : (item?.addressDetails?.laneNumber ?? "") +
-                              " " +
-                              (item?.addressDetails?.buildinName ?? "")
+                            : item?.addressDetails?.buildinName ?? ""
                         }}
                       </p>
                       <p

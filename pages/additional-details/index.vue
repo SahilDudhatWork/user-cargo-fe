@@ -153,7 +153,7 @@ export default {
         if (verifyByAdmin) {
           if (!this.service?.typeOfService?._id) {
             this.$toast.open({
-              message: "Please select the field before submitting.",
+              message: "Please select the Type of Service.",
               type: "error",
             });
             return;

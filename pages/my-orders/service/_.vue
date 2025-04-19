@@ -441,6 +441,30 @@
           "
         />
       </div>
+      <p
+        v-if="
+          orderData?.carrierData &&
+          orderData?.carrierData?.companyFormationType == 'USA'
+        "
+        class="text-[#1E1E1E] font-semibold text-sm"
+      >
+        CARRIER ASSIGNED IS A US BASED CARRIER WHICH WILL NOT SHARE A CARTA
+        PORTE FOLIO, INSTEAD PLEASE REVIEW THE
+        <a
+          class="text-[#0060C9]"
+          href="javascript:void(0)"
+          @click="downloadCarrierFileItem(orderData?.carrierData?.scac)"
+          >SCAC</a
+        >
+        AND
+        <a
+          class="text-[#0060C9]"
+          href="javascript:void(0)"
+          @click="downloadCarrierFileItem(orderData?.carrierData?.caat)"
+          >CAAT</a
+        >
+        TO CONTINUE THE PROCESS
+      </p>
     </div>
     <div class="grid sm:grid-cols-2 grid-cols-1 mt-9">
       <div class="border-r border-[#EEEEEE]">
@@ -614,26 +638,17 @@
               <div class="flex justify-between pb-3 gap-1">
                 <div>
                   <p
-                    v-if="
-                      item?.addressDetails?.laneNumber ||
-                      item?.addressDetails?.buildinName
-                    "
+                    v-if="item?.addressDetails?.buildinName"
                     class="text-[#1E1E1E] font-semibold text-sm"
                   >
                     {{
-                      (
-                        (item?.addressDetails?.laneNumber ?? "") +
-                        " " +
-                        (item?.addressDetails?.buildinName ?? "")
-                      ).trim().length > 40
-                        ? (
-                            (item?.addressDetails?.laneNumber ?? "") +
-                            " " +
-                            (item?.addressDetails?.buildinName ?? "")
-                          ).substring(0, 40) + "..."
-                        : (item?.addressDetails?.laneNumber ?? "") +
-                          " " +
-                          (item?.addressDetails?.buildinName ?? "")
+                      (item?.addressDetails?.buildinName ?? "").trim().length >
+                      40
+                        ? (item?.addressDetails?.buildinName ?? "").substring(
+                            0,
+                            40
+                          ) + "..."
+                        : item?.addressDetails?.buildinName ?? ""
                     }}
                   </p>
 
@@ -686,26 +701,17 @@
               <div class="flex justify-between pb-3 gap-1">
                 <div>
                   <p
-                    v-if="
-                      item?.addressDetails?.laneNumber ||
-                      item?.addressDetails?.buildinName
-                    "
+                    v-if="item?.addressDetails?.buildinName"
                     class="text-[#1E1E1E] font-semibold text-sm"
                   >
                     {{
-                      (
-                        (item?.addressDetails?.laneNumber ?? "") +
-                        " " +
-                        (item?.addressDetails?.buildinName ?? "")
-                      ).trim().length > 40
-                        ? (
-                            (item?.addressDetails?.laneNumber ?? "") +
-                            " " +
-                            (item?.addressDetails?.buildinName ?? "")
-                          ).substring(0, 40) + "..."
-                        : (item?.addressDetails?.laneNumber ?? "") +
-                          " " +
-                          (item?.addressDetails?.buildinName ?? "")
+                      (item?.addressDetails?.buildinName ?? "").trim().length >
+                      40
+                        ? (item?.addressDetails?.buildinName ?? "").substring(
+                            0,
+                            40
+                          ) + "..."
+                        : item?.addressDetails?.buildinName ?? ""
                     }}
                   </p>
                   <p
@@ -1208,8 +1214,24 @@ export default {
         this.isLoading = false;
       }
     },
-
+    downloadCarrierFileItem(doc) {
+      if (!doc) {
+        this.$toast.open({
+          message: "Document not uploaded by carrier.",
+          type: "error",
+        });
+        return;
+      }
+      const baseUrl = "https://cargo-storage-bucket.s3.us-east-1.amazonaws.com";
+      if (doc.startsWith(baseUrl)) {
+        const fileName = doc.split("/").pop();
+        this.$downloadFile({ src: doc, name: fileName });
+      }
+    },
     downloadFileItem(doc) {
+      if (!doc) {
+        return;
+      }
       const baseUrl = "https://cargo-storage-bucket.s3.us-east-1.amazonaws.com";
       if (doc.startsWith(baseUrl)) {
         const fileName = doc.split("/").pop();

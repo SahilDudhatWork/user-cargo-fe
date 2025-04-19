@@ -270,12 +270,17 @@ export default {
       this.$emit("getEditUserAddress", id);
     },
     step4Next() {
-      if (
-        this.selectedServiceItems?.selectedPickupItems == "" ||
-        this.selectedServiceItems?.selectedDropItems == ""
-      ) {
+      if (this.selectedServiceItems?.selectedPickupItems == "") {
         this.$toast.open({
-          message: "Please select the field before submitting.",
+          message: "Please select a Pickup Location.",
+          type: "error",
+        });
+        return;
+      }
+
+      if (this.selectedServiceItems?.selectedDropItems == "") {
+        this.$toast.open({
+          message: "Please select a Drop Location.",
           type: "error",
         });
         return;

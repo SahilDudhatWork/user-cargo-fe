@@ -169,43 +169,53 @@ export default {
     },
     step1Next() {
       if (
-        (this.selectedServiceItems.selectedTypeOfTransportationItem &&
-          this.selectedServiceItems.selectedTypeOfTransportationItem?.title ==
-            "") ||
-        (this.selectedServiceItems.selectedModeItem &&
-          this.selectedServiceItems.selectedModeItem?.title == "")
+        this.selectedServiceItems.selectedTypeOfTransportationItem &&
+        this.selectedServiceItems.selectedTypeOfTransportationItem?.title === ""
       ) {
         this.$toast.open({
-          message: "Please select the field before submitting.",
+          message: "Please select the Type of Transportation.",
           type: "error",
         });
-      } else {
-        if (
-          this.selectedServiceItems.selectedServiceItem.title !=
-            "Local Drayage US" &&
-          this.selectedServiceItems.selectedServiceItem.title !=
-            "Local Drayage MX"
-        ) {
-          if (
-            this.selectedServiceItems.selectedPortItem &&
-            this.selectedServiceItems.selectedPortItem?.title == ""
-          ) {
-            this.$toast.open({
-              message: "Please select the field before submitting.",
-              type: "error",
-            });
-            return;
-          }
-        }
-
-        let items = {
-          selectedPortItem: this.selectedServiceItems.selectedPortItem,
-          selectedTypeOfTransportationItem:
-            this.selectedServiceItems.selectedTypeOfTransportationItem,
-          selectedModeItem: this.selectedServiceItems.selectedModeItem,
-        };
-        this.$emit("step1Next", items);
+        return;
       }
+
+      if (
+        this.selectedServiceItems.selectedModeItem &&
+        this.selectedServiceItems.selectedModeItem?.title === ""
+      ) {
+        this.$toast.open({
+          message: "Please select the Mode of Transportation.",
+          type: "error",
+        });
+        return;
+      }
+
+      if (
+        this.selectedServiceItems.selectedServiceItem.title !==
+          "Local Drayage US" &&
+        this.selectedServiceItems.selectedServiceItem.title !==
+          "Local Drayage MX"
+      ) {
+        if (
+          this.selectedServiceItems.selectedPortItem &&
+          this.selectedServiceItems.selectedPortItem?.title === ""
+        ) {
+          this.$toast.open({
+            message: "Please select the Port & Bridge of Crossing.",
+            type: "error",
+          });
+          return;
+        }
+      }
+
+      let items = {
+        selectedPortItem: this.selectedServiceItems.selectedPortItem,
+        selectedTypeOfTransportationItem:
+          this.selectedServiceItems.selectedTypeOfTransportationItem,
+        selectedModeItem: this.selectedServiceItems.selectedModeItem,
+      };
+
+      this.$emit("step1Next", items);
     },
   },
 };
