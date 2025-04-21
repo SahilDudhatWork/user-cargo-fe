@@ -283,6 +283,61 @@
         />
 
         <UploadBox
+          v-if="
+            orderData?.specialRequirements?.some((req) =>
+              req.type.includes('Over Weight')
+            )
+          "
+          v-model="formData.overweightNotification"
+          :filePreview="
+            overweightNotificationPreview ||
+            (orderData?.documents &&
+              orderData?.documents?.overweightNotification?.[0]) ||
+            null
+          "
+          @file-selected="handleOverweightNotificationFile"
+          title="OVERWEIGHT NOTIFICATION (AVISO)"
+          :fileTypes="
+            fileTypes[orderData?.documents?.overweightNotification?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(orderData?.documents?.overweightNotification?.[0])
+          "
+        />
+
+        <UploadBox
+          v-model="formData.cuadernoAta"
+          :filePreview="
+            cuadernoAtaPreview ||
+            (orderData?.documents && orderData?.documents?.cuadernoAta?.[0]) ||
+            null
+          "
+          @file-selected="handleCuadernoAtaFile"
+          title="CUADERNO ATA"
+          :fileTypes="fileTypes[orderData?.documents?.cuadernoAta?.[0]]"
+          @downloadFileItem="
+            downloadFileItem(orderData?.documents?.cuadernoAta?.[0])
+          "
+        />
+
+        <UploadBox
+          v-if="orderData?.typeOfService?.title === 'Northbound Service'"
+          v-model="formData.informalExport"
+          :filePreview="
+            informalExportPreview ||
+            (orderData?.documents &&
+              orderData?.documents?.informalExport?.[0]) ||
+            null
+          "
+          @file-selected="handleInformalExportFile"
+          title="INFORMAL EXPORT"
+          :fileTypes="fileTypes[orderData?.documents?.informalExport?.[0]]"
+          @downloadFileItem="
+            downloadFileItem(orderData?.documents?.informalExport?.[0])
+          "
+        />
+
+        <UploadBox
           v-model="formData.proofOfDeliveryForUser"
           :filePreview="
             proofOfDeliveryForUserPreview ||
@@ -1019,6 +1074,9 @@ export default {
         sedenaPackage: null,
         damagesDiscrepanciesForUser: null,
         proofOfDeliveryForUser: null,
+        overweightNotification: null,
+        cuadernoAta: null,
+        informalExport: null,
       },
       cartaPortepreview: null,
       dodaPreview: null,
@@ -1035,6 +1093,9 @@ export default {
       sedenaPackagePreview: null,
       damagesDiscrepanciesForUserPreview: null,
       proofOfDeliveryForUserPreview: null,
+      overweightNotificationPreview: null,
+      cuadernoAtaPreview: null,
+      informalExportPreview: null,
     };
   },
   computed: {
@@ -1170,6 +1231,23 @@ export default {
       this.formData.sedenaPackage = file;
       this.sedenaPackagePreview = file ? URL.createObjectURL(file) : null;
       await this.uploadDocumentFiles("sedenaPackage", file);
+    },
+    async handleOverweightNotificationFile(file) {
+      this.formData.overweightNotification = file;
+      this.overweightNotificationPreview = file
+        ? URL.createObjectURL(file)
+        : null;
+      await this.uploadDocumentFiles("overweightNotification", file);
+    },
+    async handleCuadernoAtaFile(file) {
+      this.formData.cuadernoAta = file;
+      this.cuadernoAtaPreview = file ? URL.createObjectURL(file) : null;
+      await this.uploadDocumentFiles("cuadernoAta", file);
+    },
+    async handleInformalExportFile(file) {
+      this.formData.informalExport = file;
+      this.informalExportPreview = file ? URL.createObjectURL(file) : null;
+      await this.uploadDocumentFiles("informalExport", file);
     },
     async handleProofOfDeliveryFile(file) {
       this.formData.proofOfDeliveryForUser = file;
