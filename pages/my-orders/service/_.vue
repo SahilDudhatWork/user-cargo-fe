@@ -134,18 +134,20 @@
               req.type.includes('Over Weight')
             )
           "
-          v-model="formData.overweightPermit"
+          v-model="formData.overweightPermitUser"
           :filePreview="
-            overweightPermitPreview ||
+            overweightPermitUserPreview ||
             (orderData?.documents &&
-              orderData?.documents?.overweightPermit?.[0]) ||
+              orderData?.documents?.overweightPermitUser?.[0]) ||
             null
           "
-          @file-selected="handleOverweightPermitFile"
-          title="OVERWEIGHT PERMIT"
-          :fileTypes="fileTypes[orderData?.documents?.overweightPermit?.[0]]"
+          @file-selected="handleOverweightPermitUserFile"
+          title="OVERWEIGHT PERMIT USER"
+          :fileTypes="
+            fileTypes[orderData?.documents?.overweightPermitUser?.[0]]
+          "
           @downloadFileItem="
-            downloadFileItem(orderData?.documents?.overweightPermit?.[0])
+            downloadFileItem(orderData?.documents?.overweightPermitUser?.[0])
           "
         />
 
@@ -424,14 +426,16 @@
         <UploadBox
           v-if="
             orderData?.reqDocFields?.Carrier &&
-            'overweightPermit' in orderData.reqDocFields.Carrier
+            'overweightPermitCarrier' in orderData.reqDocFields.Carrier
           "
           :isUploadMode="false"
-          :filePreview="orderData?.documents?.overweightPermit?.[0]"
-          title="OVERWEIGHT PERMIT"
-          :fileTypes="fileTypes[orderData?.documents?.overweightPermit?.[0]]"
+          :filePreview="orderData?.documents?.overweightPermitCarrier?.[0]"
+          title="OVERWEIGHT PERMIT CARRIER"
+          :fileTypes="
+            fileTypes[orderData?.documents?.overweightPermitCarrier?.[0]]
+          "
           @downloadFileItem="
-            downloadFileItem(orderData?.documents?.overweightPermit?.[0])
+            downloadFileItem(orderData?.documents?.overweightPermitCarrier?.[0])
           "
         />
         <UploadBox
@@ -1065,7 +1069,7 @@ export default {
         inbond: null,
         instructions: null,
         oversizeNotification: null,
-        overweightPermit: null,
+        overweightPermitUser: null,
         hazmatBol: null,
         hazmatSDS: null,
         agriculTure: null,
@@ -1084,7 +1088,7 @@ export default {
       inbondPreview: null,
       instructionsPreview: null,
       oversizeNotificationPreview: null,
-      overweightPermitPreview: null,
+      overweightPermitUserPreview: null,
       hazmatBolPreview: null,
       hazmatSDSPreview: null,
       agriculTurePreview: null,
@@ -1197,10 +1201,12 @@ export default {
         : null;
       await this.uploadDocumentFiles("oversizeNotificationUser", file);
     },
-    async handleOverweightPermitFile(file) {
-      this.formData.overweightPermit = file;
-      this.overweightPermitPreview = file ? URL.createObjectURL(file) : null;
-      await this.uploadDocumentFiles("overweightPermit", file);
+    async handleOverweightPermitUserFile(file) {
+      this.formData.overweightPermitUser = file;
+      this.overweightPermitUserPreview = file
+        ? URL.createObjectURL(file)
+        : null;
+      await this.uploadDocumentFiles("overweightPermitUser", file);
     },
     async handleHazmatBolFile(file) {
       this.formData.hazmatBol = file;
