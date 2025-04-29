@@ -51,6 +51,7 @@ export default {
     "~/plugins/loading-overlay.js",
     "~/plugins/vue-loading-button.js",
     { src: "~/plugins/google-maps.js", mode: "client" },
+    { src: "~/plugins/firebase-messaging-listener.client.js", mode: "client" },
   ],
 
   components: [{ path: "~/components/", pathPrefix: false }],

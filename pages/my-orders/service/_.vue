@@ -507,22 +507,22 @@
         "
         class="text-[#1E1E1E] font-semibold text-sm"
       >
-        CARRIER ASSIGNED IS A US BASED CARRIER WHICH WILL NOT SHARE A CARTA
-        PORTE FOLIO, INSTEAD PLEASE REVIEW THE
+        Use the
+
         <a
-          class="text-[#0060C9]"
-          href="javascript:void(0)"
-          @click="downloadCarrierFileItem(orderData?.carrierData?.scac)"
-          >SCAC</a
-        >
-        AND
-        <a
-          class="text-[#0060C9]"
+          class="bg-[#18607c] text-white font-bold px-4 rounded border-2 border-[#053549] shadow-inner"
           href="javascript:void(0)"
           @click="downloadCarrierFileItem(orderData?.carrierData?.caat)"
           >CAAT</a
         >
-        TO CONTINUE THE PROCESS
+        and
+        <a
+          class="bg-[#18607c] text-white font-bold px-4 rounded border-2 border-[#053549] shadow-inner"
+          href="javascript:void(0)"
+          @click="downloadCarrierFileItem(orderData?.carrierData?.scac)"
+          >SCAC</a
+        >
+        to proceed. US-based company.
       </p>
     </div>
     <div class="grid sm:grid-cols-2 grid-cols-1 mt-9">
