@@ -207,8 +207,8 @@ export const actions = {
   },
   async fetchPostBridge(ctx, payload) {
     try {
-      const response = await $axios.get(
-        `/v1/user/specialRequirements/${payload.id}`,
+      const response = await $axios.post(
+        `/v1/user/specialRequirements`,
         payload
       );
       return response;

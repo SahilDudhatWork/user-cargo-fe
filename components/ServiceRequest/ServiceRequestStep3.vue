@@ -344,13 +344,13 @@ export default {
     isRequirementSelected() {
       return (label) => {
         return this.selectedServiceItems.selectedSpecialRequirementItems?.some(
-          (selected) => selected.type === label.type
+          (selected) => selected.type === label.type,
         );
       };
     },
     selectedSpecialRequirementType() {
       return this.selectedServiceItems.selectedSpecialRequirementItems.map(
-        (item) => item.type
+        (item) => item.type,
       );
     },
   },
@@ -379,15 +379,15 @@ export default {
       let updatedItems;
       if (selectedItems.some((selected) => selected.type === item.type)) {
         updatedItems = selectedItems.filter(
-          (selected) => selected.type !== item.type
+          (selected) => selected.type !== item.type,
         );
       } else {
         updatedItems = [...selectedItems, item];
       }
       const isValid = updatedItems.every((updatedItem) =>
         this.specialRequirements.some(
-          (requirement) => requirement.type === updatedItem.type
-        )
+          (requirement) => requirement.type === updatedItem.type,
+        ),
       );
 
       if (isValid) {
@@ -476,8 +476,10 @@ export default {
     async getPostBridge() {
       try {
         const postBridgeId = this.selectedServiceItems?.selectedPortItem?._id;
+        const transportationId = this.selectedServiceItems?.selectedModeItem?._id;
         const res = await this.fetchPostBridge({
-          id: postBridgeId,
+          portBridgeId: postBridgeId,
+          transportationId: transportationId,
         });
         this.specialRequirements = res?.data?.requirements;
       } catch (error) {
