@@ -24,10 +24,7 @@
       <ServiceRequestStep4
         v-if="modal.step4"
         @step3Next="step3Next"
-        :isSkipButton="false"
-        :isLoading="isLoading"
         :errors="errors"
-        @skipUserAddress="skipUserAddress"
         :service="service"
         :isButtonLoader="isButtonLoader"
       />
@@ -83,7 +80,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
 
 export default {
   layout: "dashboard",
@@ -145,6 +142,8 @@ export default {
       createCoordinatesPrice: "service/createCoordinatesPrice",
       validateUserReference: "service/validateUserReference",
     }),
+    ...mapMutations("service", ["setStep"]),
+
     async handleService(selectedService) {
       this.isButtonLoader = true;
       try {
@@ -262,6 +261,14 @@ export default {
         });
         return;
       }
+      if (!addressDetails.lat && !addressDetails.long) {
+        this.$toast.open({
+          message:
+            "Please select a valid google address from the drop down menu and/or move the pin in the map section to properly select the desired location",
+          type: "error",
+        });
+        return;
+      }
       this.isLoading = true;
       this.isButtonLoader = true;
       try {
@@ -285,11 +292,6 @@ export default {
         this.isButtonLoader = false;
       }
     },
-    async skipUserAddress() {
-      this.closeModal("step4");
-      this.openModal("step5");
-      await this.getUserAddress();
-    },
     async editUserAddress() {
       try {
         this.isButtonLoader = true;
@@ -303,6 +305,18 @@ export default {
           });
           return;
         }
+        if (
+          !this.formData.addressDetails.lat &&
+          !this.formData.addressDetails.long
+        ) {
+          this.$toast.open({
+            message:
+              "Please select a valid google address from the drop down menu and/or move the pin in the map section to properly select the desired location",
+            type: "error",
+          });
+          return;
+        }
+
         const res = await this.updateUserAddress(this.formData);
         this.$toast.open({
           message: res.msg,
@@ -470,11 +484,14 @@ export default {
       this.$router.push(`/my-orders/service/${this.orderId}`);
     },
     prevPage() {
-      if (this.modal.step8) {
-        this.modal.step8 = false;
-        this.modal.step5 = true;
-      } else if (this.modal.step1) {
+      if (this.modal.step1) {
         this.$router.push("/");
+      } else if (this.modal.step5) {
+        this.setStep("step3");
+      } else if (this.modal.step4) {
+        this.setStep("step5");
+      } else if (this.modal.step8) {
+        this.setStep("step5");
       } else {
         this.previousStep();
       }

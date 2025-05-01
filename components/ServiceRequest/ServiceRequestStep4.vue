@@ -1,12 +1,6 @@
 <template>
   <div>
-    <Additional
-      @click="step3Next"
-      :isSkipButton="isSkipButton"
-      :isLoading="isLoading"
-      @skip="$emit('skipUserAddress')"
-      :isButtonLoader="isButtonLoader"
-    >
+    <Additional @click="step3Next" :isButtonLoader="isButtonLoader">
       <template #header>
         <div
           class="flex items-center gap-2 cursor-pointer sm:flex-row flex-col"
@@ -59,6 +53,14 @@
             :addressDetails="addressSearch == true ? addressDetails : null"
           />
         </div>
+
+        <div class="py-3">
+          <span class="text-[16px] font-medium text-[#0060c9] mt-3 mb-3"
+            >Please select a valid google address from the drop down menu and/or
+            move the pin in the map section to properly select the desired
+            location</span
+          >
+        </div>
         <div class="grid sm:grid-cols-2 grid-cols-1 mt-7 gap-4">
           <div class="flex flex-col gap-y-2">
             <h1 class="text-[#00000099] text-base font-normal">
@@ -83,6 +85,7 @@
                 class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                 placeholder="Your Building Name"
                 v-model="addressDetails.buildinName"
+                @input="updateBuildingName"
               />
               <span v-if="errors?.buildinName" class="error-msg">{{
                 errors?.buildinName
@@ -242,14 +245,6 @@
 import { mapActions } from "vuex";
 export default {
   props: {
-    isSkipButton: {
-      type: Boolean,
-      required: true,
-    },
-    isLoading: {
-      type: Boolean,
-      default: false,
-    },
     errors: {
       type: Object,
       required: true,
@@ -301,6 +296,9 @@ export default {
       openModal: "service/openModal",
       closeModal: "service/closeModal",
     }),
+    updateBuildingName() {
+      (this.addressDetails.lat = ""), (this.addressDetails.long = "");
+    },
     async loadGoogleMaps() {
       if (this.placesService != null) return; // Prevent loading if already loaded
 

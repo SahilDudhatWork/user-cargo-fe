@@ -51,6 +51,13 @@
             "
           />
         </div>
+        <div class="py-3">
+          <span class="text-[16px] font-medium text-[#0060c9] mt-3 mb-3"
+            >Please select a valid google address from the drop down menu and/or
+            move the pin in the map section to properly select the desired
+            location</span
+          >
+        </div>
         <div class="grid sm:grid-cols-2 grid-cols-1 gap-4 mt-7">
           <div class="flex flex-col gap-y-2">
             <h1 class="text-[#00000099] text-base font-normal">
@@ -75,6 +82,7 @@
                 class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                 placeholder="Your Building Name"
                 v-model="formData.addressDetails.buildinName"
+                @input="updateBuildingName"
               />
               <span v-if="errors.buildinName" class="error-msg">{{
                 errors.buildinName
@@ -289,6 +297,10 @@ export default {
       openModal: "service/openModal",
       closeModal: "service/closeModal",
     }),
+    updateBuildingName() {
+      this.formData.addressDetails.lat = "";
+      this.formData.addressDetails.long = "";
+    },
     async loadGoogleMaps() {
       if (this.placesService != null) return; // Prevent loading if already loaded
 

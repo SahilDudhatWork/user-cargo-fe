@@ -90,11 +90,23 @@ export const mutations = {
     state.userAddress = payload;
   },
   previousStep(state) {
-    const activeStep = Object.keys(state.modal).find((key) => state.modal[key]);
-    const activeIndex = Object.keys(state.modal).indexOf(activeStep);
+    const keys = Object.keys(state.modal);
+    const activeStep = keys.find((key) => state.modal[key]);
+    const activeIndex = keys.indexOf(activeStep);
+
     if (activeIndex > 0) {
       state.modal[activeStep] = false;
-      state.modal[Object.keys(state.modal)[activeIndex - 1]] = true;
+      state.modal[keys[activeIndex - 1]] = true;
+    }
+  },
+
+  setStep(state, stepKey) {
+    Object.keys(state.modal).forEach((key) => {
+      state.modal[key] = false;
+    });
+
+    if (stepKey in state.modal) {
+      state.modal[stepKey] = true;
     }
   },
   setAddressType(state, payload) {
