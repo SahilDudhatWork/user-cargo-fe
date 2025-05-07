@@ -477,9 +477,11 @@ export default {
       try {
         const postBridgeId = this.selectedServiceItems?.selectedPortItem?._id;
         const transportationId = this.selectedServiceItems?.selectedModeItem?._id;
+        const typeOfServiceId = this.selectedServiceItems?.selectedServiceItem?._id;
         const res = await this.fetchPostBridge({
           portBridgeId: postBridgeId,
           transportationId: transportationId,
+          typeOfServiceId: typeOfServiceId,
         });
         this.specialRequirements = res?.data?.requirements;
       } catch (error) {

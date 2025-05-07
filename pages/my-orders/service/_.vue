@@ -98,7 +98,7 @@
           "
           @downloadFileItem="
             downloadFileItem(
-              orderData?.documents?.letterWithInstructionsMemo?.[0]
+              orderData?.documents?.letterWithInstructionsMemo?.[0],
             )
           "
         />
@@ -106,7 +106,7 @@
         <UploadBox
           v-if="
             orderData?.specialRequirements?.some((req) =>
-              req.type.includes('Over Size')
+              req.type.includes('Over Size'),
             )
           "
           v-model="formData.oversizeNotification"
@@ -123,7 +123,7 @@
           "
           @downloadFileItem="
             downloadFileItem(
-              orderData?.documents?.oversizeNotificationUser?.[0]
+              orderData?.documents?.oversizeNotificationUser?.[0],
             )
           "
         />
@@ -131,7 +131,7 @@
         <UploadBox
           v-if="
             orderData?.specialRequirements?.some((req) =>
-              req.type.includes('Over Weight')
+              req.type.includes('Over Weight'),
             )
           "
           v-model="formData.overweightPermitUser"
@@ -154,7 +154,7 @@
         <UploadBox
           v-if="
             orderData?.specialRequirements?.some((req) =>
-              req.type.includes('Hazmat (USD405)')
+              req.type.includes('Hazmat (USD405)'),
             )
           "
           v-model="formData.hazmatBol"
@@ -173,7 +173,7 @@
         <UploadBox
           v-if="
             orderData?.specialRequirements?.some((req) =>
-              req.type.includes('Hazmat (USD405)')
+              req.type.includes('Hazmat (USD405)'),
             )
           "
           v-model="formData.hazmatSDS"
@@ -190,14 +190,14 @@
           "
           @downloadFileItem="
             downloadFileItem(
-              orderData?.documents?.hazmatSdsSafetyDataSheet?.[0]
+              orderData?.documents?.hazmatSdsSafetyDataSheet?.[0],
             )
           "
         />
         <UploadBox
           v-if="
             orderData?.specialRequirements?.some((req) =>
-              req.type.includes('Sagarpa Inspection MX (USD 45)')
+              req.type.includes('Sagarpa Inspection MX (USD 45)'),
             )
           "
           v-model="formData.agriculTure"
@@ -214,14 +214,14 @@
           "
           @downloadFileItem="
             downloadFileItem(
-              orderData?.documents?.sagarpaPackageAgriculture?.[0]
+              orderData?.documents?.sagarpaPackageAgriculture?.[0],
             )
           "
         />
         <UploadBox
           v-if="
             orderData?.specialRequirements?.some((req) =>
-              req.type.includes('Profepa Inspection MX (USD 45)')
+              req.type.includes('Profepa Inspection MX (USD 45)'),
             )
           "
           v-model="formData.proferaPackage"
@@ -238,7 +238,7 @@
           "
           @downloadFileItem="
             downloadFileItem(
-              orderData?.documents?.profepaPackageEnvironmental?.[0]
+              orderData?.documents?.profepaPackageEnvironmental?.[0],
             )
           "
         />
@@ -258,7 +258,7 @@
           "
           @downloadFileItem="
             downloadFileItem(
-              orderData?.documents?.intercambioTrailerRelease?.[0]
+              orderData?.documents?.intercambioTrailerRelease?.[0],
             )
           "
         />
@@ -266,7 +266,7 @@
           v-if="
             orderData?.typeOfService?.title === 'Southbound' &&
             orderData?.specialRequirements?.some((req) =>
-              req.type.includes('Sedena Inspection MX (USD 0)')
+              req.type.includes('Sedena Inspection MX (USD 0)'),
             )
           "
           v-model="formData.sedenaPackage"
@@ -287,7 +287,7 @@
         <UploadBox
           v-if="
             orderData?.specialRequirements?.some((req) =>
-              req.type.includes('Over Weight')
+              req.type.includes('Over Weight'),
             )
           "
           v-model="formData.overweightNotification"
@@ -371,7 +371,7 @@
           "
           @downloadFileItem="
             downloadFileItem(
-              orderData?.documents?.damagesDiscrepanciesForUser?.[0]
+              orderData?.documents?.damagesDiscrepanciesForUser?.[0],
             )
           "
         />
@@ -379,6 +379,32 @@
     </div>
     <div class="mt-5" v-if="orderData?.reqDocFields?.Carrier">
       <h1 class="text-[#000000] font-bold text-lg mb-4">Carrier documents</h1>
+      <p
+        v-if="
+          orderData?.carrierData &&
+          orderData?.carrierData?.companyFormationType == 'USA'
+        "
+        class="text-[#1E1E1E] font-semibold text-sm"
+      >
+        <span class="text-[#e44747]">*Please download and review</span>
+        <a
+          class="bg-[#18607c] text-white font-bold px-4 rounded border-2 border-[#053549] shadow-inner"
+          href="javascript:void(0)"
+          @click="downloadCarrierFileItem(orderData?.carrierData?.caat)"
+          >CAAT</a
+        >
+        <span class="text-[#e44747]">and</span>
+        <a
+          class="bg-[#18607c] text-white font-bold px-4 rounded border-2 border-[#053549] shadow-inner"
+          href="javascript:void(0)"
+          @click="downloadCarrierFileItem(orderData?.carrierData?.scac)"
+          >SCAC</a
+        >
+        <span class="text-[#e44747]"
+          >to proceed. Note that carrier assigned is a US based carrier which
+          will not share a carta porte folio.*</span
+        >
+      </p>
       <div
         class="mt-5 grid xxl:grid-cols-6 xl:grid-cols-4 sm:grid-cols-2 grid-cols-2 lg:grid-cols-3 gap-y-5 mb-10"
       >
@@ -479,7 +505,7 @@
           "
           @downloadFileItem="
             downloadFileItem(
-              orderData?.documents?.proofOfDeliveryForCarrier?.[0]
+              orderData?.documents?.proofOfDeliveryForCarrier?.[0],
             )
           "
         />
@@ -495,35 +521,11 @@
           "
           @downloadFileItem="
             downloadFileItem(
-              orderData?.documents?.damagesDiscrepanciesForCarrier?.[0]
+              orderData?.documents?.damagesDiscrepanciesForCarrier?.[0],
             )
           "
         />
       </div>
-      <p
-        v-if="
-          orderData?.carrierData &&
-          orderData?.carrierData?.companyFormationType == 'USA'
-        "
-        class="text-[#1E1E1E] font-semibold text-sm"
-      >
-        Use the
-
-        <a
-          class="bg-[#18607c] text-white font-bold px-4 rounded border-2 border-[#053549] shadow-inner"
-          href="javascript:void(0)"
-          @click="downloadCarrierFileItem(orderData?.carrierData?.caat)"
-          >CAAT</a
-        >
-        and
-        <a
-          class="bg-[#18607c] text-white font-bold px-4 rounded border-2 border-[#053549] shadow-inner"
-          href="javascript:void(0)"
-          @click="downloadCarrierFileItem(orderData?.carrierData?.scac)"
-          >SCAC</a
-        >
-        to proceed. US-based company.
-      </p>
     </div>
     <div class="grid sm:grid-cols-2 grid-cols-1 mt-9">
       <div class="border-r border-[#EEEEEE]">
@@ -705,7 +707,7 @@
                       40
                         ? (item?.addressDetails?.buildinName ?? "").substring(
                             0,
-                            40
+                            40,
                           ) + "..."
                         : item?.addressDetails?.buildinName ?? ""
                     }}
@@ -768,7 +770,7 @@
                       40
                         ? (item?.addressDetails?.buildinName ?? "").substring(
                             0,
-                            40
+                            40,
                           ) + "..."
                         : item?.addressDetails?.buildinName ?? ""
                     }}
