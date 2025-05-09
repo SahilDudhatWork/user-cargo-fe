@@ -321,7 +321,9 @@ export default {
         if (inputElement instanceof HTMLInputElement) {
           this.autocomplete = new google.maps.places.Autocomplete(
             inputElement,
-            { types: ["geocode"] }
+            {
+              types: ["establishment", "geocode"],
+            }
           );
           this.autocomplete.setFields([
             "address_component",
