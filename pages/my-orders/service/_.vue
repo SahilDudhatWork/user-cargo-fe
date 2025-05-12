@@ -98,7 +98,7 @@
           "
           @downloadFileItem="
             downloadFileItem(
-              orderData?.documents?.letterWithInstructionsMemo?.[0],
+              orderData?.documents?.letterWithInstructionsMemo?.[0]
             )
           "
         />
@@ -106,7 +106,7 @@
         <UploadBox
           v-if="
             orderData?.specialRequirements?.some((req) =>
-              req.type.includes('Over Size'),
+              req.type.includes('Over Size')
             )
           "
           v-model="formData.oversizeNotification"
@@ -123,7 +123,7 @@
           "
           @downloadFileItem="
             downloadFileItem(
-              orderData?.documents?.oversizeNotificationUser?.[0],
+              orderData?.documents?.oversizeNotificationUser?.[0]
             )
           "
         />
@@ -131,7 +131,7 @@
         <UploadBox
           v-if="
             orderData?.specialRequirements?.some((req) =>
-              req.type.includes('Over Weight'),
+              req.type.includes('Over Weight')
             )
           "
           v-model="formData.overweightPermitUser"
@@ -154,7 +154,7 @@
         <UploadBox
           v-if="
             orderData?.specialRequirements?.some((req) =>
-              req.type.includes('Hazmat (USD405)'),
+              req.type.includes('Hazmat (USD405)')
             )
           "
           v-model="formData.hazmatBol"
@@ -173,7 +173,7 @@
         <UploadBox
           v-if="
             orderData?.specialRequirements?.some((req) =>
-              req.type.includes('Hazmat (USD405)'),
+              req.type.includes('Hazmat (USD405)')
             )
           "
           v-model="formData.hazmatSDS"
@@ -190,14 +190,14 @@
           "
           @downloadFileItem="
             downloadFileItem(
-              orderData?.documents?.hazmatSdsSafetyDataSheet?.[0],
+              orderData?.documents?.hazmatSdsSafetyDataSheet?.[0]
             )
           "
         />
         <UploadBox
           v-if="
             orderData?.specialRequirements?.some((req) =>
-              req.type.includes('Sagarpa Inspection MX (USD 45)'),
+              req.type.includes('Sagarpa Inspection MX (USD 45)')
             )
           "
           v-model="formData.agriculTure"
@@ -214,14 +214,14 @@
           "
           @downloadFileItem="
             downloadFileItem(
-              orderData?.documents?.sagarpaPackageAgriculture?.[0],
+              orderData?.documents?.sagarpaPackageAgriculture?.[0]
             )
           "
         />
         <UploadBox
           v-if="
             orderData?.specialRequirements?.some((req) =>
-              req.type.includes('Profepa Inspection MX (USD 45)'),
+              req.type.includes('Profepa Inspection MX (USD 45)')
             )
           "
           v-model="formData.proferaPackage"
@@ -238,7 +238,7 @@
           "
           @downloadFileItem="
             downloadFileItem(
-              orderData?.documents?.profepaPackageEnvironmental?.[0],
+              orderData?.documents?.profepaPackageEnvironmental?.[0]
             )
           "
         />
@@ -258,7 +258,7 @@
           "
           @downloadFileItem="
             downloadFileItem(
-              orderData?.documents?.intercambioTrailerRelease?.[0],
+              orderData?.documents?.intercambioTrailerRelease?.[0]
             )
           "
         />
@@ -266,7 +266,7 @@
           v-if="
             orderData?.typeOfService?.title === 'Southbound' &&
             orderData?.specialRequirements?.some((req) =>
-              req.type.includes('Sedena Inspection MX (USD 0)'),
+              req.type.includes('Sedena Inspection MX (USD 0)')
             )
           "
           v-model="formData.sedenaPackage"
@@ -287,7 +287,7 @@
         <UploadBox
           v-if="
             orderData?.specialRequirements?.some((req) =>
-              req.type.includes('Over Weight'),
+              req.type.includes('Over Weight')
             )
           "
           v-model="formData.overweightNotification"
@@ -315,7 +315,7 @@
             null
           "
           @file-selected="handleCuadernoAtaFile"
-          title="CUADERNO ATA"
+          title="TRUCK ORDER NOT USED (TONU) EVIDENCE"
           :fileTypes="fileTypes[orderData?.documents?.cuadernoAta?.[0]]"
           @downloadFileItem="
             downloadFileItem(orderData?.documents?.cuadernoAta?.[0])
@@ -332,7 +332,7 @@
             null
           "
           @file-selected="handleInformalExportFile"
-          title="INFORMAL EXPORT"
+          title="DEMURRAGES EVIDENCES"
           :fileTypes="fileTypes[orderData?.documents?.informalExport?.[0]]"
           @downloadFileItem="
             downloadFileItem(orderData?.documents?.informalExport?.[0])
@@ -371,7 +371,7 @@
           "
           @downloadFileItem="
             downloadFileItem(
-              orderData?.documents?.damagesDiscrepanciesForUser?.[0],
+              orderData?.documents?.damagesDiscrepanciesForUser?.[0]
             )
           "
         />
@@ -505,7 +505,7 @@
           "
           @downloadFileItem="
             downloadFileItem(
-              orderData?.documents?.proofOfDeliveryForCarrier?.[0],
+              orderData?.documents?.proofOfDeliveryForCarrier?.[0]
             )
           "
         />
@@ -521,7 +521,7 @@
           "
           @downloadFileItem="
             downloadFileItem(
-              orderData?.documents?.damagesDiscrepanciesForCarrier?.[0],
+              orderData?.documents?.damagesDiscrepanciesForCarrier?.[0]
             )
           "
         />
@@ -707,7 +707,7 @@
                       40
                         ? (item?.addressDetails?.buildinName ?? "").substring(
                             0,
-                            40,
+                            40
                           ) + "..."
                         : item?.addressDetails?.buildinName ?? ""
                     }}
@@ -770,7 +770,7 @@
                       40
                         ? (item?.addressDetails?.buildinName ?? "").substring(
                             0,
-                            40,
+                            40
                           ) + "..."
                         : item?.addressDetails?.buildinName ?? ""
                     }}
