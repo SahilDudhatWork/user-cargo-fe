@@ -278,7 +278,7 @@ export default {
         });
         this.closeModal("step4");
         this.openModal("step5");
-        this.getUserAddress();
+        await this.getUserAddress();
         this.isButtonLoader = false;
       } catch (error) {
         this.isButtonLoader = false;
@@ -323,7 +323,7 @@ export default {
         });
         this.closeModal("step8");
         this.openModal("step5");
-        this.getUserAddress();
+        await this.getUserAddress();
         this.isButtonLoader = false;
       } catch (error) {
         this.isButtonLoader = false;

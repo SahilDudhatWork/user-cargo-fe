@@ -154,7 +154,7 @@ export default {
         speed: 500,
         slidesToShow: 3,
         dots: false,
-        infinite: false,
+        infinite: true,
         swipeToSlide: false,
         centerMode: false,
         centerPadding: "0px",
